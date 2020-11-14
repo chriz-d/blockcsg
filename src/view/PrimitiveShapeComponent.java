@@ -9,12 +9,15 @@ import javax.swing.JComponent;
 
 public class PrimitiveShapeComponent extends JComponent {
 	
+	public enum PrimitiveShapeComponentSocket {
+		LEFT, RIGHT, BOTH
+	}
+	
 	private static final long serialVersionUID = -5948325703189463847L;
 	
 	private String type;
 	
-	private boolean showLeftSocket;
-	private boolean showRightSocket;
+	private PrimitiveShapeComponentSocket socketType;
 	
 	// Coordinates of shape with both sockets open
 	final private int shapeBothCoordinatesX[] = {0, 100, 75, 100, 0, 25};
@@ -29,10 +32,9 @@ public class PrimitiveShapeComponent extends JComponent {
 	final private int shapeRightCoordinatesY[] = {0, 0, 25, 50, 50};
 
 	
-	public PrimitiveShapeComponent(String type, boolean showLeftSocket, boolean showRightSocket) {
+	public PrimitiveShapeComponent(String type, PrimitiveShapeComponentSocket socketType) {
 		this.type = type;
-		this.showLeftSocket = showLeftSocket;
-		this.showRightSocket = showRightSocket;
+		this.socketType = socketType;
 	}
 	
 	
@@ -55,39 +57,26 @@ public class PrimitiveShapeComponent extends JComponent {
 		int reqCoordinatesX[] = null;
 		int reqCoordinatesY[] = null;
 		path.moveTo(0, 0);
-		if(showLeftSocket && showRightSocket) {
+		switch(socketType) {
+		case BOTH: {
 			reqCoordinatesX = shapeBothCoordinatesX;
 			reqCoordinatesY = shapeBothCoordinatesY;
-		} else if(showRightSocket && !showLeftSocket) {
+		} break;
+		case RIGHT: {
 			reqCoordinatesX = shapeRightCoordinatesX;
 			reqCoordinatesY = shapeRightCoordinatesY;
-		} else if(!showRightSocket && showLeftSocket) {
+		} break;
+		case LEFT: {
 			reqCoordinatesX = shapeLeftCoordinatesX;
 			reqCoordinatesY = shapeLeftCoordinatesY;
-		} else {
-			System.out.println("Both sockets disabled?!");
+		} break;
+		default: System.out.println("Both sockets disabled?!"); break;
 		}
 		for(int i = 0; i < reqCoordinatesX.length; i++) {
 			path.lineTo(reqCoordinatesX[i], reqCoordinatesY[i]);
 		}
 		path.closePath();
 		return path;
-	}
-	
-	public void enableLeftSocket() {
-		showLeftSocket = true;
-	}
-	
-	public void enableRightSocket() {
-		showRightSocket = true;
-	}
-	
-	public void disableLeftSocket() {
-		showLeftSocket = false;
-	}
-	
-	public void disableRightSocket() {
-		showLeftSocket = false;
 	}
 	
 	public String getType() {

@@ -1,15 +1,18 @@
 package view;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.Controller;
+import view.PrimitiveShapeComponent.PrimitiveShapeComponentSocket;
 
 public class View {
 	
@@ -30,13 +33,15 @@ public class View {
 		JPanel jMonkeyPanel = new JPanel();
 		frame.setLayout(new GridLayout(0, 2));
 		workspacePanel.setLayout(null);
+		jMonkeyPanel.setBackground(Color.DARK_GRAY);
+		workspacePanel.setBackground(Color.LIGHT_GRAY);
 		
 		frame.add(workspacePanel);
 		frame.add(jMonkeyPanel);
 		
-		PrimitiveShapeComponent s = new PrimitiveShapeComponent("Cube", true, true);
-		PrimitiveShapeComponent s2 = new PrimitiveShapeComponent("Cube", false, true);
-		PrimitiveShapeComponent s3 = new PrimitiveShapeComponent("Cube", true, false);
+		PrimitiveShapeComponent s = new PrimitiveShapeComponent("Cube", PrimitiveShapeComponentSocket.BOTH);
+		PrimitiveShapeComponent s2 = new PrimitiveShapeComponent("Cube", PrimitiveShapeComponentSocket.LEFT);
+		PrimitiveShapeComponent s3 = new PrimitiveShapeComponent("Cube", PrimitiveShapeComponentSocket.RIGHT);
 		
 		OperatorComponent o1 = new OperatorComponent("Union");
 		

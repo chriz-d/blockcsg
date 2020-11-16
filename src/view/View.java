@@ -3,10 +3,13 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.Box;
@@ -18,13 +21,16 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import controller.Controller;
-import view.PrimitiveShapeComponent.PrimitiveShapeComponentSocket;
+import view.BlockComponent.BlockType;
+import view.PrimShapeBlock.PrimShapeSocket;
 
 public class View {
 	
-	// Main window
+	// Main window and panels for easy access
 	private JFrame frame;
 	private Controller controller;
+	private JPanel transferPanel;
+	private JPanel blockViewPanel;
 	
 	// Misc var for event handler
 	private int screenX = 0;
@@ -44,14 +50,22 @@ public class View {
 		frame = new JFrame();
 		frame.setLayout(new GridLayout(1, 3));
 		
-		// Every panel of GUI
-		JPanel jMonkeyViewPanel = new JPanel();
+		frame.add(getBlockViewPanel());
+		frame.add(getJMonkeyPanel());
+		
+		
+		frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		frame.setTitle("CSG Editor");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+	
+	private JLayeredPane getBlockViewPanel() {
 		JLayeredPane layeredPane = new JLayeredPane();
-		JPanel transferPanel = new JPanel(null);
-		JPanel blockViewPanel = new JPanel(new BorderLayout());
+		transferPanel = new JPanel(null);
+		blockViewPanel = new JPanel(new BorderLayout());
 		JPanel workspacePanel = new JPanel(null);
 				
-		jMonkeyViewPanel.setBackground(Color.DARK_GRAY);
 		workspacePanel.setBackground(Color.LIGHT_GRAY);
 		// Layered pane does not have layout manager, hence manual position and size
 		// needed
@@ -63,16 +77,13 @@ public class View {
 		blockViewPanel.add(workspacePanel, BorderLayout.CENTER);
 		layeredPane.add(blockViewPanel, JLayeredPane.DEFAULT_LAYER);
 		layeredPane.add(transferPanel, JLayeredPane.DRAG_LAYER);
-		
-		frame.add(layeredPane);
-		frame.add(jMonkeyViewPanel);
-		
-		
-		
-		frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		frame.setTitle("CSG Editor");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		return layeredPane;
+	}
+	
+	private JPanel getJMonkeyPanel() {
+		JPanel jMonkeyViewPanel = new JPanel();
+		jMonkeyViewPanel.setBackground(Color.DARK_GRAY);
+		return jMonkeyViewPanel;
 	}
 	
 	private JPanel getDrawerPanel() {
@@ -82,51 +93,29 @@ public class View {
 		scrollPane.setBorder(null);
 		//scrollPane.setPreferredSize(new Dimension(130, 650));
 		drawerPanel.add(scrollPane, BorderLayout.CENTER);
-		vBox.add(new PrimitiveShapeComponent("Cube", PrimitiveShapeComponentSocket.BOTH));
-		vBox.add(new PrimitiveShapeComponent("Sphere", PrimitiveShapeComponentSocket.BOTH));
-		vBox.add(new PrimitiveShapeComponent("Cylinder", PrimitiveShapeComponentSocket.BOTH));
-		vBox.add(new PrimitiveShapeComponent("Pyramid", PrimitiveShapeComponentSocket.BOTH));
-		vBox.add(new OperatorComponent("Union"));
-		vBox.add(new OperatorComponent("Difference"));
-		vBox.add(new OperatorComponent("Intersection"));
+		vBox.add(new PrimShapeBlock(BlockType.CUBE, PrimShapeSocket.BOTH));
+		vBox.add(new PrimShapeBlock(BlockType.SPHERE, PrimShapeSocket.BOTH));
+		vBox.add(new PrimShapeBlock(BlockType.CYLINDER, PrimShapeSocket.BOTH));
+		vBox.add(new PrimShapeBlock(BlockType.PYRAMID, PrimShapeSocket.BOTH));
+		vBox.add(new OperatorComponent(BlockType.DIFFERENCE));
+		vBox.add(new OperatorComponent(BlockType.INTERSECT));
+		vBox.add(new OperatorComponent(BlockType.UNION));
 
 		return drawerPanel;
 	}
 	
 	// Resizes BlockView, because no layout manager
 	private void addBlockViewResizeHandler(JPanel blockview) {
-		frame.addComponentListener(new ComponentListener() {
-			
-			@Override
-			public void componentShown(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent arg0) {
 				blockview.setBounds(0, 0, (frame.getWidth() + blockview.getComponent(0).getWidth() )/ 2, frame.getHeight()- 30);
-			}
-			
-			@Override
-			public void componentMoved(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void componentHidden(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}
 	
 	private void addDragHandler(JComponent component) {
-		component.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			
+		component.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 		        screenX = e.getXOnScreen();
@@ -135,28 +124,14 @@ public class View {
 		        myX = component.getX();
 		        myY = component.getY();
 			}
-			
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {}
 		});
-		component.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent arg0) {}
-			
+		component.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 		        int deltaX = e.getXOnScreen() - screenX;
 		        int deltaY = e.getYOnScreen() - screenY;
 
 		        component.setLocation(myX + deltaX, myY + deltaY);
-				
 			}
 		});
 	}

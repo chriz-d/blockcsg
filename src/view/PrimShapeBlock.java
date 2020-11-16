@@ -8,17 +8,15 @@ import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
 
-public class PrimitiveShapeComponent extends JComponent {
+public class PrimShapeBlock extends BlockComponent {
 	
-	public enum PrimitiveShapeComponentSocket {
+	public enum PrimShapeSocket {
 		LEFT, RIGHT, BOTH
 	}
 	
 	private static final long serialVersionUID = -5948325703189463847L;
 	
-	private String type;
-	
-	private PrimitiveShapeComponentSocket socketType;
+	private PrimShapeSocket socketType;
 	
 	// Coordinates of shape with both sockets open
 	final private int shapeBothCoordinatesX[] = {0, 100, 75, 100, 0, 25};
@@ -33,8 +31,8 @@ public class PrimitiveShapeComponent extends JComponent {
 	final private int shapeRightCoordinatesY[] = {0, 0, 25, 50, 50};
 
 	
-	public PrimitiveShapeComponent(String type, PrimitiveShapeComponentSocket socketType) {
-		this.type = type;
+	public PrimShapeBlock(BlockType type, PrimShapeSocket socketType) {
+		super(type);
 		this.socketType = socketType;
 		this.setPreferredSize(new Dimension(100, 50));
 	}
@@ -49,7 +47,7 @@ public class PrimitiveShapeComponent extends JComponent {
 		g2.fill(path);
 		g2.draw(path);
 		g2.setColor(Color.WHITE);
-		g2.drawString(type, 40, 25);
+		g2.drawString(getType().toString(), 40, 25);
 	}
 	
 	// returns the drawn path of needed shape
@@ -78,9 +76,5 @@ public class PrimitiveShapeComponent extends JComponent {
 		}
 		path.closePath();
 		return path;
-	}
-	
-	public String getType() {
-		return type;
 	}
 }

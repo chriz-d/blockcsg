@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
@@ -35,8 +36,8 @@ public class PrimitiveShapeComponent extends JComponent {
 	public PrimitiveShapeComponent(String type, PrimitiveShapeComponentSocket socketType) {
 		this.type = type;
 		this.socketType = socketType;
+		this.setPreferredSize(new Dimension(100, 50));
 	}
-	
 	
 	@Override
 	public void paint(Graphics g) {

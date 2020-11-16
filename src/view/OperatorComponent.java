@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
@@ -19,6 +20,7 @@ public class OperatorComponent extends JComponent {
 	
 	public OperatorComponent(String type) {
 		this.type = type;
+		this.setPreferredSize(new Dimension(100, 50));
 	}
 	
 	@Override

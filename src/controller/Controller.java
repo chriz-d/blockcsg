@@ -9,12 +9,13 @@ public class Controller {
 	private Model model;
 	
 	public void start() {
-		view = new View(this);
+		view = new View();
 		view.initView();
 		model = new Model();
 	}
 	
 	public static void main(String[] args) {
+		org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
 	}

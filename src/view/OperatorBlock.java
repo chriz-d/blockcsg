@@ -6,21 +6,25 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.JComponent;
-
-import view.BlockComponent.BlockType;
-
-public class OperatorComponent extends BlockComponent {
-
+public class OperatorBlock extends BlockComponent {
+	
+	public enum OperatorBlockType {
+		UNION, DIFFERENCE, INTERSECT;
+	}
+	
 	private static final long serialVersionUID = -1526119201511001957L;
+	
+	private OperatorBlockType blockType;
 	
 	// Coordinates of connector shape
 	final private int shapeConnectorCoordinatesX[] = {0, 25, 75, 100, 75, 25};
 	final private int shapeConnectorCoordinatesY[] = {25, 0, 0, 25, 50, 50};
 	
-	public OperatorComponent(BlockType type) {
-		super(type);
+	public OperatorBlock(OperatorBlockType blockType) {
+		this.blockType = blockType;
+		this.setMinimumSize(new Dimension(100, 50));
 		this.setPreferredSize(new Dimension(100, 50));
+		this.setMaximumSize(new Dimension(100, 50));
 	}
 	
 	@Override
@@ -37,13 +41,17 @@ public class OperatorComponent extends BlockComponent {
 	}
 	
 	// returns the drawn path of needed shape
-		private GeneralPath getGeneralPath() {
-			GeneralPath path = new GeneralPath();
-			path.moveTo(0, 25);
-			for(int i = 0; i < shapeConnectorCoordinatesX.length; i++) {
-				path.lineTo(shapeConnectorCoordinatesX[i], shapeConnectorCoordinatesY[i]);
-			}
-			path.closePath();
-			return path;
+	private GeneralPath getGeneralPath() {
+		GeneralPath path = new GeneralPath();
+		path.moveTo(0, 25);
+		for(int i = 0; i < shapeConnectorCoordinatesX.length; i++) {
+			path.lineTo(shapeConnectorCoordinatesX[i], shapeConnectorCoordinatesY[i]);
 		}
+		path.closePath();
+		return path;
+	}
+	
+	public OperatorBlockType getType() {
+		return blockType;
+	}
 }

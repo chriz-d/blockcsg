@@ -10,12 +10,17 @@ import javax.swing.JComponent;
 
 public class PrimShapeBlock extends BlockComponent {
 	
+	public enum PrimBlockType {
+		CUBE, SPHERE, PYRAMID, CYLINDER
+	}
+	
 	public enum PrimShapeSocket {
 		LEFT, RIGHT, BOTH
 	}
 	
 	private static final long serialVersionUID = -5948325703189463847L;
 	
+	private PrimBlockType blockType;
 	private PrimShapeSocket socketType;
 	
 	// Coordinates of shape with both sockets open
@@ -31,10 +36,12 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesY[] = {0, 0, 25, 50, 50};
 
 	
-	public PrimShapeBlock(BlockType type, PrimShapeSocket socketType) {
-		super(type);
+	public PrimShapeBlock(PrimBlockType blockType, PrimShapeSocket socketType) {
+		this.blockType = blockType;
 		this.socketType = socketType;
+		this.setMinimumSize(new Dimension(100, 50));
 		this.setPreferredSize(new Dimension(100, 50));
+		this.setMaximumSize(new Dimension(100, 50));
 	}
 	
 	@Override
@@ -76,5 +83,9 @@ public class PrimShapeBlock extends BlockComponent {
 		}
 		path.closePath();
 		return path;
+	}
+	
+	public PrimBlockType getType() {
+		return blockType;
 	}
 }

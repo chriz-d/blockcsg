@@ -31,7 +31,7 @@ import javax.swing.ScrollPaneConstants;
 import controller.Controller;
 import support.Support;
 import view.OperatorBlock.OperatorBlockType;
-import view.PrimShapeBlock.PrimBlockType;
+import view.PrimShapeBlock.PrimShapeType;
 import view.PrimShapeBlock.PrimShapeSocket;
 
 public class View {
@@ -48,7 +48,7 @@ public class View {
 	public void initView() {
 		// Main JFrame
 		frame = new JFrame();
-		frame.setLayout(new GridLayout(1, 3));
+		frame.setLayout(new GridLayout(1, 2));
 		
 		frame.add(getBlockViewPanel());
 		frame.add(getJMonkeyPanel());
@@ -91,7 +91,7 @@ public class View {
 		JScrollPane scrollPane = new JScrollPane(vBox, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBorder(null);
 		drawerPanel.add(scrollPane, BorderLayout.CENTER);
-		for(PrimBlockType e : PrimBlockType.values()) {
+		for(PrimShapeType e : PrimShapeType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			PrimShapeBlock block = new PrimShapeBlock(e, PrimShapeSocket.BOTH);
 			block.addMouseListener(new SpawnHandler(block, this));

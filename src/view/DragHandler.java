@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -69,8 +70,40 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(!Support.isOutOfBounds(view.frame.getMousePosition(), view.workspacePanel)) {
 			componentToDrag.getParent().remove(componentToDrag);
 			componentToDrag.setBounds(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY(), 100, 50);
-			view.workspacePanel.add(componentToDrag);
 			System.out.println("Inside!");
+			
+			
+			
+			// Find closest snapping point
+			Component list[] = view.workspacePanel.getComponents();
+			BlockComponent draggedBlock = (BlockComponent) componentToDrag;
+			double closestDistance = Double.MAX_VALUE;
+			Point closestPoint = null;
+			BlockComponent closestBlock = null;
+//			for(int i = 0; i < draggedBlock.snapPoints.length; i++) {
+//				for(Component blockc : view.workspacePanel.getComponents()) {
+//					BlockComponent block = (BlockComponent) blockc;
+//					for(int j = 0; j < block.snapPoints.length; j++) {
+//						if(!block.snapPointUsed[j] && block.blockType != draggedBlock.blockType) {
+//							if(closestDistance > Support.getDistance(
+//									Support.addPoints(draggedBlock.snapPoints[i], draggedBlock.getLocation()), 
+//									Support.addPoints(block.snapPoints[j], block.getLocation()))) {
+//								closestDistance = Support.getDistance(
+//										Support.addPoints(draggedBlock.snapPoints[i], draggedBlock.getLocation()), 
+//										Support.addPoints(block.snapPoints[j], block.getLocation()));
+//								closestPoint = block.snapPoints[j];
+//								closestBlock = block;
+//							}
+//						}
+//					}
+//				}
+//			}
+//			if(closestPoint != null && closestDistance < 25) {
+//				Point absolute = Support.addPoints(closestPoint, closestBlock.getLocation());
+//				componentToDrag.setBounds(absolute.x, absolute.y, 100, 50);
+//			}
+			
+			view.workspacePanel.add(componentToDrag);
 		} else {
 			System.out.println("Outside!");
 			componentToDrag.getParent().remove(componentToDrag);

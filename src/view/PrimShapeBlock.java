@@ -4,13 +4,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
 
+import support.Support;
+
 public class PrimShapeBlock extends BlockComponent {
 	
-	public enum PrimBlockType {
+	public enum PrimShapeType {
 		CUBE, SPHERE, PYRAMID, CYLINDER
 	}
 	
@@ -20,27 +24,32 @@ public class PrimShapeBlock extends BlockComponent {
 	
 	private static final long serialVersionUID = -5948325703189463847L;
 	
-	private PrimBlockType blockType;
+	private PrimShapeType primShapeType;
 	private PrimShapeSocket socketType;
 	
 	// Coordinates of shape with both sockets open
-	final private int shapeBothCoordinatesX[] = {0, 100, 75, 100, 0, 25};
-	final private int shapeBothCoordinatesY[] = {0, 0, 25, 50, 50, 25};
+	final private int shapeBothCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
+	final private int shapeBothCoordinatesY[] = {0,   0,  20, 20, 15, 15, 35, 35, 30,  30,  49, 49, 30, 30, 35, 35, 15, 15, 20, 20};
 	
 	// Coordinates of shape with only left socket open
-	final private int shapeLeftCoordinatesX[] = {0, 100, 100, 0, 25};
-	final private int shapeLeftCoordinatesY[] = {0, 0, 50, 50, 25};
+	final private int shapeLeftCoordinatesX[] = {0, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
+	final private int shapeLeftCoordinatesY[] = {0,   0,  49, 49, 30, 30, 35, 35, 15, 15, 20, 20};
 	
 	// Coordinates of shape with only right socket open
-	final private int shapeRightCoordinatesX[] = {0, 100, 75, 100, 0};
-	final private int shapeRightCoordinatesY[] = {0, 0, 25, 50, 50};
-
+	final private int shapeRightCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99, 99,  0};
+	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
-	public PrimShapeBlock(PrimBlockType blockType, PrimShapeSocket socketType) {
-		this.blockType = blockType;
+	
+	
+	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
+		this.primShapeType = primShapeType;
 		this.socketType = socketType;
+		blockType = BlockType.PrimShape;
+		snapPoints = new Point[]{new Point(20, 25), new  Point(80, 25)};
+		//snapPointOffsetVector = new Point[] {new Point(0, -25), new Point(75)};
+		snapPointUsed = new boolean[] {false, false};
 		this.setMinimumSize(new Dimension(100, 50));
-		this.setPreferredSize(new Dimension(100, 50));
+		this.setPreferredSize(new Dimension(101, 50));
 		this.setMaximumSize(new Dimension(100, 50));
 	}
 	
@@ -48,13 +57,17 @@ public class PrimShapeBlock extends BlockComponent {
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.setColor(Color.RED);
-
 		GeneralPath path = getGeneralPath();
 		g2.fill(path);
 		g2.draw(path);
+		g2.setColor(Color.BLACK);
+		g2.draw(path);
 		g2.setColor(Color.WHITE);
-		g2.drawString(getType().toString(), 40, 25);
+		g2.drawString(Support.capitalizeNormal(getType().toString()), 30, 25);
 	}
 	
 	// returns the drawn path of needed shape
@@ -85,7 +98,7 @@ public class PrimShapeBlock extends BlockComponent {
 		return path;
 	}
 	
-	public PrimBlockType getType() {
-		return blockType;
+	public PrimShapeType getType() {
+		return primShapeType;
 	}
 }

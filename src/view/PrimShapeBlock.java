@@ -15,11 +15,11 @@ import support.Support;
 public class PrimShapeBlock extends BlockComponent {
 	
 	public enum PrimShapeType {
-		CUBE, SPHERE, PYRAMID, CYLINDER
+		CSG, CUBE, SPHERE, PYRAMID, CYLINDER
 	}
 	
 	public enum PrimShapeSocket {
-		LEFT, RIGHT, BOTH
+		LEFT, RIGHT, BOTH, TRIPLE
 	}
 	
 	private static final long serialVersionUID = -5948325703189463847L;
@@ -29,7 +29,7 @@ public class PrimShapeBlock extends BlockComponent {
 	
 	// Coordinates of shape with both sockets open
 	final private int shapeBothCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
-	final private int shapeBothCoordinatesY[] = {0,   0,  20, 20, 15, 15, 35, 35, 30,  30,  49, 49, 30, 30, 35, 35, 15, 15, 20, 20};
+	final private int shapeBothCoordinatesY[] = {0,   0,  15, 15, 10, 10, 30, 30, 25,  25,  39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
 	
 	// Coordinates of shape with only left socket open
 	final private int shapeLeftCoordinatesX[] = {0, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
@@ -39,7 +39,10 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99, 99,  0};
 	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
-	
+	// Coordinates of CSG shape block (has 3 sockets)
+	final private int shapeCSGCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
+	final private int shapeCSGCoordinatesY[] = {0,   0,  20, 20, 15, 15, 35, 35, 30,  30,  49, 49, 30, 30, 35, 35, 15, 15, 20, 20};
+
 	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
 		this.primShapeType = primShapeType;
@@ -88,6 +91,10 @@ public class PrimShapeBlock extends BlockComponent {
 		case LEFT: {
 			reqCoordinatesX = shapeLeftCoordinatesX;
 			reqCoordinatesY = shapeLeftCoordinatesY;
+		} break;
+		case TRIPLE: {
+			reqCoordinatesX = shapeCSGCoordinatesX;
+			reqCoordinatesY = shapeCSGCoordinatesY;
 		} break;
 		default: System.out.println("Both sockets disabled?!"); break;
 		}

@@ -22,8 +22,8 @@ public class OperatorBlock extends BlockComponent {
 	private OperatorBlockType operatorBlockType;
 	
 	// Coordinates of connector shape
-	final private int shapeConnectorCoordinatesX[] = {10, 90, 90, 95, 95, 99, 99, 95, 95, 90, 90, 10, 10,  5,  5,  0,  0,  5,  5, 10, 10};
-	final private int shapeConnectorCoordinatesY[] = { 0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 30, 30, 35, 35, 15, 15, 20, 20, 0};
+	final private int shapeConnectorCoordinatesX[] = {10, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
+	final private int shapeConnectorCoordinatesY[] = {10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		this.operatorBlockType = operatorBlockType;
@@ -58,7 +58,7 @@ public class OperatorBlock extends BlockComponent {
 	// returns the drawn path of needed shape
 	private GeneralPath getGeneralPath() {
 		GeneralPath path = new GeneralPath();
-		path.moveTo(10, 0);
+		path.moveTo(10, 10);
 		for(int i = 0; i < shapeConnectorCoordinatesX.length; i++) {
 			path.lineTo(shapeConnectorCoordinatesX[i], shapeConnectorCoordinatesY[i]);
 		}

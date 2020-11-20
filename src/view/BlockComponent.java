@@ -10,7 +10,7 @@ public class BlockComponent extends JComponent {
 	private static final long serialVersionUID = -973194356557981053L;
 	
 	public enum BlockType {
-		PrimShape, Operator
+		PrimShape, Operator, CSG
 	}
 	
 	public BlockType blockType;

@@ -15,7 +15,7 @@ public class Controller {
 	}
 	
 	public static void main(String[] args) {
-		org.swingexplorer.Launcher.launch();
+		//org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
 	}

@@ -97,6 +97,10 @@ public class View {
 			block.addMouseListener(new SpawnHandler(block, this));
 			vBox.add(block);
 		}
+		vBox.add(Box.createRigidArea(new Dimension(150, 30)));
+		CSGBlock csgblock = new CSGBlock();
+		csgblock.addMouseListener(new SpawnHandler(csgblock, this));
+		vBox.add(csgblock);
 		for(OperatorBlockType e : OperatorBlockType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			OperatorBlock block = new OperatorBlock(e);

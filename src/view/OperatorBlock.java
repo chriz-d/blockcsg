@@ -9,7 +9,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
 import support.Support;
-import view.BlockComponent.BlockType;
 
 public class OperatorBlock extends BlockComponent {
 	
@@ -22,8 +21,8 @@ public class OperatorBlock extends BlockComponent {
 	private OperatorBlockType operatorBlockType;
 	
 	// Coordinates of connector shape
-	final private int shapeConnectorCoordinatesX[] = {10, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
-	final private int shapeConnectorCoordinatesY[] = {10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
+	final private int shapeConnectorCoordinatesX[] = {10, 45, 45, 40, 50, 60, 55, 55, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
+	final private int shapeConnectorCoordinatesY[] = {10, 10,  5,  5,  0,  5,  5, 10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		this.operatorBlockType = operatorBlockType;
@@ -45,7 +44,7 @@ public class OperatorBlock extends BlockComponent {
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		// Draw shape
 		GeneralPath path = getGeneralPath();
-		g2.setColor(Color.DARK_GRAY);
+		g2.setColor(new Color(0xf8961e));
 		g2.fill(path);
 		g2.draw(path);
 		// Draw black outline

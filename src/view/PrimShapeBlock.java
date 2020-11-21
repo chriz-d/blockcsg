@@ -12,6 +12,7 @@ import java.awt.geom.GeneralPath;
 import javax.swing.JComponent;
 
 import support.Support;
+import view.SnapPoint.SocketType;
 
 public class PrimShapeBlock extends BlockComponent {
 	
@@ -25,7 +26,6 @@ public class PrimShapeBlock extends BlockComponent {
 	
 	private static final long serialVersionUID = -5948325703189463847L;
 	
-	private PrimShapeType primShapeType;
 	private PrimShapeSocket socketType;
 	
 	// Coordinates of shape with both sockets open
@@ -40,17 +40,21 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99, 99,  0};
 	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
+	// Coordinates of snap points
+	final private Point[] snapPoints = {new Point(0, 0), new Point(0, 0)};
+	final private Point[] snapPointOffsetVector = {new Point(0, 0), new Point(0, 0)};
+	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
-		this.primShapeType = primShapeType;
 		this.socketType = socketType;
 		label = Support.capitalizeNormal(primShapeType.toString());
 		color = 0x90be6d;
 		blockType = BlockType.PrimShape;
 		blockCornerCoorX = shapeBothCoordinatesX;
 		blockCornerCoorY = shapeBothCoordinatesY;
-		snapPoints = new Point[]{new Point(20, 25), new  Point(80, 25)};
-		snapPointOffsetVector = new Point[] {new Point(0, -25), new Point(75, 99)};
-		snapPointUsed = new boolean[] {false, false};
+		snapPointArr = new SnapPoint[snapPoints.length];
+		for(int i = 0; i < snapPoints.length; i++) {
+			snapPointArr[i] = new SnapPoint(snapPoints[i], SocketType.RECTANGLE, snapPointOffsetVector[i]);
+		}
 		
 		// Set bounds
 		this.setMinimumSize(new Dimension(80, 40));

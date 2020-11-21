@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
@@ -24,10 +23,7 @@ public class BlockComponent extends JComponent {
 	public String label;
 	public int color;
 	public BlockType blockType;
-	public Point[] snapPoints;
-	// Offset vector for snapPoints of SAME index (blockPos + snapPoint + OffsetVector = Correct pos for block)
-	public Point snapPointOffsetVector[];
-	public boolean snapPointUsed[];
+	public SnapPoint[] snapPointArr;
 	
 	@Override
 	public void paint(Graphics g) {

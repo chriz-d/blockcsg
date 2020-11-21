@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -51,7 +52,11 @@ public class OperatorBlock extends BlockComponent {
 		g2.setColor(Color.BLACK);
 		g2.draw(path);
 		g2.setColor(Color.WHITE);
-		g2.drawString(Support.capitalizeNormal(getType().toString()), 30, 25);
+		// Draw Label centered
+		String toDraw = Support.capitalizeNormal(getType().toString());
+		FontMetrics metrics = g.getFontMetrics(g.getFont());
+		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds(toDraw, g).getWidth()) / 2);
+		g2.drawString(toDraw, x, 25);
 	}
 	
 	// returns the drawn path of needed shape

@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -19,9 +20,9 @@ public class CSGBlock extends BlockComponent {
 		blockType = BlockType.CSG;
 		//snapPoints = new Point[]{new Point(18, 25), new  Point(82, 25)};
 		//snapPointUsed = new boolean[] {false, false};
-		this.setMinimumSize(new Dimension(100, 50));
-		this.setPreferredSize(new Dimension(100, 50));
-		this.setMaximumSize(new Dimension(100, 50));
+		this.setMinimumSize(new Dimension(80, 50));
+		this.setPreferredSize(new Dimension(80, 50));
+		this.setMaximumSize(new Dimension(80, 50));
 	}
 	
 	@Override
@@ -41,7 +42,10 @@ public class CSGBlock extends BlockComponent {
 		g2.setColor(Color.BLACK);
 		g2.draw(path);
 		g2.setColor(Color.WHITE);
-		g2.drawString("CSG", 30, 25);
+		// Draw Label centered
+		FontMetrics metrics = g.getFontMetrics(g.getFont());
+		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds("CSG", g).getWidth()) / 2);
+		g2.drawString("CSG", x, 25);
 	}
 	
 	// returns the drawn path of needed shape

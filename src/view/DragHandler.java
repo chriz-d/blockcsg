@@ -52,7 +52,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		componentToDrag.getParent().remove(componentToDrag);
 		view.transferPanel.add(componentToDrag);
 		if(!isFreshlySpawned) {
-			componentToDrag.setBounds(componentToDrag.getX() + view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY(), 100, 50);
+			componentToDrag.setBounds(componentToDrag.getX() + view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY(), componentToDrag.getWidth(), componentToDrag.getHeight());
 		}
         screenX = e.getXOnScreen();
         screenY = e.getYOnScreen();
@@ -69,7 +69,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		System.out.println("Release!");
 		if(!Support.isOutOfBounds(view.frame.getMousePosition(), view.workspacePanel)) {
 			componentToDrag.getParent().remove(componentToDrag);
-			componentToDrag.setBounds(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY(), 100, 50);
+			componentToDrag.setBounds(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY(), componentToDrag.getWidth(), componentToDrag.getHeight());
 			System.out.println("Inside!");
 			
 			

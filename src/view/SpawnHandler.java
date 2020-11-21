@@ -25,7 +25,7 @@ public class SpawnHandler extends MouseAdapter {
 		System.out.println("Spawn!");
 		// Clone component and place at old components position
         JComponent spawnedComp = (JComponent) Support.deepCopy(spawnableComponent);
-        spawnedComp.setBounds(spawnableComponent.getX(), spawnableComponent.getY(), 100, 50);
+        spawnedComp.setBounds(spawnableComponent.getX(), spawnableComponent.getY(), spawnableComponent.getWidth(), spawnableComponent.getHeight());
         
         Container parent = spawnableComponent.getParent();
         // Get index of old element for inserting clone into same position

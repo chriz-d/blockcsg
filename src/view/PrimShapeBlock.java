@@ -30,7 +30,7 @@ public class PrimShapeBlock extends BlockComponent {
 	
 	// Coordinates of shape with both sockets open
 	final private int shapeBothCoordinatesX[] = {0, 79, 79, 75, 75, 70, 70, 75, 75, 79, 79,  0,  0,  5,  5, 10, 10,  5,  5,  0};
-	final private int shapeBothCoordinatesY[] = {0,   0,  15, 15, 10, 10, 30, 30, 25,  25,  39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
+	final private int shapeBothCoordinatesY[] = {0,  0, 15, 15, 10, 10, 30, 30, 25, 25, 39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
 	
 	// Coordinates of shape with only left socket open
 	final private int shapeLeftCoordinatesX[] = {0, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
@@ -40,44 +40,26 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99, 99,  0};
 	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
-	
-
-	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
 		this.primShapeType = primShapeType;
 		this.socketType = socketType;
+		label = Support.capitalizeNormal(primShapeType.toString());
+		color = 0x90be6d;
 		blockType = BlockType.PrimShape;
+		blockCornerCoorX = shapeBothCoordinatesX;
+		blockCornerCoorY = shapeBothCoordinatesY;
 		snapPoints = new Point[]{new Point(20, 25), new  Point(80, 25)};
-		//snapPointOffsetVector = new Point[] {new Point(0, -25), new Point(75)};
+		snapPointOffsetVector = new Point[] {new Point(0, -25), new Point(75, 99)};
 		snapPointUsed = new boolean[] {false, false};
+		
+		// Set bounds
 		this.setMinimumSize(new Dimension(80, 40));
 		this.setPreferredSize(new Dimension(80, 40));
 		this.setMaximumSize(new Dimension(80, 40));
 	}
 	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(
-		        RenderingHints.KEY_TEXT_ANTIALIASING,
-		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2.setColor(new Color(0x90be6d));
-		GeneralPath path = getGeneralPath();
-		g2.fill(path);
-		g2.draw(path);
-		g2.setColor(Color.BLACK);
-		g2.draw(path);
-		g2.setColor(Color.WHITE);
-		// Draw Label centered
-		String toDraw = Support.capitalizeNormal(getType().toString());
-		FontMetrics metrics = g.getFontMetrics(g.getFont());
-		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds(toDraw, g).getWidth()) / 2);
-		g2.drawString(toDraw, x, 25);
-	}
-	
 	// returns the drawn path of needed shape
-	private GeneralPath getGeneralPath() {
+	public GeneralPath getGeneralPath() {
 		GeneralPath path = new GeneralPath();
 		int reqCoordinatesX[] = null;
 		int reqCoordinatesY[] = null;
@@ -102,9 +84,5 @@ public class PrimShapeBlock extends BlockComponent {
 		}
 		path.closePath();
 		return path;
-	}
-	
-	public PrimShapeType getType() {
-		return primShapeType;
 	}
 }

@@ -27,50 +27,16 @@ public class OperatorBlock extends BlockComponent {
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		this.operatorBlockType = operatorBlockType;
+		label = Support.capitalizeNormal(operatorBlockType.toString());
+		color = 0xf8961e;
+		blockCornerCoorX = shapeConnectorCoordinatesX;
+		blockCornerCoorY = shapeConnectorCoordinatesY;
+		
 		blockType = BlockType.Operator;
 		snapPoints = new Point[]{new Point(18, 25), new  Point(82, 25)};
 		snapPointUsed = new boolean[] {false, false};
 		this.setMinimumSize(new Dimension(100, 50));
 		this.setPreferredSize(new Dimension(100, 50));
 		this.setMaximumSize(new Dimension(100, 50));
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2 = (Graphics2D) g;
-		// Enable Anti-Aliasing for text
-		g2.setRenderingHint(
-		        RenderingHints.KEY_TEXT_ANTIALIASING,
-		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		// Draw shape
-		GeneralPath path = getGeneralPath();
-		g2.setColor(new Color(0xf8961e));
-		g2.fill(path);
-		g2.draw(path);
-		// Draw black outline
-		g2.setColor(Color.BLACK);
-		g2.draw(path);
-		g2.setColor(Color.WHITE);
-		// Draw Label centered
-		String toDraw = Support.capitalizeNormal(getType().toString());
-		FontMetrics metrics = g.getFontMetrics(g.getFont());
-		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds(toDraw, g).getWidth()) / 2);
-		g2.drawString(toDraw, x, 25);
-	}
-	
-	// returns the drawn path of needed shape
-	private GeneralPath getGeneralPath() {
-		GeneralPath path = new GeneralPath();
-		path.moveTo(10, 10);
-		for(int i = 0; i < shapeConnectorCoordinatesX.length; i++) {
-			path.lineTo(shapeConnectorCoordinatesX[i], shapeConnectorCoordinatesY[i]);
-		}
-		path.closePath();
-		return path;
-	}
-	
-	public OperatorBlockType getType() {
-		return operatorBlockType;
 	}
 }

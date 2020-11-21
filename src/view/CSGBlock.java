@@ -18,36 +18,17 @@ public class CSGBlock extends BlockComponent {
 
 	public CSGBlock() {
 		blockType = BlockType.CSG;
+		label = "CSG";
+		color = 0x577590;
+		blockCornerCoorX = shapeCSGCoordinatesX;
+		blockCornerCoorY = shapeCSGCoordinatesY;
 		//snapPoints = new Point[]{new Point(18, 25), new  Point(82, 25)};
 		//snapPointUsed = new boolean[] {false, false};
 		this.setMinimumSize(new Dimension(80, 50));
 		this.setPreferredSize(new Dimension(80, 50));
 		this.setMaximumSize(new Dimension(80, 50));
 	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2 = (Graphics2D) g;
-		// Enable Anti-Aliasing for text
-		g2.setRenderingHint(
-		        RenderingHints.KEY_TEXT_ANTIALIASING,
-		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		// Draw shape
-		GeneralPath path = getGeneralPath();
-		g2.setColor(new Color(0x577590));
-		g2.fill(path);
-		g2.draw(path);
-		// Draw black outline
-		g2.setColor(Color.BLACK);
-		g2.draw(path);
-		g2.setColor(Color.WHITE);
-		// Draw Label centered
-		FontMetrics metrics = g.getFontMetrics(g.getFont());
-		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds("CSG", g).getWidth()) / 2);
-		g2.drawString("CSG", x, 25);
-	}
-	
+
 	// returns the drawn path of needed shape
 	private GeneralPath getGeneralPath() {
 		GeneralPath path = new GeneralPath();

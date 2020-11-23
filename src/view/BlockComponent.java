@@ -23,7 +23,7 @@ public class BlockComponent extends JComponent {
 	public String label;
 	public int color;
 	public BlockType blockType;
-	public SnapPoint[] snapPointArr;
+	public BlockSocket[] socketArr;
 	
 	@Override
 	public void paint(Graphics g) {

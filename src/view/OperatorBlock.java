@@ -1,18 +1,11 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.geom.GeneralPath;
 
 import support.Support;
-import view.BlockComponent.BlockType;
-import view.SnapPoint.SocketPos;
-import view.SnapPoint.SocketType;
+import view.BlockSocket.SocketDir;
+import view.BlockSocket.SocketType;
 
 public class OperatorBlock extends BlockComponent {
 	
@@ -30,7 +23,7 @@ public class OperatorBlock extends BlockComponent {
 	final private Point[] snapPoints = {new Point(0, 35), new Point(50, 0), new Point(90, 30)};
 	final private Point[] snapPointOffsetVector = {new Point(11, -25), new Point(-40, 11), new Point(-1, -20)};
 	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.TRIANGLE_PLUG, SocketType.RECTANGLE_PLUG};
-	final private SocketPos[] socketPos = {SocketPos.LEFT, SocketPos.TOP, SocketPos.RIGHT};
+	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.TOP, SocketDir.RIGHT};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());
@@ -38,9 +31,9 @@ public class OperatorBlock extends BlockComponent {
 		blockType = BlockType.Operator;
 		blockCornerCoorX = shapeConnectorCoordinatesX;
 		blockCornerCoorY = shapeConnectorCoordinatesY;
-		snapPointArr = new SnapPoint[snapPoints.length];
+		socketArr = new BlockSocket[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			snapPointArr[i] = new SnapPoint(snapPoints[i], socketType[i], socketPos[i], snapPointOffsetVector[i]);
+			socketArr[i] = new BlockSocket(snapPoints[i], socketType[i], socketPos[i], snapPointOffsetVector[i]);
 		}
 		
 		// Set bounds

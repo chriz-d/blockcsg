@@ -1,19 +1,12 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.JComponent;
-
 import support.Support;
-import view.SnapPoint.SocketPos;
-import view.SnapPoint.SocketType;
+import view.BlockSocket.SocketDir;
+import view.BlockSocket.SocketType;
 
 public class PrimShapeBlock extends BlockComponent {
 	
@@ -44,7 +37,7 @@ public class PrimShapeBlock extends BlockComponent {
 	// Coordinates of snap points
 	final private Point[] snapPoints = {new Point(0, 25), new Point(79, 25)};
 	final private Point[] snapPointOffsetVector = {new Point(11, -35), new Point(-10, -35)};
-	final private SocketPos[] socketPos = {SocketPos.LEFT, SocketPos.RIGHT};
+	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
 	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
 		this.socketType = socketType;
@@ -53,9 +46,9 @@ public class PrimShapeBlock extends BlockComponent {
 		blockType = BlockType.PrimShape;
 		blockCornerCoorX = shapeBothCoordinatesX;
 		blockCornerCoorY = shapeBothCoordinatesY;
-		snapPointArr = new SnapPoint[snapPoints.length];
+		socketArr = new BlockSocket[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			snapPointArr[i] = new SnapPoint(snapPoints[i], SocketType.RECTANGLE_SOCKET, socketPos[i], snapPointOffsetVector[i]);
+			socketArr[i] = new BlockSocket(snapPoints[i], SocketType.RECTANGLE_SOCKET, socketPos[i], snapPointOffsetVector[i]);
 		}
 		
 		// Set bounds

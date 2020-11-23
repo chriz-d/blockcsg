@@ -3,8 +3,8 @@ package view;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import view.SnapPoint.SocketPos;
-import view.SnapPoint.SocketType;
+import view.BlockSocket.SocketDir;
+import view.BlockSocket.SocketType;
 
 public class CSGBlock extends BlockComponent {
 
@@ -18,7 +18,7 @@ public class CSGBlock extends BlockComponent {
 	final private Point[] snapPoints = {new Point(0, 25), new Point(40, 49), new Point(80, 25)};
 	final private Point[] snapPointOffsetVector = {new Point(11, -35), new Point(-50, -10), new Point(-11, -35)};
 	final private SocketType[] socketType = {SocketType.RECTANGLE_SOCKET, SocketType.TRIANGLE_SOCKET, SocketType.RECTANGLE_SOCKET};
-	final private SocketPos[] socketPos = {SocketPos.LEFT, SocketPos.BOTTOM, SocketPos.RIGHT};
+	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.BOTTOM, SocketDir.RIGHT};
 	
 	public CSGBlock() {
 		blockType = BlockType.CSG;
@@ -26,9 +26,9 @@ public class CSGBlock extends BlockComponent {
 		color = 0x577590;
 		blockCornerCoorX = shapeCSGCoordinatesX;
 		blockCornerCoorY = shapeCSGCoordinatesY;
-		snapPointArr = new SnapPoint[snapPoints.length];
+		socketArr = new BlockSocket[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			snapPointArr[i] = new SnapPoint(snapPoints[i], socketType[i], socketPos[i], snapPointOffsetVector[i]);
+			socketArr[i] = new BlockSocket(snapPoints[i], socketType[i], socketPos[i], snapPointOffsetVector[i]);
 		}
 		this.setMinimumSize(new Dimension(80, 50));
 		this.setPreferredSize(new Dimension(80, 50));

@@ -2,37 +2,21 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Arrays;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import controller.Controller;
-import support.Support;
 import view.OperatorBlock.OperatorBlockType;
-import view.PrimShapeBlock.PrimShapeType;
 import view.PrimShapeBlock.PrimShapeSocket;
+import view.PrimShapeBlock.PrimShapeType;
 
 public class View {
 	
@@ -88,7 +72,7 @@ public class View {
 	private JPanel getDrawerPanel() {
 		JPanel drawerPanel = new JPanel(new BorderLayout());
 		Box vBox = Box.createVerticalBox();
-		JScrollPane scrollPane = new JScrollPane(vBox, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane(vBox, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBorder(null);
 		drawerPanel.add(scrollPane, BorderLayout.CENTER);
 		for(PrimShapeType e : PrimShapeType.values()) {

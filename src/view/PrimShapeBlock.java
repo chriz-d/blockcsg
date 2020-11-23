@@ -12,6 +12,7 @@ import java.awt.geom.GeneralPath;
 import javax.swing.JComponent;
 
 import support.Support;
+import view.SnapPoint.SocketPos;
 import view.SnapPoint.SocketType;
 
 public class PrimShapeBlock extends BlockComponent {
@@ -41,8 +42,9 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 0), new Point(0, 0)};
-	final private Point[] snapPointOffsetVector = {new Point(0, 0), new Point(0, 0)};
+	final private Point[] snapPoints = {new Point(0, 25), new Point(79, 25)};
+	final private Point[] snapPointOffsetVector = {new Point(11, -35), new Point(-10, -35)};
+	final private SocketPos[] socketPos = {SocketPos.LEFT, SocketPos.RIGHT};
 	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
 		this.socketType = socketType;
@@ -53,7 +55,7 @@ public class PrimShapeBlock extends BlockComponent {
 		blockCornerCoorY = shapeBothCoordinatesY;
 		snapPointArr = new SnapPoint[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			snapPointArr[i] = new SnapPoint(snapPoints[i], SocketType.RECTANGLE, snapPointOffsetVector[i]);
+			snapPointArr[i] = new SnapPoint(snapPoints[i], SocketType.RECTANGLE_SOCKET, socketPos[i], snapPointOffsetVector[i]);
 		}
 		
 		// Set bounds

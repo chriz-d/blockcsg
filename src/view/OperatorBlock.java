@@ -11,6 +11,7 @@ import java.awt.geom.GeneralPath;
 
 import support.Support;
 import view.BlockComponent.BlockType;
+import view.SnapPoint.SocketPos;
 import view.SnapPoint.SocketType;
 
 public class OperatorBlock extends BlockComponent {
@@ -26,8 +27,10 @@ public class OperatorBlock extends BlockComponent {
 	final private int shapeConnectorCoordinatesY[] = {10, 10,  5,  5,  0,  5,  5, 10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 0), new Point(0, 0)};
-	final private Point[] snapPointOffsetVector = {new Point(0, 0), new Point(0, 0)};
+	final private Point[] snapPoints = {new Point(0, 35), new Point(50, 0), new Point(90, 30)};
+	final private Point[] snapPointOffsetVector = {new Point(11, -25), new Point(-40, 11), new Point(-1, -20)};
+	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.TRIANGLE_PLUG, SocketType.RECTANGLE_PLUG};
+	final private SocketPos[] socketPos = {SocketPos.LEFT, SocketPos.TOP, SocketPos.RIGHT};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());
@@ -37,7 +40,7 @@ public class OperatorBlock extends BlockComponent {
 		blockCornerCoorY = shapeConnectorCoordinatesY;
 		snapPointArr = new SnapPoint[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			snapPointArr[i] = new SnapPoint(snapPoints[i], SocketType.RECTANGLE, snapPointOffsetVector[i]);
+			snapPointArr[i] = new SnapPoint(snapPoints[i], socketType[i], socketPos[i], snapPointOffsetVector[i]);
 		}
 		
 		// Set bounds

@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import support.Support;
+import view.SnapPoint.SocketPos;
 
 // Not able to use MouseAdapter, thanks diamond of death...
 public class DragHandler implements MouseListener, MouseMotionListener {
@@ -75,32 +76,11 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			
 			
 			// Find closest snapping point
-			Component list[] = view.workspacePanel.getComponents();
-			BlockComponent draggedBlock = (BlockComponent) componentToDrag;
-			double closestDistance = Double.MAX_VALUE;
-			Point closestPoint = null;
-			BlockComponent closestBlock = null;
-			for(int i = 0; i < draggedBlock.snapPoints.length; i++) {
-				for(Component blockc : view.workspacePanel.getComponents()) {
-					BlockComponent block = (BlockComponent) blockc;
-					for(int j = 0; j < block.snapPoints.length; j++) {
-						if(!block.snapPointUsed[j] && block.blockType != draggedBlock.blockType) {
-							double distance = Support.getDistance(
-									Support.addPoints(draggedBlock.snapPoints[i], draggedBlock.getLocation()), 
-									Support.addPoints(block.snapPoints[j], block.getLocation()));
-							if(closestDistance > distance) {
-								closestDistance = distance;
-								closestPoint = block.snapPoints[j];
-								closestBlock = block;
-							}
-						}
-					}
-				}
+			Point pointToSnap = getClosestSnappingPoint();
+			if(pointToSnap != null) {
+				componentToDrag.setBounds(pointToSnap.x, pointToSnap.y, componentToDrag.getWidth(), componentToDrag.getHeight());
 			}
-			if(closestPoint != null && closestDistance < 25) {
-				Point absolute = Support.addPoints(closestPoint, closestBlock.getLocation());
-				componentToDrag.setBounds(absolute.x, absolute.y, 100, 50);
-			}
+			
 			
 			view.workspacePanel.add(componentToDrag);
 		} else {
@@ -110,6 +90,56 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			componentToDrag.removeMouseListener(this);
 		}
 		view.frame.repaint();
+	}
+	
+	// Searches all components for closest snapping point and calculates position
+	private Point getClosestSnappingPoint() {
+		Component[] componentList = view.workspacePanel.getComponents();
+		BlockComponent draggedBlock = (BlockComponent) componentToDrag;
+		double closestDistance = Double.MAX_VALUE;
+		Point closestPoint = null;
+		BlockComponent closestBlock = null;
+		int idx = 0;
+		SnapPoint[] draggedBlockSP = draggedBlock.snapPointArr;
+		// Iterate over sockets of dragged block, over all components and their own sockets
+		for(int i = 0; i < draggedBlockSP.length; i++) {
+			for(Component blockc : componentList) {
+				BlockComponent potClosest = (BlockComponent) blockc;
+				SnapPoint[] potClosestSP = potClosest.snapPointArr;
+				for(int j = 0; j < potClosest.snapPointArr.length; j++) {
+					if(isValidSocket(draggedBlockSP[i], potClosestSP[j])) {
+						double distance = Support.getDistance(
+								Support.addPoints(draggedBlockSP[i].position, draggedBlock.getLocation()), 
+								Support.addPoints(potClosestSP[j].position, potClosest.getLocation()));
+						if(closestDistance > distance) {
+							closestDistance = distance;
+							closestPoint = potClosestSP[j].position;
+							idx = j;
+							closestBlock = potClosest;
+						}
+					}
+				}
+			}
+		}
+		if(closestPoint != null && closestDistance < 25) {
+			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
+			if(closestBlock.snapPointArr[idx].pos == SocketPos.LEFT) {
+				spPos = Support.subPoints(spPos, new Point(draggedBlock.getWidth(), 0));
+			} else if(closestBlock.snapPointArr[idx].pos == SocketPos.TOP) {
+				spPos = Support.subPoints(spPos, new Point(0, draggedBlock.getHeight()));
+			}
+			return Support.addPoints(spPos, closestBlock.snapPointArr[idx].offsetVector);
+		} else {
+			return null;
+		}
+	}
+	
+	private boolean isValidSocket(SnapPoint s1, SnapPoint s2) {
+		boolean isNotUsed = !s1.isUsed && !s2.isUsed;
+		boolean isFittingSocket = SnapPoint.isFitting(s1.type, s2.type);
+		boolean isNotOnSameSide = s1.pos != s2.pos;
+		
+		return isNotUsed && isFittingSocket && isNotOnSameSide;
 	}
 	
 }

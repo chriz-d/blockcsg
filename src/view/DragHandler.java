@@ -13,7 +13,7 @@ import view.BlockSocket.SocketDir;
 public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private View view;
-	private Component componentToDrag;
+	private BlockComponent componentToDrag;
 	
 	private int screenX = 0;
 	private int screenY = 0;
@@ -22,7 +22,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private boolean isFreshlySpawned;
 	
-	public DragHandler(Component componentToDrag, View view) {
+	public DragHandler(BlockComponent componentToDrag, View view) {
 		this.componentToDrag = componentToDrag;
 		this.view = view;
 		this.isFreshlySpawned = true;
@@ -50,16 +50,27 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// Selection color
+		if(view.lastSelected != componentToDrag) {
+			if(view.lastSelected != null) {
+				view.lastSelected.color -= 10000; 
+			}
+			view.lastSelected = componentToDrag;
+			view.lastSelected.color += 10000;
+		}
+		
+		// Switch layers
 		componentToDrag.getParent().remove(componentToDrag);
 		view.transferPanel.add(componentToDrag);
 		if(!isFreshlySpawned) {
 			componentToDrag.setLocation(componentToDrag.getX() + view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
 		}
+		// Save position for dragging
         screenX = e.getXOnScreen();
         screenY = e.getYOnScreen();
-        System.out.println("Fired!");
         componentX = componentToDrag.getX();
         componentY = componentToDrag.getY();
+        view.frame.repaint();
 	}
 
 	@Override
@@ -67,18 +78,16 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(isFreshlySpawned) {
 			isFreshlySpawned = false;
 		}
-		System.out.println("Release!");
+		// Check if mouse is inside workspace Panel
 		if(!Support.isOutOfBounds(view.frame.getMousePosition(), view.workspacePanel)) {
 			componentToDrag.getParent().remove(componentToDrag);
 			componentToDrag.setLocation(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
-			System.out.println("Inside!");
 			
 			// Find closest snapping point and set component position to it if necessary
 			snapToClosestBlock();
 			
 			view.workspacePanel.add(componentToDrag);
-		} else {
-			System.out.println("Outside!");
+		} else { // Delete component, cause it's outside
 			componentToDrag.getParent().remove(componentToDrag);
 			componentToDrag.removeMouseMotionListener(this);
 			componentToDrag.removeMouseListener(this);
@@ -89,12 +98,11 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	// Searches all components for closest snapping point and calculates position
 	private void snapToClosestBlock() {
 		Component[] componentList = view.workspacePanel.getComponents();
-		BlockComponent draggedBlock = (BlockComponent) componentToDrag;
 		double closestDistance = Double.MAX_VALUE;
 		Point closestPoint = null;
 		BlockComponent closestBlock = null;
 		int idx = 0;
-		BlockSocket[] dragBlockSckt = draggedBlock.socketArr;
+		BlockSocket[] dragBlockSckt = componentToDrag.socketArr;
 		// Iterate over sockets of dragged block, over all components and their own sockets
 		for(int i = 0; i < dragBlockSckt.length; i++) {
 			for(Component blockc : componentList) {
@@ -103,7 +111,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				for(int j = 0; j < potClosest.socketArr.length; j++) {
 					if(isValidSocket(dragBlockSckt[i], potClosestScktArr[j])) {
 						double distance = Support.getDistance(
-								Support.addPoints(dragBlockSckt[i].position, draggedBlock.getLocation()), 
+								Support.addPoints(dragBlockSckt[i].position, componentToDrag.getLocation()), 
 								Support.addPoints(potClosestScktArr[j].position, potClosest.getLocation()));
 						if(closestDistance > distance) {
 							closestDistance = distance;
@@ -120,9 +128,9 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
 			// Compensate for width or height when snapping to left or top side of block
 			if(closestBlock.socketArr[idx].direction == SocketDir.LEFT) {
-				spPos = Support.subPoints(spPos, new Point(draggedBlock.getWidth(), 0));
+				spPos = Support.subPoints(spPos, new Point(componentToDrag.getWidth(), 0));
 			} else if(closestBlock.socketArr[idx].direction == SocketDir.TOP) {
-				spPos = Support.subPoints(spPos, new Point(0, draggedBlock.getHeight()));
+				spPos = Support.subPoints(spPos, new Point(0, componentToDrag.getHeight()));
 			}
 			// Add offset vector for precise placement
 			spPos = Support.addPoints(spPos, closestBlock.socketArr[idx].offsetVector);

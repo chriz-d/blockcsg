@@ -12,10 +12,10 @@ import support.Support;
 
 public class SpawnHandler extends MouseAdapter {
 	
-	private Component spawnableComponent;
+	private BlockComponent spawnableComponent;
 	private View view;
 	
-	public SpawnHandler(Component spawnableComponent, View view) {
+	public SpawnHandler(BlockComponent spawnableComponent, View view) {
 		this.spawnableComponent = spawnableComponent;
 		this.view = view;
 	}
@@ -24,7 +24,7 @@ public class SpawnHandler extends MouseAdapter {
 	public void mousePressed(MouseEvent e) {
 		System.out.println("Spawn!");
 		// Clone component and place at old components position
-        JComponent spawnedComp = (JComponent) Support.deepCopy(spawnableComponent);
+        BlockComponent spawnedComp = (BlockComponent) Support.deepCopy(spawnableComponent);
         spawnedComp.setBounds(spawnableComponent.getX(), spawnableComponent.getY(), spawnableComponent.getWidth(), spawnableComponent.getHeight());
         
         Container parent = spawnableComponent.getParent();

@@ -29,6 +29,8 @@ public class View {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
+	public BlockComponent lastSelected;
+	
 	public void initView() {
 		// Main JFrame
 		frame = new JFrame();

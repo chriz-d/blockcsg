@@ -92,6 +92,13 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			componentToDrag.removeMouseMotionListener(this);
 			componentToDrag.removeMouseListener(this);
 		}
+		Component[] components = view.workspacePanel.getComponents();
+		if(components.length > 1) {
+			for(int i = 0; i < components.length; i++) {
+				view.workspacePanel.setComponentZOrder(components[i], i);
+			}
+		}
+		view.workspacePanel.setComponentZOrder(componentToDrag, 0);
 		view.frame.repaint();
 	}
 	

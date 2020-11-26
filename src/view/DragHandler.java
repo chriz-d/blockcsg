@@ -86,19 +86,21 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Find closest snapping point and set component position to it if necessary
 			snapToClosestBlock();
 			
+			// fix z ordering of other elements
+			Component[] components = view.workspacePanel.getComponents();
+			if(components.length > 1) {
+				for(int i = 0; i < components.length; i++) {
+					view.workspacePanel.setComponentZOrder(components[i], i);
+				}
+			}
+			// Finally add to panel and give last element highest z order
 			view.workspacePanel.add(componentToDrag);
+			view.workspacePanel.setComponentZOrder(componentToDrag, 0);
 		} else { // Delete component, cause it's outside
 			componentToDrag.getParent().remove(componentToDrag);
 			componentToDrag.removeMouseMotionListener(this);
 			componentToDrag.removeMouseListener(this);
 		}
-		Component[] components = view.workspacePanel.getComponents();
-		if(components.length > 1) {
-			for(int i = 0; i < components.length; i++) {
-				view.workspacePanel.setComponentZOrder(components[i], i);
-			}
-		}
-		view.workspacePanel.setComponentZOrder(componentToDrag, 0);
 		view.frame.repaint();
 	}
 	

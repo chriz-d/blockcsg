@@ -41,6 +41,7 @@ public class View {
 		
 		frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		frame.setTitle("CSG Editor");
+		frame.setMinimumSize(new Dimension(800, 300));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
@@ -93,6 +94,7 @@ public class View {
 			block.addMouseListener(new SpawnHandler(block, this));
 			vBox.add(block);
 		}
+		vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 
 		return drawerPanel;
 	}

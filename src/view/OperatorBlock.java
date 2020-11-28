@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import support.Support;
 import view.BlockSocket.SocketDir;
@@ -16,14 +17,14 @@ public class OperatorBlock extends BlockComponent {
 	private static final long serialVersionUID = -1526119201511001957L;
 	
 	// Coordinates of connector shape
-	final private int shapeConnectorCoordinatesX[] = {10, 45, 45, 40, 50, 60, 55, 55, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
-	final private int shapeConnectorCoordinatesY[] = {10, 10,  5,  5,  0,  5,  5, 10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
+	final private int shapeConnectorCoordinatesX[] = {10, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
+	final private int shapeConnectorCoordinatesY[] = {10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 35), new Point(50, 0), new Point(90, 30)};
-	final private Point[] snapPointOffsetVector = {new Point(11, -25), new Point(-40, 11), new Point(-1, -20)};
-	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.TRIANGLE_PLUG, SocketType.RECTANGLE_PLUG};
-	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.TOP, SocketDir.RIGHT};
+	final private Point[] snapPoints = {new Point(0, 35), new Point(90, 30)};
+	final private Point[] snapPointOffsetVector = {new Point(11, -25), new Point(-1, -20)};
+	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_PLUG};
+	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());
@@ -40,5 +41,10 @@ public class OperatorBlock extends BlockComponent {
 		this.setMinimumSize(new Dimension(100, 50));
 		this.setPreferredSize(new Dimension(100, 50));
 		this.setMaximumSize(new Dimension(100, 50));
+	}
+	
+	@Override
+	public boolean contains(Point point) {
+		return !Support.isOutOfBounds(point, new Rectangle(0, 0, 20, 20));
 	}
 }

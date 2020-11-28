@@ -58,6 +58,7 @@ public class PrimShapeBlock extends BlockComponent {
 	}
 	
 	// returns the drawn path of needed shape
+	@Override
 	public GeneralPath getGeneralPath() {
 		GeneralPath path = new GeneralPath();
 		int reqCoordinatesX[] = null;
@@ -75,8 +76,7 @@ public class PrimShapeBlock extends BlockComponent {
 		case LEFT: {
 			reqCoordinatesX = shapeLeftCoordinatesX;
 			reqCoordinatesY = shapeLeftCoordinatesY;
-		} break;
-		default: System.out.println("Both sockets disabled?!"); break;
+		}
 		}
 		for(int i = 0; i < reqCoordinatesX.length; i++) {
 			path.lineTo(reqCoordinatesX[i], reqCoordinatesY[i]);

@@ -49,7 +49,7 @@ public class BlockComponent extends JComponent {
 	}
 	
 	// returns the drawn path of needed shape
-	private GeneralPath getGeneralPath() {
+	public GeneralPath getGeneralPath() {
 		GeneralPath path = new GeneralPath();
 		path.moveTo(blockCornerCoorX[0], blockCornerCoorY[0]);
 		for(int i = 0; i < blockCornerCoorX.length; i++) {

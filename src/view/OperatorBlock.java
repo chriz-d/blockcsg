@@ -21,7 +21,7 @@ public class OperatorBlock extends BlockComponent {
 	final private int shapeConnectorCoordinatesY[] = {40, 40, 26, 26, 31, 31, 11, 11, 16, 16,  1,  1, 16, 16, 11, 11, 31, 31, 26, 26, 40, 40, 55, 55, 50, 50, 70, 70, 65, 65, 79, 79, 65, 65, 70, 70, 50, 50, 55, 55};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 60), new Point(35, 20), new Point(65, 20), new Point(90, 60)};
+	final private Point[] snapPoints = {new Point(5, 60), new Point(40, 21), new Point(59, 21), new Point(94, 60)};
 	final private Point[] snapPointOffsetVector = {new Point(11, -20), new Point(11, -59), new Point(-11, -59), new Point(-1, -20)};
 	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG};
 	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.LEFT, SocketDir.RIGHT, SocketDir.RIGHT};
@@ -39,9 +39,9 @@ public class OperatorBlock extends BlockComponent {
 		}
 		
 		// Set bounds
-		this.setMinimumSize(new Dimension(100, 80));
-		this.setPreferredSize(new Dimension(100, 80));
-		this.setMaximumSize(new Dimension(100, 80));
+		this.setMinimumSize(new Dimension(101, 80));
+		this.setPreferredSize(new Dimension(101, 80));
+		this.setMaximumSize(new Dimension(101, 80));
 	}
 	
 	@Override

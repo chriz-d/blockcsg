@@ -35,7 +35,7 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 25), new Point(75, 25)};
+	final private Point[] snapPoints = {new Point(5, 20), new Point(74, 20)};
 	final private Point[] snapPointOffsetVector = {new Point(11, -35), new Point(-10, -35)};
 	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
 	
@@ -53,9 +53,9 @@ public class PrimShapeBlock extends BlockComponent {
 		}
 		
 		// Set bounds
-		this.setMinimumSize(new Dimension(80, 40));
-		this.setPreferredSize(new Dimension(80, 40));
-		this.setMaximumSize(new Dimension(80, 40));
+		this.setMinimumSize(new Dimension(81, 40));
+		this.setPreferredSize(new Dimension(81, 40));
+		this.setMaximumSize(new Dimension(81, 40));
 	}
 	
 	// returns the drawn path of needed shape

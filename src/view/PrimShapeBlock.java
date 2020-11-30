@@ -35,13 +35,14 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 25), new Point(79, 25)};
+	final private Point[] snapPoints = {new Point(0, 25), new Point(75, 25)};
 	final private Point[] snapPointOffsetVector = {new Point(11, -35), new Point(-10, -35)};
 	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
 	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
 		this.socketType = socketType;
 		label = Support.capitalizeNormal(primShapeType.toString());
+		labelHeight = 25;
 		color = 0x90be6d;
 		blockType = BlockType.PrimShape;
 		blockCornerCoorX = shapeBothCoordinatesX;

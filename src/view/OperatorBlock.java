@@ -17,17 +17,18 @@ public class OperatorBlock extends BlockComponent {
 	private static final long serialVersionUID = -1526119201511001957L;
 	
 	// Coordinates of connector shape
-	final private int shapeConnectorCoordinatesX[] = {10, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
-	final private int shapeConnectorCoordinatesY[] = {10, 10, 25, 25, 20, 20, 40, 40, 35, 35, 49, 49, 35, 35, 40, 40, 20, 20, 25, 25};
+	final private int shapeConnectorCoordinatesX[] = {10, 35, 35, 40, 40, 45, 45, 40, 40, 35, 35, 65, 65, 60, 60, 55, 55, 60, 60, 65, 65, 89, 89, 94, 94, 99, 99, 94, 94, 89, 89, 10, 10,  6,  6,  1,  1,  6,  6, 10};
+	final private int shapeConnectorCoordinatesY[] = {40, 40, 26, 26, 31, 31, 11, 11, 16, 16,  1,  1, 16, 16, 11, 11, 31, 31, 26, 26, 40, 40, 55, 55, 50, 50, 70, 70, 65, 65, 79, 79, 65, 65, 70, 70, 50, 50, 55, 55};
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(0, 35), new Point(90, 30)};
-	final private Point[] snapPointOffsetVector = {new Point(11, -25), new Point(-1, -20)};
-	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_PLUG};
-	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
+	final private Point[] snapPoints = {new Point(0, 60), new Point(35, 20), new Point(65, 20), new Point(90, 60)};
+	final private Point[] snapPointOffsetVector = {new Point(11, -20), new Point(11, -59), new Point(-11, -59), new Point(-1, -20)};
+	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG};
+	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.LEFT, SocketDir.RIGHT, SocketDir.RIGHT};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());
+		labelHeight = 65;
 		color = 0xf8961e;
 		blockType = BlockType.Operator;
 		blockCornerCoorX = shapeConnectorCoordinatesX;
@@ -38,9 +39,9 @@ public class OperatorBlock extends BlockComponent {
 		}
 		
 		// Set bounds
-		this.setMinimumSize(new Dimension(100, 50));
-		this.setPreferredSize(new Dimension(100, 50));
-		this.setMaximumSize(new Dimension(100, 50));
+		this.setMinimumSize(new Dimension(100, 80));
+		this.setPreferredSize(new Dimension(100, 80));
+		this.setMaximumSize(new Dimension(100, 80));
 	}
 	
 	@Override

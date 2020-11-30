@@ -2,6 +2,7 @@ package support;
 
 import java.awt.Container;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -26,14 +27,14 @@ public class Support {
 	}
 
 	// Checks if point is inside of container
-	public static boolean isOutOfBounds(Point point, Container container) {
+	public static boolean isOutOfBounds(Point point, Rectangle rectangle) {
 		if(point == null) {
 			return true;
 		}
-		boolean x = point.getX() < container.getX() || 
-				point.getX() > container.getX() + container.getWidth();
-		boolean y = point.getY() < container.getY() || 
-				point.getY() > container.getY() + container.getHeight();
+		boolean x = point.getX() < rectangle.getX() || 
+				point.getX() > rectangle.getX() + rectangle.getWidth();
+		boolean y = point.getY() < rectangle.getY() || 
+				point.getY() > rectangle.getY() + rectangle.getHeight();
 		return x || y;
 	}
 	

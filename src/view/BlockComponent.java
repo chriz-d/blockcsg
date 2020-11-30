@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
@@ -21,6 +22,7 @@ public class BlockComponent extends JComponent {
 	public int[] blockCornerCoorY;
 	
 	public String label;
+	public int labelHeight;
 	public int color;
 	public BlockType blockType;
 	public BlockSocket[] socketArr;
@@ -33,19 +35,22 @@ public class BlockComponent extends JComponent {
 		g2.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		
 		// Draw shape
 		GeneralPath path = getGeneralPath();
 		g2.setColor(new Color(color));
 		g2.fill(path);
 		g2.draw(path);
+		
 		// Draw black outline
 		g2.setColor(Color.BLACK);
 		g2.draw(path);
 		g2.setColor(Color.WHITE);
+		
 		// Draw Label centered
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds(label, g).getWidth()) / 2);
-		g2.drawString(label, x, 25);
+		g2.drawString(label, x, labelHeight);
 	}
 	
 	// returns the drawn path of needed shape

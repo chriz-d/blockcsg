@@ -45,9 +45,15 @@ public class BlockComponent extends JComponent {
 		// Draw black outline
 		g2.setColor(Color.BLACK);
 		g2.draw(path);
-		g2.setColor(Color.WHITE);
+		
+		// Draw snap points
+		g2.setColor(Color.BLUE);
+		for(BlockSocket e : socketArr) {
+			g2.drawRect(e.position.x, e.position.y, 1, 1);
+		}
 		
 		// Draw Label centered
+		g2.setColor(Color.WHITE);
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 		int x = (int) ((getPreferredSize().getWidth() - metrics.getStringBounds(label, g).getWidth()) / 2);
 		g2.drawString(label, x, labelHeight);

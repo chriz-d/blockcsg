@@ -7,7 +7,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import support.Support;
-import view.BlockSocket.SocketDir;
 
 // Not able to use MouseAdapter, thanks diamond of death...
 public class DragHandler implements MouseListener, MouseMotionListener {
@@ -139,14 +138,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(closestPoint != null && closestDistance < 25) {
 			// Convert found point to workspace coordinates
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
-			// Compensate for width or height when snapping to left or top side of block
-			if(closestBlock.socketArr[idx].direction == SocketDir.LEFT) {
-				//spPos = Support.subPoints(spPos, new Point(componentToDrag.getWidth(), 0));
-			} else if(closestBlock.socketArr[idx].direction == SocketDir.TOP) {
-				//spPos = Support.subPoints(spPos, new Point(0, componentToDrag.getHeight()));
-			}
-			// Add offset vector for precise placement
-			//spPos = Support.addPoints(spPos, closestBlock.socketArr[idx].offsetVector);
+
 			spPos = Support.subPoints(spPos, dragBlockSckt[idx2].position);
 			componentToDrag.setLocation(spPos.x, spPos.y);
 		}

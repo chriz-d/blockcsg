@@ -23,15 +23,12 @@ public class BlockSocket implements Serializable {
 	public SocketType type;
 	public SocketDir direction;
 	public boolean isUsed;
-	// Offset vector for snapPoints of SAME index (blockPos + snapPoint + OffsetVector = Correct pos for block)
-	public Point offsetVector;
 	
-	public BlockSocket(Point position, SocketType type, SocketDir direction, Point offsetVector) {
+	public BlockSocket(Point position, SocketType type, SocketDir direction) {
 		this.position = position;
 		this.type = type;
 		this.direction = direction;
 		this.isUsed = false;
-		this.offsetVector = offsetVector;
 	}
 	
 	// Returns if given socket types are compatible using static map

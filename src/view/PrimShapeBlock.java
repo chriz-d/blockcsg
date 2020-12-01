@@ -36,7 +36,6 @@ public class PrimShapeBlock extends BlockComponent {
 	
 	// Coordinates of snap points
 	final private Point[] snapPoints = {new Point(5, 20), new Point(74, 20)};
-	final private Point[] snapPointOffsetVector = {new Point(11, -35), new Point(-10, -35)};
 	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
 	
 	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
@@ -49,7 +48,7 @@ public class PrimShapeBlock extends BlockComponent {
 		blockCornerCoorY = shapeBothCoordinatesY;
 		socketArr = new BlockSocket[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			socketArr[i] = new BlockSocket(snapPoints[i], SocketType.RECTANGLE_SOCKET, socketPos[i], snapPointOffsetVector[i]);
+			socketArr[i] = new BlockSocket(snapPoints[i], SocketType.RECTANGLE_SOCKET, socketPos[i]);
 		}
 		
 		// Set bounds

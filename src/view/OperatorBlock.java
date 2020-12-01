@@ -22,7 +22,6 @@ public class OperatorBlock extends BlockComponent {
 	
 	// Coordinates of snap points
 	final private Point[] snapPoints = {new Point(5, 60), new Point(40, 21), new Point(59, 21), new Point(94, 60)};
-	final private Point[] snapPointOffsetVector = {new Point(11, -20), new Point(11, -59), new Point(-11, -59), new Point(-1, -20)};
 	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG};
 	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.LEFT, SocketDir.RIGHT, SocketDir.RIGHT};
 	
@@ -35,7 +34,7 @@ public class OperatorBlock extends BlockComponent {
 		blockCornerCoorY = shapeConnectorCoordinatesY;
 		socketArr = new BlockSocket[snapPoints.length];
 		for(int i = 0; i < snapPoints.length; i++) {
-			socketArr[i] = new BlockSocket(snapPoints[i], socketType[i], socketPos[i], snapPointOffsetVector[i]);
+			socketArr[i] = new BlockSocket(snapPoints[i], socketType[i], socketPos[i]);
 		}
 		
 		// Set bounds

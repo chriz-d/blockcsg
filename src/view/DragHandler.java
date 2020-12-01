@@ -1,10 +1,13 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import javax.swing.SwingUtilities;
 
 import support.Support;
 
@@ -14,11 +17,16 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	private View view;
 	private BlockComponent componentToDrag;
 	
+	// Is the component below componentToDrag, if this is not null
+	// all events need to passed to this instead
+	private Component componentBelow;
+	
 	private int screenX = 0;
 	private int screenY = 0;
 	private int componentX = 0;
 	private int componentY = 0;
 	
+	// Flag for setting component position correctly after inital spawning
 	private boolean isFreshlySpawned;
 	
 	public DragHandler(BlockComponent componentToDrag, View view) {
@@ -29,10 +37,16 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-        int deltaX = e.getXOnScreen() - screenX;
-        int deltaY = e.getYOnScreen() - screenY;
-
-        componentToDrag.setLocation(componentX + deltaX, componentY + deltaY);
+		// Pass on event (if a lower component exists)
+		if(componentBelow != null) {
+			componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
+					e.getComponent(), e, componentBelow));
+		} else if(componentToDrag.contains(e.getPoint())) { // Check if click actually is inside shape and not just bounding box
+			int deltaX = e.getXOnScreen() - screenX;
+			int deltaY = e.getYOnScreen() - screenY;
+			
+			componentToDrag.setLocation(componentX + deltaX, componentY + deltaY);
+		}
 	}
 
 	@Override
@@ -49,59 +63,76 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		//System.out.println(componentToDrag.contains(e.getPoint()));
-		// Selection color
-		if(view.lastSelected != componentToDrag) {
-			if(view.lastSelected != null) {
-				view.lastSelected.color -= 10000; 
+		// Check if click actually is inside shape and not just bounding box
+		if(!componentToDrag.contains(e.getPoint())) {
+			// Pass on event (if a lower component exists)
+			componentBelow = getLowerComponent(e.getPoint());
+			if(componentBelow != null) {
+				componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
+						e.getComponent(), e, componentBelow));
 			}
-			view.lastSelected = componentToDrag;
-			view.lastSelected.color += 10000;
+		} else {
+			// Selection color
+			if(view.lastSelected != componentToDrag) {
+				if(view.lastSelected != null) {
+					view.lastSelected.color -= 10000; 
+				}
+				view.lastSelected = componentToDrag;
+				view.lastSelected.color += 10000;
+			}
+			
+			// Switch layers
+			componentToDrag.getParent().remove(componentToDrag);
+			view.transferPanel.add(componentToDrag);
+			if(!isFreshlySpawned) {
+				componentToDrag.setLocation(componentToDrag.getX() + view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
+			}
+			// Save position for dragging
+			screenX = e.getXOnScreen();
+			screenY = e.getYOnScreen();
+			componentX = componentToDrag.getX();
+			componentY = componentToDrag.getY();
+			view.frame.repaint();
 		}
-		
-		// Switch layers
-		componentToDrag.getParent().remove(componentToDrag);
-		view.transferPanel.add(componentToDrag);
-		if(!isFreshlySpawned) {
-			componentToDrag.setLocation(componentToDrag.getX() + view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
-		}
-		// Save position for dragging
-        screenX = e.getXOnScreen();
-        screenY = e.getYOnScreen();
-        componentX = componentToDrag.getX();
-        componentY = componentToDrag.getY();
-        view.frame.repaint();
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		if(isFreshlySpawned) {
-			isFreshlySpawned = false;
-		}
-		// Check if mouse is inside workspace Panel
-		if(!Support.isOutOfBounds(view.frame.getMousePosition(), view.workspacePanel.getBounds())) {
-			componentToDrag.getParent().remove(componentToDrag);
-			componentToDrag.setLocation(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
-			
-			// Find closest snapping point and set component position to it if necessary
-			snapToClosestBlock();
-			
-			// fix z ordering of other elements
-			Component[] components = view.workspacePanel.getComponents();
-			if(components.length > 1) {
-				for(int i = 0; i < components.length; i++) {
-					view.workspacePanel.setComponentZOrder(components[i], i);
-				}
+	public void mouseReleased(MouseEvent e) {
+		// Check if click actually is inside shape and not just bounding box
+		if(componentBelow != null ) {
+			// Pass on event (if a lower component exists)
+				componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
+						e.getComponent(), e, componentBelow));
+				componentBelow = null;
+		} else if(componentToDrag.contains(e.getPoint())) {
+			if(isFreshlySpawned) {
+				isFreshlySpawned = false;
 			}
-			// Finally add to panel and give last element highest z order
-			view.workspacePanel.add(componentToDrag);
-			view.workspacePanel.setComponentZOrder(componentToDrag, 0);
-		} else { // Delete component, cause it's outside
-			componentToDrag.getParent().remove(componentToDrag);
-			componentToDrag.removeMouseMotionListener(this);
-			componentToDrag.removeMouseListener(this);
+			// Check if mouse is inside workspace Panel
+			if(!Support.isOutOfBounds(view.frame.getMousePosition(), view.workspacePanel.getBounds())) {
+				componentToDrag.getParent().remove(componentToDrag);
+				componentToDrag.setLocation(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
+				
+				// Find closest snapping point and set component position to it if necessary
+				snapToClosestBlock();
+				
+				// fix z ordering of other elements
+				Component[] components = view.workspacePanel.getComponents();
+				if(components.length > 1) {
+					for(int i = 1; i < components.length; i++) {
+						view.workspacePanel.setComponentZOrder(components[i], i);
+					}
+				}
+				// Finally add to panel and give last element highest z order
+				view.workspacePanel.add(componentToDrag);
+				view.workspacePanel.setComponentZOrder(componentToDrag, 0);
+			} else { // Delete component, cause it's outside
+				componentToDrag.getParent().remove(componentToDrag);
+				componentToDrag.removeMouseMotionListener(this);
+				componentToDrag.removeMouseListener(this);
+			}
+			view.frame.repaint();
 		}
-		view.frame.repaint();
 	}
 	
 	// Searches all components for closest snapping point and calculates position
@@ -110,25 +141,23 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		double closestDistance = Double.MAX_VALUE;
 		Point closestPoint = null;
 		BlockComponent closestBlock = null;
-		int idx = 0;
-		int idx2 = 0;
+		int socketIndex = 0;
 		BlockSocket[] dragBlockSckt = componentToDrag.socketArr;
 		// Iterate over sockets of dragged block, over all components and their own sockets
+		// and find closest snap point
 		for(int i = 0; i < dragBlockSckt.length; i++) {
 			for(Component blockc : componentList) {
 				BlockComponent potClosest = (BlockComponent) blockc;
-				BlockSocket[] potClosestScktArr = potClosest.socketArr;
 				for(int j = 0; j < potClosest.socketArr.length; j++) {
-					if(isValidSocket(dragBlockSckt[i], potClosestScktArr[j])) {
+					if(isValidSocket(dragBlockSckt[i], potClosest.socketArr[j])) {
 						double distance = Support.getDistance(
 								Support.addPoints(dragBlockSckt[i].position, componentToDrag.getLocation()), 
-								Support.addPoints(potClosestScktArr[j].position, potClosest.getLocation()));
+								Support.addPoints(potClosest.socketArr[j].position, potClosest.getLocation()));
 						if(closestDistance > distance) {
 							closestDistance = distance;
-							closestPoint = potClosestScktArr[j].position;
-							idx = j;
+							closestPoint = potClosest.socketArr[j].position;
 							closestBlock = potClosest;
-							idx2 = i;
+							socketIndex = i;
 						}
 					}
 				}
@@ -139,7 +168,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Convert found point to workspace coordinates
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
 
-			spPos = Support.subPoints(spPos, dragBlockSckt[idx2].position);
+			spPos = Support.subPoints(spPos, dragBlockSckt[socketIndex].position);
 			componentToDrag.setLocation(spPos.x, spPos.y);
 		}
 	}
@@ -153,4 +182,24 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		return isNotUsed && isFittingSocket && isNotOnSameSide;
 	}
 	
+	// Gets lower component with lowest z index
+	private Component getLowerComponent(Point p) {
+		Container parent = componentToDrag.getParent();
+		Component[] allComps = parent.getComponents();
+		Component result = null;
+		Point pWorkSpace = Support.addPoints(componentToDrag.getLocation(), p);
+		int zIndex = Integer.MAX_VALUE;
+		
+		// Search for component under componentToDrag and pick the one with lowest z index
+		for(Component e : allComps) {
+			Point pe = Support.subPoints(pWorkSpace, e.getLocation());
+			if(!e.equals((Component)componentToDrag) && e.contains(pe)) {
+				if(parent.getComponentZOrder(e) < zIndex) {
+					result = e;
+					zIndex = parent.getComponentZOrder(e);
+				}
+			}
+		}
+		return result;
+	}
 }

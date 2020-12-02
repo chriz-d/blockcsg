@@ -21,8 +21,8 @@ public class PrimShapeBlock extends BlockComponent {
 	final private int shapeBothCoordinatesY[] = {0,  0, 15, 15, 10, 10, 30, 30, 25, 25, 39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
 	
 	// Coordinates of shape with only left socket open
-	final private int shapeLeftCoordinatesX[] = {0, 79,  79,  0,  0,  5,  5, 10, 10,  5,  5,  0};
-	final private int shapeLeftCoordinatesY[] = {0,  0,  39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
+	final private int shapeLeftCoordinatesX[] = {0, 79, 79,  0,  0,  5,  5, 10, 10,  5,  5,  0};
+	final private int shapeLeftCoordinatesY[] = {0,  0, 39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
 	
 	// Coordinates of shape with only right socket open
 	final private int shapeRightCoordinatesX[] = {0, 79, 79, 75, 75, 70, 70, 75, 75, 79, 79,  0};

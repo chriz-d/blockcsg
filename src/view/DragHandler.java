@@ -81,6 +81,16 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				view.lastSelected.color += 10000;
 			}
 			
+			// Disconnect all sockets
+			for(BlockSocket socket : componentToDrag.socketArr) {
+				if(socket.connectedSocket != null) {
+					socket.connectedSocket.isUsed = false;
+					socket.connectedSocket.connectedSocket = null;
+				}
+				socket.isUsed = false;
+				socket.connectedSocket = null;
+			}
+			
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);
 			view.transferPanel.add(componentToDrag);
@@ -141,7 +151,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		double closestDistance = Double.MAX_VALUE;
 		Point closestPoint = null;
 		BlockComponent closestBlock = null;
-		int socketIndex = 0;
+		int dragSocketIndex = 0;
+		int closestSocketIndex = 0;
 		BlockSocket[] dragBlockSckt = componentToDrag.socketArr;
 		// Iterate over sockets of dragged block, over all components and their own sockets
 		// and find closest snap point
@@ -157,7 +168,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 							closestDistance = distance;
 							closestPoint = potClosest.socketArr[j].position;
 							closestBlock = potClosest;
-							socketIndex = i;
+							dragSocketIndex = i;
+							closestSocketIndex = j;
 						}
 					}
 				}
@@ -168,8 +180,14 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Convert found point to workspace coordinates
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
 
-			spPos = Support.subPoints(spPos, dragBlockSckt[socketIndex].position);
+			spPos = Support.subPoints(spPos, dragBlockSckt[dragSocketIndex].position);
 			componentToDrag.setLocation(spPos.x, spPos.y);
+			
+			// update socketState
+			componentToDrag.socketArr[dragSocketIndex].isUsed = true;
+			closestBlock.socketArr[closestSocketIndex].isUsed = true;
+			componentToDrag.socketArr[dragSocketIndex].connectedSocket = closestBlock.socketArr[closestSocketIndex];
+			closestBlock.socketArr[closestSocketIndex].connectedSocket = componentToDrag.socketArr[dragSocketIndex];
 		}
 	}
 	

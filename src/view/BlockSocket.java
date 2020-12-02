@@ -24,11 +24,15 @@ public class BlockSocket implements Serializable {
 	public SocketDir direction;
 	public boolean isUsed;
 	
+	public BlockComponent parent;
+	public BlockSocket connectedSocket;
+	
 	public BlockSocket(Point position, SocketType type, SocketDir direction) {
 		this.position = position;
 		this.type = type;
 		this.direction = direction;
 		this.isUsed = false;
+		connectedSocket = null;
 	}
 	
 	// Returns if given socket types are compatible using static map

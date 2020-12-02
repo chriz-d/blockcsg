@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import view.OperatorBlock.OperatorBlockType;
-import view.PrimShapeBlock.PrimShapeSocket;
 import view.PrimShapeBlock.PrimShapeType;
 
 public class View {
@@ -80,7 +79,7 @@ public class View {
 		drawerPanel.add(scrollPane, BorderLayout.CENTER);
 		for(PrimShapeType e : PrimShapeType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
-			PrimShapeBlock block = new PrimShapeBlock(e, PrimShapeSocket.BOTH);
+			PrimShapeBlock block = new PrimShapeBlock(e);
 			block.addMouseListener(new SpawnHandler(block, this));
 			vBox.add(block);
 		}

@@ -1,10 +1,10 @@
 package model;
 
-public class BlockBinaryTree {
+public class BinaryTree {
 	
 	private Node root;
 	
-	public BlockBinaryTree() {
+	public BinaryTree() {
 		root = new Node(null);
 	}
 	

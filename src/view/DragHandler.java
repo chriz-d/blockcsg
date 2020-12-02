@@ -29,10 +29,14 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	// Flag for setting component position correctly after inital spawning
 	private boolean isFreshlySpawned;
 	
+	// Flag for fixing dragging inside bounds of block, but still outside of blockshape
+	private boolean ignoreClick;
+	
 	public DragHandler(BlockComponent componentToDrag, View view) {
 		this.componentToDrag = componentToDrag;
 		this.view = view;
-		this.isFreshlySpawned = true;
+		isFreshlySpawned = true;
+		ignoreClick = false;
 	}
 	
 	@Override
@@ -41,7 +45,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(componentBelow != null) {
 			componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
 					e.getComponent(), e, componentBelow));
-		} else if(componentToDrag.contains(e.getPoint())) { // Check if click actually is inside shape and not just bounding box
+		} else if(componentToDrag.contains(e.getPoint()) && !ignoreClick) { // Check if click actually is inside shape and not just bounding box
 			int deltaX = e.getXOnScreen() - screenX;
 			int deltaY = e.getYOnScreen() - screenY;
 			
@@ -67,6 +71,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(!componentToDrag.contains(e.getPoint())) {
 			// Pass on event (if a lower component exists)
 			componentBelow = getLowerComponent(e.getPoint());
+			ignoreClick = true;
 			if(componentBelow != null) {
 				componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
 						e.getComponent(), e, componentBelow));
@@ -114,7 +119,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
 						e.getComponent(), e, componentBelow));
 				componentBelow = null;
-		} else if(componentToDrag.contains(e.getPoint())) {
+		} else if(componentToDrag.contains(e.getPoint()) && !ignoreClick) {
 			if(isFreshlySpawned) {
 				isFreshlySpawned = false;
 			}
@@ -143,6 +148,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			view.frame.repaint();
 		}
+		ignoreClick = false;
 	}
 	
 	// Searches all components for closest snapping point and calculates position

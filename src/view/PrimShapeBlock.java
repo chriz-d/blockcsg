@@ -14,32 +14,25 @@ public class PrimShapeBlock extends BlockComponent {
 		CUBE, SPHERE, PYRAMID, CYLINDER
 	}
 	
-	public enum PrimShapeSocket {
-		LEFT, RIGHT, BOTH
-	}
-	
 	private static final long serialVersionUID = -5948325703189463847L;
-	
-	private PrimShapeSocket socketType;
 	
 	// Coordinates of shape with both sockets open
 	final private int shapeBothCoordinatesX[] = {0, 79, 79, 75, 75, 70, 70, 75, 75, 79, 79,  0,  0,  5,  5, 10, 10,  5,  5,  0};
 	final private int shapeBothCoordinatesY[] = {0,  0, 15, 15, 10, 10, 30, 30, 25, 25, 39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
 	
 	// Coordinates of shape with only left socket open
-	final private int shapeLeftCoordinatesX[] = {0, 99, 99,  0,  0,  5,  5, 10, 10,  5,  5,  0};
-	final private int shapeLeftCoordinatesY[] = {0,   0,  49, 49, 30, 30, 35, 35, 15, 15, 20, 20};
+	final private int shapeLeftCoordinatesX[] = {0, 79,  79,  0,  0,  5,  5, 10, 10,  5,  5,  0};
+	final private int shapeLeftCoordinatesY[] = {0,  0,  39, 39, 25, 25, 30, 30, 10, 10, 15, 15};
 	
 	// Coordinates of shape with only right socket open
-	final private int shapeRightCoordinatesX[] = {0, 99, 99, 95, 95, 90, 90, 95, 95, 99, 99, 99,  0};
-	final private int shapeRightCoordinatesY[] = {0,  0, 20, 20, 15, 15, 35, 35, 30, 30, 49, 49, 49};
+	final private int shapeRightCoordinatesX[] = {0, 79, 79, 75, 75, 70, 70, 75, 75, 79, 79,  0};
+	final private int shapeRightCoordinatesY[] = {0,  0, 15, 15, 10, 10, 30, 30, 25, 25, 39, 39};
 	
 	// Coordinates of snap points
 	final private Point[] snapPoints = {new Point(5, 20), new Point(74, 20)};
 	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
 	
-	public PrimShapeBlock(PrimShapeType primShapeType, PrimShapeSocket socketType) {
-		this.socketType = socketType;
+	public PrimShapeBlock(PrimShapeType primShapeType) {
 		label = Support.capitalizeNormal(primShapeType.toString());
 		labelHeight = 25;
 		color = 0x90be6d;
@@ -64,20 +57,17 @@ public class PrimShapeBlock extends BlockComponent {
 		int reqCoordinatesX[] = null;
 		int reqCoordinatesY[] = null;
 		path.moveTo(0, 0);
-		switch(socketType) {
-		case BOTH: {
+		if(!socketArr[0].isUsed && !socketArr[1].isUsed) {
 			reqCoordinatesX = shapeBothCoordinatesX;
 			reqCoordinatesY = shapeBothCoordinatesY;
-		} break;
-		case RIGHT: {
+		} else if(!socketArr[0].isUsed) {
 			reqCoordinatesX = shapeRightCoordinatesX;
 			reqCoordinatesY = shapeRightCoordinatesY;
-		} break;
-		case LEFT: {
+		} else if(!socketArr[1].isUsed) {
 			reqCoordinatesX = shapeLeftCoordinatesX;
 			reqCoordinatesY = shapeLeftCoordinatesY;
 		}
-		}
+
 		for(int i = 0; i < reqCoordinatesX.length; i++) {
 			path.lineTo(reqCoordinatesX[i], reqCoordinatesY[i]);
 		}

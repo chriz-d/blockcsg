@@ -17,6 +17,7 @@ public class BlockComponent extends JComponent {
 	public enum BlockType {
 		PrimShape, Operator, CSG
 	}
+	
 	// Position of corners for paint()
 	public int[] blockCornerCoorX;
 	public int[] blockCornerCoorY;
@@ -25,7 +26,7 @@ public class BlockComponent extends JComponent {
 	public int labelHeight;
 	public int color;
 	public BlockType blockType;
-	public BlockSocket[] socketArr;
+	public BlockSocket[] socketArr; // Describes sockets from left to right
 	
 	@Override
 	public void paint(Graphics g) {

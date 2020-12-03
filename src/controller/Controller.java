@@ -1,6 +1,5 @@
 package controller;
 
-import model.Model;
 import view.View;
 
 public class Controller {
@@ -11,7 +10,6 @@ public class Controller {
 	public void start() {
 		view = new View();
 		view.initView();
-		model = new Model();
 	}
 	
 	public static void main(String[] args) {

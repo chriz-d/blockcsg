@@ -1,51 +1,49 @@
 package model;
 
-import view.BlockComponent;
-
-public class Node {
+public class Node<T> {
 	
-	private BlockComponent component;
+	private T content;
 	
-	private Node parent;
-	private Node left;
-	private Node right;
-	// Operand
+	private Node<T> parent;
+	private Node<T> left;
+	private Node<T> right;
 	
-	public Node(BlockComponent component) {
+	public Node(T content) {
 		parent = null;
 		left = null;
 		right = null;
-		this.component = component;
+		this.content = content;
 	}
 	
-	public Node(Node parent, Node left, Node right, BlockComponent component) {
-		this.parent = parent;
-		this.left = left;
-		this.right = right;
-		this.component = component;
-	}
-	
-	public void setLeft(Node node) {
+	public void setLeft(Node<T> node) {
 		left = node;
 	}
 	
-	public void setRight(Node node) {
+	public void setRight(Node<T> node) {
 		right = node;
 	}
 	
-	public void setParent(Node node) {
+	public void setParent(Node<T> node) {
 		parent = node;
 	}
 	
-	public Node getLeft() {
+	public Node<T> getLeft() {
 		return left;
 	}
 	
-	public Node getRight() {
+	public Node<T> getRight() {
 		return right;
 	}
 	
-	public Node getParent() {
+	public Node<T> getParent() {
 		return parent;
+	}
+	
+	public T getContent() {
+		return content;
+	}
+	
+	public void setContent(T content) {
+		this.content = content;
 	}
 }

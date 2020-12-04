@@ -46,4 +46,20 @@ public class Node<T> {
 	public void setContent(T content) {
 		this.content = content;
 	}
+	
+	public StringBuilder toString(StringBuilder prefix, boolean isTail, StringBuilder sb) {
+	    if(right!=null) {
+	        right.toString(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
+	    }
+	    sb.append(prefix).append(isTail ? "└── " : "┌── ").append(content.toString()).append("\n");
+	    if(left!=null) {
+	        left.toString(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
+	    }
+	    return sb;
+	}
+
+	@Override
+	public String toString() {
+	    return this.toString(new StringBuilder(), true, new StringBuilder()).toString();
+	}
 }

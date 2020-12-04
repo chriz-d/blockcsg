@@ -38,6 +38,7 @@ public class BinaryTree<T> {
 			root.setParent(parentNode);
 			root = parentNode;
 		}
+		System.out.println(root.toString());
 	}
 	
 	public void addElement(BinaryTree<T> tree, T parent, Direction dir) {

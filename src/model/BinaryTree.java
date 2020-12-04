@@ -1,26 +1,35 @@
 package model;
 
+import support.Support.Direction;
+
 public class BinaryTree<T> {
-	
-	public enum Direction {
-		LEFT, RIGHT
-	}
 	
 	private Node<T> root;
 	
+	/* adds new element to existing parent node. If parent is unknown
+	 * the new node gets inserted above root node and becomes new root.
+	 * If tree is empty and parent null, node gets inserted as new root */
 	public void addElement(T newElem, T parent, Direction dir) {
-		Node<T> newNode = new Node<T>(newElem);
+		Node<T> newNode = searchNode(newElem, root);
 		Node<T> parentNode = searchNode(parent, root);
-		// Tree is empty
-		if(root == null && parent == null) {
-			root = newNode;
-		} else if(parentNode != null) { // Normal insert at lower node
+		// Tree is empty, add both parent and child
+		if(root == null && parentNode == null && newNode == null) {
+			newNode = new Node<T>(newElem);
+			parentNode = new Node<T>(parent);
+			root = parentNode;
 			switch(dir) {
 			case LEFT: parentNode.setLeft(newNode); break;
 			case RIGHT: parentNode.setRight(newNode); break;
 			}
 			newNode.setParent(parentNode);
-		} else if(parentNode == null) { // Parent is unknown, insert as new root
+		} else if(parentNode != null && newNode == null) { // Normal insert at lower node
+			newNode = new Node<T>(newElem);
+			switch(dir) {
+			case LEFT: parentNode.setLeft(newNode); break;
+			case RIGHT: parentNode.setRight(newNode); break;
+			}
+			newNode.setParent(parentNode);
+		} else if(parentNode == null && newNode != null) { // Parent is unknown, insert as new root
 			parentNode = new Node<T>(parent);
 			switch(dir) {
 			case LEFT: parentNode.setLeft(root); break;
@@ -102,5 +111,4 @@ public class BinaryTree<T> {
 		}
 		return null;
 	}
-	
 }

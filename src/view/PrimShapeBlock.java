@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.awt.geom.GeneralPath;
 
 import support.Support;
-import view.BlockSocket.SocketDir;
+import support.Support.Direction;
 import view.BlockSocket.SocketType;
 
 public class PrimShapeBlock extends BlockComponent {
@@ -30,7 +30,7 @@ public class PrimShapeBlock extends BlockComponent {
 	
 	// Coordinates of snap points
 	final private Point[] snapPoints = {new Point(5, 20), new Point(74, 20)};
-	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.RIGHT};
+	final private Direction[] socketPos = {Direction.LEFT, Direction.RIGHT};
 	
 	public PrimShapeBlock(PrimShapeType primShapeType) {
 		label = Support.capitalizeNormal(primShapeType.toString());

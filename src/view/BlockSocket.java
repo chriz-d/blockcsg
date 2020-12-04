@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import support.Support.Direction;
+
 public class BlockSocket implements Serializable {
 	
 	private static final long serialVersionUID = 5343205691855604722L;
@@ -13,21 +15,17 @@ public class BlockSocket implements Serializable {
 		RECTANGLE_SOCKET, RECTANGLE_PLUG, TRIANGLE_SOCKET, TRIANGLE_PLUG
 	}
 	
-	public enum SocketDir {
-		LEFT, RIGHT, TOP, BOTTOM
-	}
-	
 	private static Map<SocketType, SocketType> socketFit;
 	
 	public Point position;
 	public SocketType type;
-	public SocketDir direction;
+	public Direction direction;
 	public boolean isUsed;
 	
 	public BlockComponent parent;
 	public BlockSocket connectedSocket;
 	
-	public BlockSocket(Point position, SocketType type, SocketDir direction) {
+	public BlockSocket(Point position, SocketType type, Direction direction) {
 		this.position = position;
 		this.type = type;
 		this.direction = direction;

@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 
 import support.Support;
-import view.BlockSocket.SocketDir;
+import support.Support.Direction;
 import view.BlockSocket.SocketType;
 
 public class OperatorBlock extends BlockComponent {
@@ -30,7 +30,7 @@ public class OperatorBlock extends BlockComponent {
 	// Coordinates of snap points
 	final private Point[] snapPoints = {new Point(5, 60), new Point(40, 21), new Point(59, 21), new Point(94, 60)};
 	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG};
-	final private SocketDir[] socketPos = {SocketDir.LEFT, SocketDir.LEFT, SocketDir.RIGHT, SocketDir.RIGHT};
+	final private Direction[] socketPos = {Direction.LEFT, Direction.LEFT, Direction.RIGHT, Direction.RIGHT};
 	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());

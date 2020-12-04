@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.SwingUtilities;
 
 import support.Support;
+import view.BlockSocket.SocketType;
 
 // Not able to use MouseAdapter, thanks diamond of death...
 public class DragHandler implements MouseListener, MouseMotionListener {
@@ -190,10 +191,20 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			componentToDrag.setLocation(spPos.x, spPos.y);
 			
 			// update socketState
-			componentToDrag.socketArr[dragSocketIndex].isUsed = true;
-			closestBlock.socketArr[closestSocketIndex].isUsed = true;
-			componentToDrag.socketArr[dragSocketIndex].connectedSocket = closestBlock.socketArr[closestSocketIndex];
-			closestBlock.socketArr[closestSocketIndex].connectedSocket = componentToDrag.socketArr[dragSocketIndex];
+			// TODO: Close other socket opposite of socket being closed
+			BlockSocket toDragSocket = componentToDrag.socketArr[dragSocketIndex];
+			BlockSocket closestSocket = closestBlock.socketArr[closestSocketIndex];
+			toDragSocket.isUsed = true;
+			closestSocket.isUsed = true;
+			toDragSocket.connectedSocket = closestSocket;
+			closestSocket.connectedSocket = toDragSocket;
+		
+			// Add to model
+			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
+				view.getController().addToTree(closestBlock, componentToDrag, toDragSocket.direction);
+			} else {
+				view.getController().addToTree(componentToDrag, closestBlock, closestSocket.direction);
+			}
 		}
 	}
 	

@@ -1,6 +1,5 @@
 package support;
 
-import java.awt.Container;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.ByteArrayInputStream;
@@ -9,6 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class Support {
+	
+	public enum Direction {
+		LEFT, RIGHT
+	}
 	
 	// Creates deep copy of an object using java serialization
 	public static Object deepCopy(Object object) {
@@ -49,7 +52,6 @@ public class Support {
 	public static Point subPoints(Point p1, Point p2) {
 		return new Point(p1.x - p2.x, p1.y - p2.y);
 	}
-	
 	
 	public static String capitalizeNormal(String s) {
 		return s.substring(0, 1) + s.substring(1, s.length()).toLowerCase();

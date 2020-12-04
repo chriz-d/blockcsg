@@ -14,10 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import controller.Controller;
 import view.OperatorBlock.OperatorBlockType;
 import view.PrimShapeBlock.PrimShapeType;
 
 public class View {
+	
+	private Controller controller;
 	
 	// Main window and panels for easy access
 	public JFrame frame;
@@ -29,6 +32,10 @@ public class View {
 	private final int WINDOW_HEIGHT = 720;
 	
 	public BlockComponent lastSelected;
+	
+	public View(Controller controller) {
+		this.controller = controller;
+	}
 	
 	public void initView() {
 		// Main JFrame
@@ -45,6 +52,10 @@ public class View {
 		frame.setVisible(true);
 	}
 
+	public Controller getController() {
+		return controller;
+	}
+	
 	private JLayeredPane getBlockViewPanel() {
 		JLayeredPane layeredPane = new JLayeredPane();
 		transferPanel = new JPanel(null);

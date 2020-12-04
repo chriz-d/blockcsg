@@ -4,7 +4,7 @@ package test;
 import org.junit.jupiter.api.Test;
 
 import model.BinaryTree;
-import model.BinaryTree.Direction;
+import support.Support.Direction;
 
 public class BinaryTreeTest {
 	

@@ -70,4 +70,9 @@ public class BlockComponent extends JComponent {
 		path.closePath();
 		return path;
 	}
+	
+	@Override
+	public String toString() {
+		return label;
+	}
 }

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import support.Support.Direction;
 
 public class BinaryTree<T> {
@@ -71,18 +74,22 @@ public class BinaryTree<T> {
 		}
 		Node<T> parent = nodeToRemove.getParent();
 		if(nodeToRemove != root) {
+			deleteTree(nodeToRemove); // Delete rest of tree below
 			if(nodeToRemove.equals(parent.getLeft())) {
 				parent.setLeft(null);
 			} else {
 				parent.setRight(null);
 			}
-		} else {
+		} else { // Root got removed, delete whole tree below
+			deleteTree(root);
 			root = null;
 		}
 		nodeToRemove.setParent(null);
 		nodeToRemove.setLeft(null);
 		nodeToRemove.setRight(null);
-		System.out.println(root.toString());
+		if(root != null) {
+			System.out.println(root.toString());
+		}
 	}
 	
 	public boolean contains(T elem) {
@@ -95,6 +102,41 @@ public class BinaryTree<T> {
 	
 	public Node<T> getRoot() {
 		return root;
+	}
+	
+	public List<T> getChildren(T parent) {
+		List<T> list = new ArrayList<T>();
+		Node<T> parentNode = searchNode(parent, root);
+		getChildren(list, parentNode);
+		return list;
+	}
+	
+	// Adds all children below node to given list
+	private void getChildren(List<T> list, Node<T> root) {
+		Node<T> worker = root;
+		if(worker.getLeft() != null) {
+			getChildren(list, worker.getLeft());
+			list.add(worker.getLeft().getContent());
+		}
+		if(worker.getRight() != null) {
+			getChildren(list, worker.getRight());
+			list.add(worker.getRight().getContent());
+		}
+	}
+	
+	// Delete everything recursively below node
+	private void deleteTree(Node<T> root) {
+		Node<T> worker = root;
+		if(worker.getLeft() != null) {
+			deleteTree(worker.getLeft());
+			worker.getLeft().setParent(null);
+			worker.setLeft(null);
+		}
+		if(worker.getRight() != null) {
+			deleteTree(worker.getRight());
+			worker.getRight().setParent(null);
+			worker.setRight(null);
+		}
 	}
 	
 	// Search recursively the whole tree

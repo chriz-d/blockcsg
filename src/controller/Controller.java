@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.jme3.app.SimpleApplication;
@@ -52,6 +53,10 @@ public class Controller extends SimpleApplication {
 	public void removeFromTree(BlockComponent blockToRemove) {
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
+			List<BlockComponent> children = tree.getChildren(blockToRemove);
+			for(BlockComponent c : children) {
+				treeMap.remove(c);
+			}
 			tree.removeElement(blockToRemove);
 			treeMap.remove(blockToRemove);
 		}
@@ -61,18 +66,18 @@ public class Controller extends SimpleApplication {
 		//org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
-		java.awt.EventQueue.invokeLater(new Runnable() {
-	    	public void run() {
-	    		AppSettings settings = new AppSettings(true);
-	    		settings.setWidth(640);
-	    		settings.setHeight(480);
-	    		controller.createCanvas();
-	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
-	    		ctx.setSystemListener(controller);
-	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
-	    		controller.startCanvas();
-	    	}
-	    });
+//		java.awt.EventQueue.invokeLater(new Runnable() {
+//	    	public void run() {
+//	    		AppSettings settings = new AppSettings(true);
+//	    		settings.setWidth(640);
+//	    		settings.setHeight(480);
+//	    		controller.createCanvas();
+//	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
+//	    		ctx.setSystemListener(controller);
+//	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
+//	    		controller.startCanvas();
+//	    	}
+//	    });
 	}
 
 	@Override

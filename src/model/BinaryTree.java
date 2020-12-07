@@ -83,6 +83,23 @@ public class BinaryTree<T> {
 		return root;
 	}
 	
+	public int getDepth() {
+		return getDepth(root);
+	}
+	
+	private int getDepth(Node<T> root) {
+		if(root == null) {
+			return 0;
+		}
+		int leftDepth = getDepth(root.getLeft());
+		int rightDepth = getDepth(root.getRight());
+		if(leftDepth > rightDepth) {
+			return leftDepth + 1;
+		} else {
+			return rightDepth + 1;
+		}
+	}
+	
 	// Returns list of children below parent node
 	public List<T> getChildren(T parent) {
 		List<T> list = new ArrayList<T>();

@@ -27,10 +27,9 @@ public class Controller extends SimpleApplication {
 	public void start() {
 		view = new View(this);
 		view.initView();
-		
-	    
 	}
 	
+	// Add a new block to required tree by map lookup
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
 		BinaryTree<BlockComponent> parentTree = treeMap.get(parent);
 		BinaryTree<BlockComponent> blockToAddTree = treeMap.get(blockToAdd);
@@ -51,12 +50,15 @@ public class Controller extends SimpleApplication {
 	}
 	
 	public void removeFromTree(BlockComponent blockToRemove) {
+		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
+			// Delete children from treeMap
 			List<BlockComponent> children = tree.getChildren(blockToRemove);
 			for(BlockComponent c : children) {
 				treeMap.remove(c);
 			}
+			//Remove actual element
 			tree.removeElement(blockToRemove);
 			treeMap.remove(blockToRemove);
 		}

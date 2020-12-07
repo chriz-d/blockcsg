@@ -101,16 +101,16 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);
-			view.transferPanel.add(componentToDrag);
+			view.getTransferPanel().add(componentToDrag);
 			if(!isFreshlySpawned) {
-				componentToDrag.setLocation(componentToDrag.getX() + view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
+				componentToDrag.setLocation(componentToDrag.getX() + view.getBlockViewPanel().getComponent(0).getWidth(), componentToDrag.getY());
 			}
 			// Save position for dragging
 			screenX = e.getXOnScreen();
 			screenY = e.getYOnScreen();
 			componentX = componentToDrag.getX();
 			componentY = componentToDrag.getY();
-			view.frame.repaint();
+			view.getFrame().repaint();
 		}
 	}
 
@@ -127,36 +127,39 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				isFreshlySpawned = false;
 			}
 			// Check if mouse is inside workspace Panel
-			if(!Support.isOutOfBounds(view.frame.getMousePosition(), view.workspacePanel.getBounds())) {
+			if(!Support.isOutOfBounds(view.getFrame().getMousePosition(), 
+					view.getWorkspacePanel().getBounds())) {
 				componentToDrag.getParent().remove(componentToDrag);
-				componentToDrag.setLocation(componentToDrag.getX() - view.blockViewPanel.getComponent(0).getWidth(), componentToDrag.getY());
+				componentToDrag.setLocation(
+						componentToDrag.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
+						componentToDrag.getY());
 				
 				// Find closest snapping point and set component position to it if necessary
 				snapToClosestBlock();
 				
 				// fix z ordering of other elements
-				Component[] components = view.workspacePanel.getComponents();
+				Component[] components = view.getWorkspacePanel().getComponents();
 				if(components.length > 1) {
 					for(int i = 1; i < components.length; i++) {
-						view.workspacePanel.setComponentZOrder(components[i], i);
+						view.getWorkspacePanel().setComponentZOrder(components[i], i);
 					}
 				}
 				// Finally add to panel and give last element highest z order
-				view.workspacePanel.add(componentToDrag);
-				view.workspacePanel.setComponentZOrder(componentToDrag, 0);
+				view.getWorkspacePanel().add(componentToDrag);
+				view.getWorkspacePanel().setComponentZOrder(componentToDrag, 0);
 			} else { // Delete component, cause it's outside
 				componentToDrag.getParent().remove(componentToDrag);
 				componentToDrag.removeMouseMotionListener(this);
 				componentToDrag.removeMouseListener(this);
 			}
-			view.frame.repaint();
+			view.getFrame().repaint();
 		}
 		ignoreClick = false;
 	}
 	
 	// Searches all components for closest snapping point and calculates position
 	private void snapToClosestBlock() {
-		Component[] componentList = view.workspacePanel.getComponents();
+		Component[] componentList = view.getWorkspacePanel().getComponents();
 		double closestDistance = Double.MAX_VALUE;
 		Point closestPoint = null;
 		BlockComponent closestBlock = null;

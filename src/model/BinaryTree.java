@@ -9,9 +9,7 @@ public class BinaryTree<T> {
 	
 	private Node<T> root;
 	
-	/* adds new element to existing parent node. If parent is unknown
-	 * the new node gets inserted above root node and becomes new root.
-	 * If tree is empty and parent null, node gets inserted as new root */
+	// Attaches new element to the parent node in tree
 	public void addElement(T newElem, T parent, Direction dir) {
 		Node<T> newNode = searchNode(newElem, root);
 		Node<T> parentNode = searchNode(parent, root);
@@ -44,43 +42,24 @@ public class BinaryTree<T> {
 		System.out.println(root.toString());
 	}
 	
-	public void addElement(BinaryTree<T> tree, T parent, Direction dir) {
-		Node<T> parentNode = searchNode(parent, root);
-		// Tree is empty
-		if(root == null && parent == null) {
-			root = tree.getRoot();
-		} else if(parentNode != null) { // Normal insert at lower node
-			switch(dir) {
-			case LEFT: parentNode.setLeft(tree.getRoot()); break;
-			case RIGHT: parentNode.setRight(tree.getRoot()); break;
-			}
-			tree.getRoot().setParent(parentNode);
-		} else if(parentNode == null) { // Parent is unknown, insert as new root
-			parentNode = new Node<T>(parent);
-			switch(dir) {
-			case LEFT: parentNode.setLeft(root); break;
-			case RIGHT: parentNode.setRight(root); break;
-			}
-			root.setParent(parentNode);
-			root = parentNode;
-		}
-	}
-	
+	// Removes element from tree
 	public void removeElement(T elem) {
+		// Search element in tree
 		Node<T> nodeToRemove = searchNode(elem, root);
 		if(nodeToRemove == null) {
 			System.out.println("Tried to delete non existing element");
 			return;
 		}
 		Node<T> parent = nodeToRemove.getParent();
-		if(nodeToRemove != root) {
+		// Check if root node neets deletion
+		if(nodeToRemove != root) { 
 			deleteTree(nodeToRemove); // Delete rest of tree below
 			if(nodeToRemove.equals(parent.getLeft())) {
 				parent.setLeft(null);
 			} else {
 				parent.setRight(null);
 			}
-		} else { // Root got removed, delete whole tree below
+		} else { // remove root, delete whole tree below
 			deleteTree(root);
 			root = null;
 		}
@@ -104,6 +83,7 @@ public class BinaryTree<T> {
 		return root;
 	}
 	
+	// Returns list of children below parent node
 	public List<T> getChildren(T parent) {
 		List<T> list = new ArrayList<T>();
 		Node<T> parentNode = searchNode(parent, root);
@@ -111,7 +91,7 @@ public class BinaryTree<T> {
 		return list;
 	}
 	
-	// Adds all children below node to given list
+	// Adds all children below node to given list recursively
 	private void getChildren(List<T> list, Node<T> root) {
 		Node<T> worker = root;
 		if(worker.getLeft() != null) {

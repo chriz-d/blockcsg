@@ -24,11 +24,11 @@ public class View {
 	private Controller controller;
 	
 	// Main window and panels for easy access
-	public JFrame frame;
-	public JPanel transferPanel;
-	public JPanel blockViewPanel;
-	public JPanel workspacePanel;
-	public JPanel jMonkeyPanel;
+	private JFrame frame;
+	private JPanel transferPanel;
+	private JPanel blockViewPanel;
+	private JPanel workspacePanel;
+	private JPanel jMonkeyPanel;
 	
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
@@ -44,8 +44,8 @@ public class View {
 		frame = new JFrame();
 		frame.setLayout(new GridLayout(1, 2));
 		
-		frame.add(getBlockViewPanel());
-		frame.add(getJMonkeyPanel());
+		frame.add(createBlockViewPanel());
+		frame.add(createJMonkeyPanel());
 		
 		frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		frame.setTitle("CSG Editor");
@@ -62,7 +62,7 @@ public class View {
 		jMonkeyPanel.add(canvas, BorderLayout.CENTER);
 	}
 	
-	private JLayeredPane getBlockViewPanel() {
+	private JLayeredPane createBlockViewPanel() {
 		JLayeredPane layeredPane = new JLayeredPane();
 		transferPanel = new JPanel(null);
 		transferPanel.setBounds(0, 0, 400, 400);
@@ -75,20 +75,20 @@ public class View {
 		transferPanel.setOpaque(false);
 		
 		// Inserting panels to each other and JFrame
-		blockViewPanel.add(getDrawerPanel(), BorderLayout.LINE_START);
+		blockViewPanel.add(createDrawerPanel(), BorderLayout.LINE_START);
 		blockViewPanel.add(workspacePanel, BorderLayout.CENTER);
 		layeredPane.add(blockViewPanel, JLayeredPane.DEFAULT_LAYER);
 		layeredPane.add(transferPanel, JLayeredPane.DRAG_LAYER);
 		return layeredPane;
 	}
 	
-	private JPanel getJMonkeyPanel() {
+	private JPanel createJMonkeyPanel() {
 		jMonkeyPanel = new JPanel(new BorderLayout());
 		jMonkeyPanel.setBackground(Color.DARK_GRAY);
 		return jMonkeyPanel;
 	}
 	
-	private JPanel getDrawerPanel() {
+	private JPanel createDrawerPanel() {
 		JPanel drawerPanel = new JPanel(new BorderLayout());
 		Box vBox = Box.createVerticalBox();
 		JScrollPane scrollPane = new JScrollPane(vBox, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -120,5 +120,21 @@ public class View {
 				transferPanel.setBounds(0, 0, (frame.getWidth() + blockview.getComponent(0).getWidth() )/ 2, frame.getHeight()- 30);
 			}
 		});
+	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+	
+	public JPanel getWorkspacePanel() {
+		return workspacePanel;
+	}
+	
+	public JPanel getBlockViewPanel() {
+		return blockViewPanel;
+	}
+	
+	public JPanel getTransferPanel() {
+		return transferPanel;
 	}
 }

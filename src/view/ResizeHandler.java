@@ -13,9 +13,9 @@ public class ResizeHandler extends ComponentAdapter {
 
 	@Override
 	public void componentResized(ComponentEvent arg0) {
-		view.blockViewPanel.setBounds(0, 0, (view.frame.getWidth() + 
-				view.blockViewPanel.getComponent(0).getWidth() )/ 2, view.frame.getHeight()- 30);
-		view.transferPanel.setBounds(0, 0, (view.frame.getWidth() + 
-				view.blockViewPanel.getComponent(0).getWidth() )/ 2, view.frame.getHeight()- 30);
+		view.getBlockViewPanel().setBounds(0, 0, (view.getFrame().getWidth() + 
+				view.getBlockViewPanel().getComponent(0).getWidth() )/ 2, view.getFrame().getHeight()- 30);
+		view.getTransferPanel().setBounds(0, 0, (view.getFrame().getWidth() + 
+				view.getBlockViewPanel().getComponent(0).getWidth() )/ 2, view.getFrame().getHeight()- 30);
 	}
 }

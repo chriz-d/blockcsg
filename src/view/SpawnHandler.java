@@ -31,7 +31,7 @@ public class SpawnHandler extends MouseAdapter {
         // Get index of old element for inserting clone into same position
         int index = Arrays.asList(parent.getComponents()).indexOf(spawnableComponent);
         parent.remove(spawnableComponent);
-        view.transferPanel.add(spawnableComponent);
+        view.getTransferPanel().add(spawnableComponent);
 //        addDragHandler(component);
         DragHandler dragger = new DragHandler(spawnableComponent, view);
         spawnableComponent.addMouseListener(dragger);
@@ -39,7 +39,7 @@ public class SpawnHandler extends MouseAdapter {
         parent.add(spawnedComp, index);
         spawnedComp.addMouseListener(new SpawnHandler(spawnedComp, view));
         
-		view.frame.repaint();
+		view.getFrame().repaint();
 		// Delegate initial mouse press for drag operation
 		spawnableComponent.getMouseListeners()[1].mousePressed(e);
 		removeBlockSpawnHandler(spawnableComponent);

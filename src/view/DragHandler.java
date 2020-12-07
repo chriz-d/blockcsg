@@ -96,6 +96,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				socket.isUsed = false;
 				socket.connectedSocket = null;
 			}
+			// Remove from tree
+			view.getController().removeFromTree(componentToDrag);
 			
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);

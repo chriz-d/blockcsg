@@ -82,6 +82,7 @@ public class BinaryTree<T> {
 		nodeToRemove.setParent(null);
 		nodeToRemove.setLeft(null);
 		nodeToRemove.setRight(null);
+		System.out.println(root.toString());
 	}
 	
 	public boolean contains(T elem) {
@@ -104,11 +105,13 @@ public class BinaryTree<T> {
 		if(searched.equals(root.getContent())) {
 			return root;
 		}
-		if(root.getLeft() != null) {
-			return searchNode(searched, root.getLeft());
+		Node<T> left = searchNode(searched, root.getLeft());
+		if(left != null) {
+			return left;
 		}
-		if(root.getRight() != null) {
-			return searchNode(searched, root.getRight());
+		Node<T> right = searchNode(searched, root.getRight());
+		if(right != null) {
+			return right;
 		}
 		return null;
 	}

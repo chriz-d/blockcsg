@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -27,6 +28,7 @@ public class View {
 	public JPanel transferPanel;
 	public JPanel blockViewPanel;
 	public JPanel workspacePanel;
+	public JPanel jMonkeyPanel;
 	
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
@@ -56,6 +58,10 @@ public class View {
 		return controller;
 	}
 	
+	public void setJMonkeyWindow(Canvas canvas) {
+		jMonkeyPanel.add(canvas, BorderLayout.CENTER);
+	}
+	
 	private JLayeredPane getBlockViewPanel() {
 		JLayeredPane layeredPane = new JLayeredPane();
 		transferPanel = new JPanel(null);
@@ -77,9 +83,9 @@ public class View {
 	}
 	
 	private JPanel getJMonkeyPanel() {
-		JPanel jMonkeyViewPanel = new JPanel();
-		jMonkeyViewPanel.setBackground(Color.DARK_GRAY);
-		return jMonkeyViewPanel;
+		jMonkeyPanel = new JPanel(new BorderLayout());
+		jMonkeyPanel.setBackground(Color.DARK_GRAY);
+		return jMonkeyPanel;
 	}
 	
 	private JPanel getDrawerPanel() {

@@ -3,12 +3,16 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jme3.app.SimpleApplication;
+import com.jme3.system.AppSettings;
+import com.jme3.system.JmeCanvasContext;
+
 import model.BinaryTree;
 import support.Support.Direction;
 import view.BlockComponent;
 import view.View;
 
-public class Controller {
+public class Controller extends SimpleApplication {
 	
 	private View view;
 	
@@ -22,6 +26,8 @@ public class Controller {
 	public void start() {
 		view = new View(this);
 		view.initView();
+		
+	    
 	}
 	
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
@@ -45,17 +51,32 @@ public class Controller {
 	
 	public void removeFromTree(BlockComponent blockToRemove) {
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
-		tree.removeElement(blockToRemove);
-		treeMap.remove(blockToRemove);
-	}
-	
-	public void deleteFromTreeList() {
-		
+		if(tree != null) {
+			tree.removeElement(blockToRemove);
+			treeMap.remove(blockToRemove);
+		}
 	}
 	
 	public static void main(String[] args) {
 		//org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	    	public void run() {
+	    		AppSettings settings = new AppSettings(true);
+	    		settings.setWidth(640);
+	    		settings.setHeight(480);
+	    		controller.createCanvas();
+	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
+	    		ctx.setSystemListener(controller);
+	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
+	    		controller.startCanvas();
+	    	}
+	    });
+	}
+
+	@Override
+	public void simpleInitApp() {
+		flyCam.setDragToRotate(true);
 	}
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.material.Material;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
@@ -85,5 +88,11 @@ public class Controller extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		flyCam.setDragToRotate(true);
+		Box b = new Box(1, 1, 1);
+		Geometry geom = new Geometry("Box", b);
+		Material mat = new Material(assetManager,"Common/MatDefs/Misc/ShowNormals.j3md");
+		geom.setMaterial(mat);
+		rootNode.attachChild(geom);
+		flyCam.setMoveSpeed(200);
 	}
 }

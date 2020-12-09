@@ -2,6 +2,7 @@ package support;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -55,5 +56,9 @@ public class Support {
 	
 	public static String capitalizeNormal(String s) {
 		return s.substring(0, 1) + s.substring(1, s.length()).toLowerCase();
+	}
+	
+	public static Point point2DToPoint(Point2D point2D) {
+		return new Point((int) point2D.getX(), (int) point2D.getY());
 	}
 }

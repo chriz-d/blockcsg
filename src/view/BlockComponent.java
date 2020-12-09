@@ -18,9 +18,13 @@ public class BlockComponent extends JComponent {
 		PrimShape, Operator, CSG
 	}
 	
-	// Position of corners for paint()
-	public int[] blockCornerCoorX;
-	public int[] blockCornerCoorY;
+	// Coordinates of plug (relative)
+	final private int plugShapeX[] = {0, -4, 0, -5,   0, 5, 0, 4};
+	final private int plugShapeY[] = {0,  0, 5,  0, -20, 0, 5, 0};
+	
+	// Coordinates of socket (relative)
+	final private int socketShapeX[] = {0, 5, 0, 5,   0, -5, 0, -5};
+	final private int socketShapeY[] = {0, 0, 5, 0, -20,  0, 5,  0};
 	
 	public String label;
 	public int labelHeight;
@@ -62,17 +66,25 @@ public class BlockComponent extends JComponent {
 	
 	// returns the drawn path of needed shape
 	public GeneralPath getGeneralPath() {
-		GeneralPath path = new GeneralPath();
-		path.moveTo(blockCornerCoorX[0], blockCornerCoorY[0]);
-		for(int i = 0; i < blockCornerCoorX.length; i++) {
-			path.lineTo(blockCornerCoorX[i], blockCornerCoorY[i]);
-		}
-		path.closePath();
-		return path;
+		return null;
 	}
 	
 	@Override
 	public String toString() {
 		return label;
+	}
+	
+	// Draws a socket
+	public void drawSocket(GeneralPathDecor path, int flip) {
+		for(int i = 0; i < socketShapeX.length; i++) {
+			path.lineToRelative(socketShapeX[i] * flip, socketShapeY[i] * flip);
+		}
+	}
+	
+	// Draws a plug
+	public void drawPlug(GeneralPathDecor path, int flip) {
+		for(int i = 0; i < plugShapeX.length; i++) {
+			path.lineToRelative(plugShapeX[i] * flip, plugShapeY[i] * flip);
+		}
 	}
 }

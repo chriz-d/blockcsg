@@ -25,6 +25,7 @@ public class BlockComponent extends JComponent {
 	// Coordinates of socket (relative)
 	final private int socketShapeX[] = {0, 5, 0, 5,   0, -5, 0, -5};
 	final private int socketShapeY[] = {0, 0, 5, 0, -20,  0, 5,  0};
+	final protected int socketWidth = 10;
 	
 	public String label;
 	public int labelHeight;

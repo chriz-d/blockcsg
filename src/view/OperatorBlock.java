@@ -18,16 +18,17 @@ public class OperatorBlock extends BlockComponent {
 	private static final long serialVersionUID = -1526119201511001957L;
 	
 	// Coordinates of lower operator block (relative)
-	final private int operatorBlockCoordinatesX[] = {25, 54,  0,  0, -79,   0};
-	final private int operatorBlockCoordinatesY[] = { 0,  0, 15, 24,   0, -14};
+	private int operatorBlockCoordinatesX[] = {25, 55,  0,  0, -80,   0};
+	private int operatorBlockCoordinatesY[] = { 0,  0, 15, 24,   0, -14};
 	
 	// Coordinates of upper operator block (relative)
 	final private int towerShapeX[] = {0,   0,   0, 30, 0,   0};
 	final private int towerShapeY[] = {0, -14, -15,  0, 15, 14};
 	final private int towerWidth = 30;	
+	final private int defaultSize = 100;
 	
 	// Coordinates of snap points
-	final private Point[] snapPoints = {new Point(5, 59), new Point(40, 20), new Point(59, 20), new Point(93, 59)};
+	private Point[] snapPoints = {new Point(5, 59), new Point(40, 20), new Point(59, 20), new Point(93, 59)};
 	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG};
 	final private Direction[] socketPos = {Direction.LEFT, Direction.LEFT, Direction.RIGHT, Direction.RIGHT};
 	
@@ -41,10 +42,11 @@ public class OperatorBlock extends BlockComponent {
 			socketArr[i] = new BlockSocket(snapPoints[i], socketType[i], socketPos[i]);
 		}
 		
+		correctWidth(1);
 		// Set bounds
-		this.setMinimumSize(new Dimension(99, 79));
-		this.setPreferredSize(new Dimension(99, 79));
-		this.setMaximumSize(new Dimension(99, 79));
+		this.setMinimumSize(new Dimension(100, 79));
+		this.setPreferredSize(new Dimension(100, 79));
+		this.setMaximumSize(new Dimension(100, 79));
 	}
 	
 	// returns the drawn path of needed shape
@@ -88,7 +90,23 @@ public class OperatorBlock extends BlockComponent {
 			}
 		}
 	}
-
+	
+	public void correctWidth(int depth) {
+		int totalWidth = (depth * defaultSize);
+		int middlePartWidth = totalWidth - socketWidth * 2;
+		int towerStartPos = (middlePartWidth / 2) - (towerWidth / 2);
+		operatorBlockCoordinatesX[0] = towerStartPos;
+		operatorBlockCoordinatesX[1] = (middlePartWidth / 2) + (towerWidth / 2);
+		operatorBlockCoordinatesX[4] = middlePartWidth * -1;
+		socketArr[1].setPosition((totalWidth / 2) - (towerWidth / 2) + 5, 20);
+		socketArr[2].setPosition((totalWidth / 2) + (towerWidth / 2) - 6, 20);
+		socketArr[3].setPosition(totalWidth - 6, 59);
+		this.setMinimumSize(new Dimension(totalWidth, 79));
+		this.setPreferredSize(new Dimension(totalWidth, 79));
+		this.setMaximumSize(new Dimension(totalWidth, 79));
+		setBounds(getX(), getY(), totalWidth, 79);
+	}
+	
 	@Override
 	public boolean contains(Point point) {
 		boolean isInUpperPart = !Support.isOutOfBounds(point, new Rectangle(35, 1, 30, 39));

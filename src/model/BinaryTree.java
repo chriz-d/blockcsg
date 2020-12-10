@@ -83,8 +83,8 @@ public class BinaryTree<T> {
 		return root;
 	}
 	
-	public int getDepth() {
-		return getDepth(root);
+	public int getDepth(T elem) {
+		return getDepth(searchNode(elem, root));
 	}
 	
 	private int getDepth(Node<T> root) {

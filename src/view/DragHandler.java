@@ -189,12 +189,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		}
 		// Check distance to found point
 		if(closestPoint != null && closestDistance < 25) {
-			// Convert found point to workspace coordinates
-			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
-
-			spPos = Support.subPoints(spPos, dragBlockSckt[dragSocketIndex].position);
-			componentToDrag.setLocation(spPos.x, spPos.y);
-			
 			// update socketState
 			// TODO: Close other socket opposite of socket being closed
 			BlockSocket toDragSocket = componentToDrag.socketArr[dragSocketIndex];
@@ -210,6 +204,18 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			} else {
 				view.getController().addToTree(componentToDrag, closestBlock, closestSocket.direction);
 			}
+			
+			// In case of operator block, change width to accommodate other blocks
+			if(componentToDrag instanceof OperatorBlock) {
+				OperatorBlock block = (OperatorBlock) componentToDrag;
+				block.correctWidth(view.getController().getDepth(block));
+			}
+			// Finally, calculate coordinates for placement
+			// Convert found point to workspace coordinates
+			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
+			
+			spPos = Support.subPoints(spPos, dragBlockSckt[dragSocketIndex].position);
+			componentToDrag.setLocation(spPos.x, spPos.y);
 		}
 	}
 	

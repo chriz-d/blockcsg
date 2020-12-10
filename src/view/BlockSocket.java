@@ -45,4 +45,8 @@ public class BlockSocket implements Serializable {
 		}
 		return socketFit.get(s1) == s2;
 	}
+	
+	public void setPosition(int x, int y) {
+		position = new Point(x, y);
+	}
 }

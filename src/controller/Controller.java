@@ -67,8 +67,12 @@ public class Controller extends SimpleApplication {
 		}
 	}
 	
+	public int getDepth(BlockComponent block) {
+		return treeMap.get(block).getDepth(block);
+	}
+	
 	public static void main(String[] args) {
-		//org.swingexplorer.Launcher.launch();
+		org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
 //		java.awt.EventQueue.invokeLater(new Runnable() {

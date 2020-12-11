@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -121,6 +122,35 @@ public class View {
 				transferPanel.setBounds(0, 0, (frame.getWidth() + blockview.getComponent(0).getWidth() )/ 2, frame.getHeight()- 30);
 			}
 		});
+	}
+	
+	/*
+	 * Resizes all leaf nodes of tree. Tree is determined by given block by controller.
+	 * doDelete determines if the given block is deleted beforehand, for a correct depth
+	 */
+	public void resizeTree(BlockComponent block, boolean doDelete) {
+		BlockComponent root = controller.getRoot(block);
+		if(root != null) {
+			// Get all children in a list and add root
+			List<BlockComponent> children = controller.getChildren(root);
+			children.add(root);
+			if(doDelete) {
+				children.remove(block);
+				controller.removeFromTree(block);
+			}
+			// Iterate over list and fix width of each component and translate children
+			for(BlockComponent e : children) {
+				if(e instanceof OperatorBlock) {
+					int width = ((OperatorBlock) e).correctWidth(controller.getDepth(e));
+					List<BlockComponent> childrenToMove = controller.getChildren(e);
+					if(childrenToMove != null) {
+						for(BlockComponent f : childrenToMove) {
+							f.setLocation((int)f.getLocation().getX() + width, (int)f.getLocation().getY());
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public JFrame getFrame() {

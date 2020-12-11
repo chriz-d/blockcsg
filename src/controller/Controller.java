@@ -68,11 +68,34 @@ public class Controller extends SimpleApplication {
 	}
 	
 	public int getDepth(BlockComponent block) {
-		return treeMap.get(block).getDepth(block);
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getDepth(block);
+		} else {
+			return 1;
+		}
+	}
+	
+	public List<BlockComponent> getChildren(BlockComponent block) {
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getChildren(block);
+		} else {
+			return null;
+		}
+	}
+	
+	public BlockComponent getRoot(BlockComponent block) {
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getRoot().getContent();
+		} else {
+			return null;
+		}
 	}
 	
 	public static void main(String[] args) {
-		org.swingexplorer.Launcher.launch();
+		//org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
 //		java.awt.EventQueue.invokeLater(new Runnable() {

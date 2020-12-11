@@ -91,8 +91,9 @@ public class OperatorBlock extends BlockComponent {
 		}
 	}
 	
-	public void correctWidth(int depth) {
+	public int correctWidth(int depth) {
 		int totalWidth = (depth * defaultSize);
+		int offset =  totalWidth - getPreferredSize().width;
 		int middlePartWidth = totalWidth - socketWidth * 2;
 		int towerStartPos = (middlePartWidth / 2) - (towerWidth / 2);
 		operatorBlockCoordinatesX[0] = towerStartPos;
@@ -105,6 +106,7 @@ public class OperatorBlock extends BlockComponent {
 		this.setPreferredSize(new Dimension(totalWidth, 79));
 		this.setMaximumSize(new Dimension(totalWidth, 79));
 		setBounds(getX(), getY(), totalWidth, 79);
+		return offset;
 	}
 	
 	@Override

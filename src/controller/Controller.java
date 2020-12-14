@@ -32,34 +32,32 @@ public class Controller extends SimpleApplication {
 		view.initView();
 	}
 	
+	// Create new tree for block
+	public void createTree(BlockComponent blockToAdd) {
+		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
+		treeMap.put(blockToAdd, newTree);
+	}
+	
 	// Add a new block to required tree by map lookup
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
+		// Get trees of blocks
 		BinaryTree<BlockComponent> parentTree = treeMap.get(parent);
 		BinaryTree<BlockComponent> blockToAddTree = treeMap.get(blockToAdd);
-		if(parentTree == null && blockToAddTree == null) {
-			// Both components have no tree yet, create one for parent
-			treeMap.put(parent, new BinaryTree<BlockComponent>());
-			parentTree = treeMap.get(parent);
-		}
-		if(parentTree == null && blockToAddTree != null) {
-			// New node gets inserted above root
-			blockToAddTree.addElement(blockToAdd, parent, dir);
-			treeMap.put(parent, blockToAddTree);
-		} else {
-			// normal insert
-			parentTree.addElement(blockToAdd, parent, dir);
-			treeMap.put(blockToAdd, parentTree);
-		}
+		// Delete tree of child block and insert it into parent tree
+		treeMap.remove(blockToAdd);
+		treeMap.put(blockToAdd, parentTree);
+		parentTree.addElement(blockToAddTree, parent, dir);
 	}
 	
 	public void removeFromTree(BlockComponent blockToRemove) {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
-			// Delete children from treeMap
+			// Delete children of block from treeMap and add to separate trees each
 			List<BlockComponent> children = tree.getChildren(blockToRemove);
 			for(BlockComponent c : children) {
 				treeMap.remove(c);
+				treeMap.put(c, new BinaryTree<BlockComponent>(c));
 			}
 			//Remove actual element
 			tree.removeElement(blockToRemove);
@@ -92,6 +90,10 @@ public class Controller extends SimpleApplication {
 		} else {
 			return null;
 		}
+	}
+	
+	public boolean hasTree(BlockComponent block) {
+		return treeMap.containsKey(block);
 	}
 	
 	public static void main(String[] args) {

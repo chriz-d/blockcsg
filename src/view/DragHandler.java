@@ -98,7 +98,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			// Resize components
 			// Remove from tree
-			view.resizeTree(componentToDrag, true);
+			//view.resizeTree(componentToDrag, true);
+			view.getController().removeFromTree(componentToDrag);
 			
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);
@@ -134,9 +135,14 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				componentToDrag.setLocation(
 						componentToDrag.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
 						componentToDrag.getY());
+				// If first time placing, create tree for block
+				if(!view.getController().hasTree(componentToDrag)) {
+					view.getController().createTree(componentToDrag);
+				}
 				
 				// Find closest snapping point and set component position to it if necessary
 				snapToClosestBlock();
+				
 				
 				// fix z ordering of other elements
 				Component[] components = view.getWorkspacePanel().getComponents();
@@ -206,7 +212,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				view.getController().addToTree(componentToDrag, closestBlock, closestSocket.direction);
 			}
 			
-			view.resizeTree(componentToDrag, false);
+			//view.resizeTree(componentToDrag, false);
 			
 			// Finally, calculate coordinates for placement
 			// Convert found point to workspace coordinates

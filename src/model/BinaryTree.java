@@ -9,38 +9,21 @@ public class BinaryTree<T> {
 	
 	private Node<T> root;
 	
-	// Attaches new element to the parent node in tree
-	public void addElement(T newElem, T parent, Direction dir) {
-		Node<T> newNode = searchNode(newElem, root);
-		Node<T> parentNode = searchNode(parent, root);
-		// Tree is empty, add both parent and child
-		if(root == null && parentNode == null && newNode == null) {
-			newNode = new Node<T>(newElem);
-			parentNode = new Node<T>(parent);
-			root = parentNode;
-			switch(dir) {
-			case LEFT: parentNode.setLeft(newNode); break;
-			case RIGHT: parentNode.setRight(newNode); break;
-			}
-			newNode.setParent(parentNode);
-		} else if(parentNode != null && newNode == null) { // Normal insert at lower node
-			newNode = new Node<T>(newElem);
-			switch(dir) {
-			case LEFT: parentNode.setLeft(newNode); break;
-			case RIGHT: parentNode.setRight(newNode); break;
-			}
-			newNode.setParent(parentNode);
-		} else if(parentNode == null && newNode != null) { // Parent is unknown, insert as new root
-			parentNode = new Node<T>(parent);
-			switch(dir) {
-			case LEFT: parentNode.setLeft(root); break;
-			case RIGHT: parentNode.setRight(root); break;
-			}
-			root.setParent(parentNode);
-			root = parentNode;
-		}
-		System.out.println(root.toString());
+	public BinaryTree(T root) {
+		this.root = new Node<T>(root);
 	}
+	
+	// Attaches new element to the parent node in tree
+		public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
+			Node<T> parentNode = searchNode(parent, root);
+			if(dir == Direction.LEFT) {
+				parentNode.setLeft(childTree.getRoot());
+			} else {
+				parentNode.setRight(childTree.getRoot());
+			}
+			childTree.getRoot().setParent(parentNode);
+			System.out.println(toString());
+		}
 	
 	// Removes element from tree
 	public void removeElement(T elem) {
@@ -53,22 +36,18 @@ public class BinaryTree<T> {
 		Node<T> parent = nodeToRemove.getParent();
 		// Check if root node neets deletion
 		if(nodeToRemove != root) { 
-			deleteTree(nodeToRemove); // Delete rest of tree below
 			if(nodeToRemove.equals(parent.getLeft())) {
 				parent.setLeft(null);
 			} else {
 				parent.setRight(null);
 			}
-		} else { // remove root, delete whole tree below
-			deleteTree(root);
-			root = null;
 		}
+		// delete whole tree below
+		deleteTree(nodeToRemove);
 		nodeToRemove.setParent(null);
 		nodeToRemove.setLeft(null);
 		nodeToRemove.setRight(null);
-		if(root != null) {
-			System.out.println(root.toString());
-		}
+		System.out.println(toString());
 	}
 	
 	public boolean contains(T elem) {
@@ -153,5 +132,10 @@ public class BinaryTree<T> {
 			return right;
 		}
 		return null;
+	}
+	
+	@Override
+	public String toString() {
+	    return root.toString(new StringBuilder(), true, new StringBuilder()).toString();
 	}
 }

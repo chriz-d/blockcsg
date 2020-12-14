@@ -104,7 +104,6 @@ public class View {
 		for(OperatorBlockType e : OperatorBlockType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			OperatorBlock block = new OperatorBlock(e);
-			//block.correctWidth(2);
 			block.addMouseListener(new SpawnHandler(block, this));
 			vBox.add(block);
 		}

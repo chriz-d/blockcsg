@@ -59,9 +59,4 @@ public class Node<T> {
 	    }
 	    return sb;
 	}
-
-	@Override
-	public String toString() {
-	    return this.toString(new StringBuilder(), true, new StringBuilder()).toString();
-	}
 }

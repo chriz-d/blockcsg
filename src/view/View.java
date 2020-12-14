@@ -129,23 +129,34 @@ public class View {
 	 */
 	public void resizeTree(BlockComponent block, boolean doDelete) {
 		BlockComponent root = controller.getRoot(block);
-		if(root != null) {
-			// Get all children in a list and add root
-			List<BlockComponent> children = controller.getChildren(root);
-			children.add(root);
-			if(doDelete) {
-				children.remove(block);
-				controller.removeFromTree(block);
-			}
-			// Iterate over list and fix width of each component and translate children
-			for(BlockComponent e : children) {
-				if(e instanceof OperatorBlock) {
-					int width = ((OperatorBlock) e).correctWidth(controller.getDepth(e));
-					List<BlockComponent> childrenToMove = controller.getChildren(e);
-					if(childrenToMove != null) {
-						for(BlockComponent f : childrenToMove) {
-							f.setLocation((int)f.getLocation().getX() + width, (int)f.getLocation().getY());
-						}
+		if(root == null) {
+			return; // Block not existing
+		}
+		// Get every node in tree
+		List<BlockComponent> children = controller.getChildren(root);
+		children.add(root);
+		if(doDelete) {
+			children.remove(block);
+			controller.removeFromTree(block);
+		}
+		// Iterate over list and fix width of each component and translate children
+		for(BlockComponent e : children) {
+			if(e instanceof OperatorBlock) {
+				int width = ((OperatorBlock) e).correctWidth(controller.getDepth(e));
+				// Translate children to the left (<--)
+				List<BlockComponent> childrenToMoveLeft = controller.getChildren(controller.getLeft(e));
+				if(childrenToMoveLeft != null) {
+					childrenToMoveLeft.add(controller.getLeft(e));
+					for(BlockComponent f : childrenToMoveLeft) {
+						f.setLocation((int)f.getLocation().getX() - width, (int)f.getLocation().getY());
+					}
+				}
+				// Translate children to the right (-->)
+				List<BlockComponent> childrenToMoveRight = controller.getChildren(controller.getRight(e));
+				if(childrenToMoveRight != null) {
+					childrenToMoveRight.add(controller.getRight(e));
+					for(BlockComponent f : childrenToMoveRight) {
+						f.setLocation((int)f.getLocation().getX() + width, (int)f.getLocation().getY());
 					}
 				}
 			}

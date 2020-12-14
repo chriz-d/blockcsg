@@ -98,8 +98,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			// Resize components
 			// Remove from tree
-			//view.resizeTree(componentToDrag, true);
-			view.getController().removeFromTree(componentToDrag);
+			view.resizeTree(componentToDrag, true);
+			//view.getController().removeFromTree(componentToDrag);
 			
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);
@@ -212,7 +212,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				view.getController().addToTree(componentToDrag, closestBlock, closestSocket.direction);
 			}
 			
-			//view.resizeTree(componentToDrag, false);
 			
 			// Finally, calculate coordinates for placement
 			// Convert found point to workspace coordinates
@@ -220,6 +219,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			
 			spPos = Support.subPoints(spPos, dragBlockSckt[dragSocketIndex].position);
 			componentToDrag.setLocation(spPos.x, spPos.y);
+
+			view.resizeTree(componentToDrag, false);
 		}
 	}
 	

@@ -92,20 +92,26 @@ public class OperatorBlock extends BlockComponent {
 	}
 	
 	public int correctWidth(int depth) {
-		int totalWidth = (depth * defaultSize);
-		int offset =  totalWidth - getPreferredSize().width;
-		int middlePartWidth = totalWidth - socketWidth * 2;
-		int towerStartPos = (middlePartWidth / 2) - (towerWidth / 2);
+		int newWidth = (depth * defaultSize);
+		int offset =  (newWidth - getPreferredSize().width) / 2;
+		int middlePartNewWidth = newWidth - socketWidth * 2;
+		int towerStartPos = (middlePartNewWidth / 2) - (towerWidth / 2);
+		int towerEndPos = (middlePartNewWidth / 2) + (towerWidth / 2);
+		int oldTowerStartPos = operatorBlockCoordinatesX[0];
 		operatorBlockCoordinatesX[0] = towerStartPos;
-		operatorBlockCoordinatesX[1] = (middlePartWidth / 2) + (towerWidth / 2);
-		operatorBlockCoordinatesX[4] = middlePartWidth * -1;
-		socketArr[1].setPosition((totalWidth / 2) - (towerWidth / 2) + 5, 20);
-		socketArr[2].setPosition((totalWidth / 2) + (towerWidth / 2) - 6, 20);
-		socketArr[3].setPosition(totalWidth - 6, 59);
-		this.setMinimumSize(new Dimension(totalWidth, 79));
-		this.setPreferredSize(new Dimension(totalWidth, 79));
-		this.setMaximumSize(new Dimension(totalWidth, 79));
-		setBounds(getX(), getY(), totalWidth, 79);
+		operatorBlockCoordinatesX[1] = towerEndPos;
+		operatorBlockCoordinatesX[4] = middlePartNewWidth * -1;
+		
+		// Change socket coordinates
+		socketArr[1].setPosition((newWidth / 2) - (towerWidth / 2) + 5, 20);
+		socketArr[2].setPosition((newWidth / 2) + (towerWidth / 2) - 6, 20);
+		socketArr[3].setPosition(newWidth - 6, 59);
+		
+		// Set component size and bounds
+		this.setMinimumSize(new Dimension(newWidth, 79));
+		this.setPreferredSize(new Dimension(newWidth, 79));
+		this.setMaximumSize(new Dimension(newWidth, 79));
+		setBounds(getX() - (towerStartPos - oldTowerStartPos), getY(), newWidth, 79);
 		return offset;
 	}
 	

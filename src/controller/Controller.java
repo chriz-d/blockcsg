@@ -12,6 +12,7 @@ import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
+import model.Node;
 import support.Support.Direction;
 import view.BlockComponent;
 import view.View;
@@ -87,6 +88,24 @@ public class Controller extends SimpleApplication {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
 			return tree.getRoot().getContent();
+		} else {
+			return null;
+		}
+	}
+	
+	public BlockComponent getLeft(BlockComponent block) {
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getLeft(block);
+		} else {
+			return null;
+		}
+	}
+	
+	public BlockComponent getRight(BlockComponent block) {
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getRight(block);
 		} else {
 			return null;
 		}

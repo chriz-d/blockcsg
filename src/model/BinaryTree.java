@@ -14,16 +14,16 @@ public class BinaryTree<T> {
 	}
 	
 	// Attaches new element to the parent node in tree
-		public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
-			Node<T> parentNode = searchNode(parent, root);
-			if(dir == Direction.LEFT) {
-				parentNode.setLeft(childTree.getRoot());
-			} else {
-				parentNode.setRight(childTree.getRoot());
-			}
-			childTree.getRoot().setParent(parentNode);
-			System.out.println(toString());
+	public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
+		Node<T> parentNode = searchNode(parent, root);
+		if(dir == Direction.LEFT) {
+			parentNode.setLeft(childTree.getRoot());
+		} else {
+			parentNode.setRight(childTree.getRoot());
 		}
+		childTree.getRoot().setParent(parentNode);
+		System.out.println(toString());
+	}
 	
 	// Removes element from tree
 	public void removeElement(T elem) {
@@ -64,6 +64,24 @@ public class BinaryTree<T> {
 	
 	public int getDepth(T elem) {
 		return getDepth(searchNode(elem, root));
+	}
+	
+	public T getLeft(T elem) {
+		Node<T> node = searchNode(elem, root);
+		if(node != null && node.getLeft() != null) {
+			return node.getLeft().getContent();
+		} else {
+			return null;
+		}
+	}
+	
+	public T getRight(T elem) {
+		Node<T> node = searchNode(elem, root);
+		if(node != null && node.getRight() != null) {
+			return node.getRight().getContent();
+		} else {
+			return null;
+		}
 	}
 	
 	private int getDepth(Node<T> root) {

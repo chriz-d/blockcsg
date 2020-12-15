@@ -6,8 +6,12 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
+
 
 import support.Support;
 import view.BlockSocket.SocketType;
@@ -24,10 +28,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private int screenX = 0;
 	private int screenY = 0;
-	private int componentX = 0;
-	private int componentY = 0;
 	
-	// Flag for setting component position correctly after inital spawning
+	// Flag for setting component position correctly after initial spawning
 	private boolean isFreshlySpawned;
 	
 	// Flag for fixing dragging inside bounds of block, but still outside of blockshape
@@ -49,8 +51,17 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		} else if(!ignoreClick) { // Check if click actually is inside shape and not just bounding box
 			int deltaX = e.getXOnScreen() - screenX;
 			int deltaY = e.getYOnScreen() - screenY;
-			
-			componentToDrag.setLocation(componentX + deltaX, componentY + deltaY);
+			// Move component
+			componentToDrag.setLocation(componentToDrag.getX() + deltaX, componentToDrag.getY() + deltaY);
+			// Move children
+			List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+			if(children != null) {
+				for(BlockComponent child : children) {
+					child.setLocation(child.getX() + deltaX, child.getY() + deltaY);
+				}
+			}
+			screenX = e.getXOnScreen();
+			screenY = e.getYOnScreen();
 		}
 	}
 
@@ -88,14 +99,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			
 			// Disconnect all sockets
-			for(BlockSocket socket : componentToDrag.socketArr) {
-				if(socket.connectedSocket != null) {
-					socket.connectedSocket.isUsed = false;
-					socket.connectedSocket.connectedSocket = null;
-				}
-				socket.isUsed = false;
-				socket.connectedSocket = null;
-			}
+			componentToDrag.disconnectSocket();
+			
 			// Resize components
 			// Remove from tree
 			view.resizeTree(componentToDrag, true);
@@ -104,14 +109,20 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);
 			view.getTransferPanel().add(componentToDrag);
+			List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+			for(BlockComponent child : children) {
+				child.getParent().remove(child);
+				view.getTransferPanel().add(child);
+				if(!isFreshlySpawned) {
+					child.setLocation(child.getX() + view.getBlockViewPanel().getComponent(0).getWidth(), child.getY());
+				}
+			}
 			if(!isFreshlySpawned) {
 				componentToDrag.setLocation(componentToDrag.getX() + view.getBlockViewPanel().getComponent(0).getWidth(), componentToDrag.getY());
 			}
 			// Save position for dragging
 			screenX = e.getXOnScreen();
 			screenY = e.getYOnScreen();
-			componentX = componentToDrag.getX();
-			componentY = componentToDrag.getY();
 			view.getFrame().repaint();
 		}
 	}
@@ -132,9 +143,18 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Check if mouse is inside workspace Panel
 			if(!Support.isOutOfBounds(view.getFrame().getMousePosition(), 
 					view.getWorkspacePanel().getBounds())) {
+				
+				// Correct for drawer width
 				componentToDrag.setLocation(
 						componentToDrag.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
 						componentToDrag.getY());
+				List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+				for(BlockComponent child : children) {
+					child.setLocation(
+							child.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
+							child.getY());
+				}
+				
 				// If first time placing, create tree for block
 				if(!view.getController().hasTree(componentToDrag)) {
 					view.getController().createTree(componentToDrag);
@@ -154,10 +174,23 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				componentToDrag.getParent().remove(componentToDrag);
 				view.getWorkspacePanel().add(componentToDrag);
 				view.getWorkspacePanel().setComponentZOrder(componentToDrag, 0);
+				for(BlockComponent child : children) {
+					view.getWorkspacePanel().add(child);
+					view.getWorkspacePanel().setComponentZOrder(child, 0);
+				}
+				
 			} else { // Delete component, cause it's outside
 				componentToDrag.getParent().remove(componentToDrag);
 				componentToDrag.removeMouseMotionListener(this);
 				componentToDrag.removeMouseListener(this);
+				
+				// delete children aswell
+				List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+				for(BlockComponent child : children) {
+					child.getParent().remove(child);
+					child.removeMouseMotionListener(this);
+					child.removeMouseListener(this);
+				}
 			}
 			view.getFrame().repaint();
 		}
@@ -166,7 +199,13 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	// Searches all components for closest snapping point and calculates position
 	private void snapToClosestBlock() {
-		Component[] componentList = view.getWorkspacePanel().getComponents();
+		// Remove all children of component to drag from list, or else it snaps to itself!
+		List<Component> componentList = 
+				new ArrayList<Component>(Arrays.asList(view.getWorkspacePanel().getComponents()));
+		List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+		for(BlockComponent e : children) {
+			componentList.remove((Component)e);
+		}
 		double closestDistance = Double.MAX_VALUE;
 		Point closestPoint = null;
 		BlockComponent closestBlock = null;
@@ -218,8 +257,12 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
 			
 			spPos = Support.subPoints(spPos, dragBlockSckt[dragSocketIndex].position);
+			// Calculate delta for children repositioning
+			Point deltaPos = Support.subPoints(spPos, componentToDrag.getLocation());
 			componentToDrag.setLocation(spPos.x, spPos.y);
-
+			for(BlockComponent child : children) {
+				child.setLocation((int)(child.getX() + deltaPos.getX()),(int) (child.getY() + deltaPos.getY()));
+			}
 			view.resizeTree(componentToDrag, false);
 		}
 	}

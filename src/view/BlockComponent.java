@@ -68,6 +68,8 @@ public abstract class BlockComponent extends JComponent {
 	// returns the drawn path of needed shape
 	public abstract GeneralPath getGeneralPath();
 	
+	public abstract void disconnectSocket();
+	
 	@Override
 	public String toString() {
 		return label;

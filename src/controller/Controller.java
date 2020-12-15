@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,16 +55,20 @@ public class Controller extends SimpleApplication {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
-			// Delete children of block from treeMap and add to separate trees each
 			List<BlockComponent> children = tree.getChildren(blockToRemove);
+			
+			// Delete element from tree, get branch as newTree
+			BinaryTree<BlockComponent> newTree = tree.removeElement(blockToRemove);
+			
+			//Remove actual element
+			treeMap.remove(blockToRemove);
+			treeMap.put(blockToRemove, newTree);
+			
+			// Delete children of block from treeMap and add to same seperate tree
 			for(BlockComponent c : children) {
 				treeMap.remove(c);
-				treeMap.put(c, new BinaryTree<BlockComponent>(c));
+				treeMap.put(c, newTree);
 			}
-			//Remove actual element
-			tree.removeElement(blockToRemove);
-			treeMap.remove(blockToRemove);
-			treeMap.put(blockToRemove, new BinaryTree<BlockComponent>(blockToRemove));
 		}
 	}
 	
@@ -81,7 +86,7 @@ public class Controller extends SimpleApplication {
 		if(tree != null) {
 			return tree.getChildren(block);
 		} else {
-			return null;
+			return new ArrayList<BlockComponent>();
 		}
 	}
 	

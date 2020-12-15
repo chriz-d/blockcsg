@@ -133,27 +133,27 @@ public class View {
 			return; // Block not existing
 		}
 		// Get every node in tree
-		List<BlockComponent> children = controller.getChildren(root);
-		children.add(root);
+		List<BlockComponent> allNodes = controller.getChildren(root);
+		allNodes.add(root);
 		if(doDelete) {
-			children.remove(block);
+			allNodes.remove(block);
 			controller.removeFromTree(block);
 		}
 		// Iterate over list and fix width of each component and translate children
-		for(BlockComponent e : children) {
+		for(BlockComponent e : allNodes) {
 			if(e instanceof OperatorBlock) {
 				int width = ((OperatorBlock) e).correctWidth(controller.getDepth(e));
 				// Translate children to the left (<--)
-				List<BlockComponent> childrenToMoveLeft = controller.getChildren(controller.getLeft(e));
-				if(childrenToMoveLeft != null) {
+				if(controller.getLeft(e) != null) {
+					List<BlockComponent> childrenToMoveLeft = controller.getChildren(controller.getLeft(e));
 					childrenToMoveLeft.add(controller.getLeft(e));
 					for(BlockComponent f : childrenToMoveLeft) {
 						f.setLocation((int)f.getLocation().getX() - width, (int)f.getLocation().getY());
 					}
 				}
 				// Translate children to the right (-->)
-				List<BlockComponent> childrenToMoveRight = controller.getChildren(controller.getRight(e));
-				if(childrenToMoveRight != null) {
+				if(controller.getRight(e) != null) {
+					List<BlockComponent> childrenToMoveRight = controller.getChildren(controller.getRight(e));
 					childrenToMoveRight.add(controller.getRight(e));
 					for(BlockComponent f : childrenToMoveRight) {
 						f.setLocation((int)f.getLocation().getX() + width, (int)f.getLocation().getY());

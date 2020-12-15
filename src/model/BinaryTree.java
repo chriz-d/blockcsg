@@ -13,6 +13,10 @@ public class BinaryTree<T> {
 		this.root = new Node<T>(root);
 	}
 	
+	private BinaryTree(Node<T> root) {
+		this.root = root;
+	}
+	
 	// Attaches new element to the parent node in tree
 	public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
 		// Get find parent node in tree
@@ -30,12 +34,12 @@ public class BinaryTree<T> {
 	}
 	
 	// Removes element from tree
-	public void removeElement(T elem) {
+	public BinaryTree<T> removeElement(T elem) {
 		// Search element in tree
 		Node<T> nodeToRemove = searchNode(elem, root);
 		if(nodeToRemove == null) {
 			System.out.println("Tried to delete non existing element");
-			return;
+			return null;
 		}
 		Node<T> parent = nodeToRemove.getParent();
 		// Check if root, else delete reference for node above
@@ -46,12 +50,9 @@ public class BinaryTree<T> {
 				parent.setRight(null);
 			}
 		}
-		// delete whole tree below
-		deleteTree(nodeToRemove);
 		nodeToRemove.setParent(null);
-		nodeToRemove.setLeft(null);
-		nodeToRemove.setRight(null);
 		System.out.println(toString());
+		return new BinaryTree<T>(nodeToRemove);
 	}
 	
 	public boolean contains(T elem) {

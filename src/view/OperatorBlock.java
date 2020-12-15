@@ -123,4 +123,20 @@ public class OperatorBlock extends BlockComponent {
 				new Rectangle(0, 40, (int) getPreferredSize().getWidth(), 40));
 		return isInUpperPart || isInLowerPart;
 	}
+
+	@Override
+	public void disconnectSocket() {
+		socketArr[1].isUsed = false;
+		socketArr[2].isUsed = false;
+		if(socketArr[1].connectedSocket != null) {
+			socketArr[1].connectedSocket.isUsed = false;
+			socketArr[1].connectedSocket.connectedSocket = null;
+			socketArr[1].connectedSocket = null;
+		}
+		if(socketArr[2].connectedSocket != null) {
+			socketArr[2].connectedSocket.isUsed = false;
+			socketArr[2].connectedSocket.connectedSocket = null;
+			socketArr[2].connectedSocket = null;
+		}
+	}
 }

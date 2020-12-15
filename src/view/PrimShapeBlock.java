@@ -61,4 +61,20 @@ public class PrimShapeBlock extends BlockComponent {
 		path.closePath();
 		return path.getPath();
 	}
+
+	@Override
+	public void disconnectSocket() {
+		socketArr[0].isUsed = false;
+		socketArr[1].isUsed = false;
+		if(socketArr[0].connectedSocket != null) {
+			socketArr[0].connectedSocket.isUsed = false;
+			socketArr[0].connectedSocket.connectedSocket = null;
+			socketArr[0].connectedSocket = null;
+		}
+		if(socketArr[1].connectedSocket != null) {
+			socketArr[1].connectedSocket.isUsed = false;
+			socketArr[1].connectedSocket.connectedSocket = null;
+			socketArr[1].connectedSocket = null;
+		}
+	}
 }

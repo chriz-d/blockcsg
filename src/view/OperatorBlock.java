@@ -117,8 +117,10 @@ public class OperatorBlock extends BlockComponent {
 	
 	@Override
 	public boolean contains(Point point) {
-		boolean isInUpperPart = !Support.isOutOfBounds(point, new Rectangle(35, 1, 30, 39));
-		boolean isInLowerPart = !Support.isOutOfBounds(point, new Rectangle(0, 40, 99, 40));
+		boolean isInUpperPart = !Support.isOutOfBounds(point, 
+				new Rectangle(operatorBlockCoordinatesX[0] + socketWidth, 1, 30, 39));
+		boolean isInLowerPart = !Support.isOutOfBounds(point, 
+				new Rectangle(0, 40, (int) getPreferredSize().getWidth(), 40));
 		return isInUpperPart || isInLowerPart;
 	}
 }

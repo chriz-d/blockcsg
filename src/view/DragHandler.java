@@ -46,7 +46,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(componentBelow != null) {
 			componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
 					e.getComponent(), e, componentBelow));
-		} else if(componentToDrag.contains(e.getPoint()) && !ignoreClick) { // Check if click actually is inside shape and not just bounding box
+		} else if(!ignoreClick) { // Check if click actually is inside shape and not just bounding box
 			int deltaX = e.getXOnScreen() - screenX;
 			int deltaY = e.getYOnScreen() - screenY;
 			

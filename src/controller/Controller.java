@@ -55,7 +55,7 @@ public class Controller extends SimpleApplication {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
-			// Delete children of block from treeMap and add to separate trees each
+			// Delete children of block and block itself from treeMap and add to separate trees each
 			List<BlockComponent> children = tree.getChildren(blockToRemove);
 			for(BlockComponent c : children) {
 				treeMap.remove(c);
@@ -64,6 +64,7 @@ public class Controller extends SimpleApplication {
 			//Remove actual element
 			tree.removeElement(blockToRemove);
 			treeMap.remove(blockToRemove);
+			treeMap.put(blockToRemove, new BinaryTree<BlockComponent>(blockToRemove));
 		}
 	}
 	

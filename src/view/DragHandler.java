@@ -99,7 +99,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Resize components
 			// Remove from tree
 			view.resizeTree(componentToDrag, true);
-			//view.getController().removeFromTree(componentToDrag);
+			view.resizeTree(componentToDrag, false);
 			
 			// Switch layers
 			componentToDrag.getParent().remove(componentToDrag);

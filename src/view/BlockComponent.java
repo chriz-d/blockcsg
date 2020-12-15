@@ -10,7 +10,7 @@ import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
 
-public class BlockComponent extends JComponent {
+public abstract class BlockComponent extends JComponent {
 
 	private static final long serialVersionUID = -973194356557981053L;
 	
@@ -66,9 +66,7 @@ public class BlockComponent extends JComponent {
 	}
 	
 	// returns the drawn path of needed shape
-	public GeneralPath getGeneralPath() {
-		return null;
-	}
+	public abstract GeneralPath getGeneralPath();
 	
 	@Override
 	public String toString() {

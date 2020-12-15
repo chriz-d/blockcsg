@@ -89,7 +89,7 @@ public class Controller extends SimpleApplication {
 	public BlockComponent getRoot(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
-			return tree.getRoot().getContent();
+			return tree.getRoot();
 		} else {
 			return null;
 		}

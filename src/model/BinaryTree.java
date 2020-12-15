@@ -3,10 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jogamp.opencl.CLSampler;
-
 import support.Support.Direction;
-import view.OperatorBlock;
 
 public class BinaryTree<T> {
 	
@@ -20,11 +17,11 @@ public class BinaryTree<T> {
 	public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
 		Node<T> parentNode = searchNode(parent, root);
 		if(dir == Direction.LEFT) {
-			parentNode.setLeft(childTree.getRoot());
+			parentNode.setLeft(childTree.getRootNode());
 		} else {
-			parentNode.setRight(childTree.getRoot());
+			parentNode.setRight(childTree.getRootNode());
 		}
-		childTree.getRoot().setParent(parentNode);
+		childTree.getRootNode().setParent(parentNode);
 		System.out.println(toString());
 	}
 	
@@ -61,8 +58,12 @@ public class BinaryTree<T> {
 		return root == null;
 	}
 	
-	public Node<T> getRoot() {
+	private Node<T> getRootNode() {
 		return root;
+	}
+	
+	public T getRoot() {
+		return root.getContent();
 	}
 	
 	/*
@@ -162,4 +163,65 @@ public class BinaryTree<T> {
 	public String toString() {
 	    return root.toString(new StringBuilder(), true, new StringBuilder()).toString();
 	}
+	
+	private class Node<G> {
+		
+		private G content;
+		
+		private Node<G> parent;
+		private Node<G> left;
+		private Node<G> right;
+		
+		public Node(G content) {
+			parent = null;
+			left = null;
+			right = null;
+			this.content = content;
+		}
+		
+		public void setLeft(Node<G> node) {
+			left = node;
+		}
+		
+		public void setRight(Node<G> node) {
+			right = node;
+		}
+		
+		public void setParent(Node<G> node) {
+			parent = node;
+		}
+		
+		public Node<G> getLeft() {
+			return left;
+		}
+		
+		public Node<G> getRight() {
+			return right;
+		}
+		
+		public Node<G> getParent() {
+			return parent;
+		}
+		
+		public G getContent() {
+			return content;
+		}
+		
+		public void setContent(G content) {
+			this.content = content;
+		}
+		
+		// toString from https://stackoverflow.com/a/27153988
+		public StringBuilder toString(StringBuilder prefix, boolean isTail, StringBuilder sb) {
+		    if(right!=null) {
+		        right.toString(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
+		    }
+		    sb.append(prefix).append(isTail ? "└── " : "┌── ").append(content.toString()).append("\n");
+		    if(left!=null) {
+		        left.toString(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
+		    }
+		    return sb;
+		}
+	}
+
 }

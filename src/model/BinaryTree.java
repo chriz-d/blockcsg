@@ -3,7 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jogamp.opencl.CLSampler;
+
 import support.Support.Direction;
+import view.OperatorBlock;
 
 public class BinaryTree<T> {
 	
@@ -62,8 +65,11 @@ public class BinaryTree<T> {
 		return root;
 	}
 	
-	public int getDepth(T elem) {
-		return getDepth(searchNode(elem, root));
+	/*
+	 * Returns max depth of the tree. Second parameter is used for filtering undesired nodes
+	 */
+	public int getDepth(T elem, Class<?> cls) {
+		return getDepth(searchNode(elem, root), cls);
 	}
 	
 	public T getLeft(T elem) {
@@ -84,12 +90,12 @@ public class BinaryTree<T> {
 		}
 	}
 	
-	private int getDepth(Node<T> root) {
-		if(root == null) {
+	private int getDepth(Node<T> root, Class<?> cls) {
+		if(root == null || cls.isInstance(root.getContent())) {
 			return 0;
 		}
-		int leftDepth = getDepth(root.getLeft());
-		int rightDepth = getDepth(root.getRight());
+		int leftDepth = getDepth(root.getLeft(), cls);
+		int rightDepth = getDepth(root.getRight(), cls);
 		if(leftDepth > rightDepth) {
 			return leftDepth + 1;
 		} else {

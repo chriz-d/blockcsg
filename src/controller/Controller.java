@@ -15,6 +15,7 @@ import model.BinaryTree;
 import model.Node;
 import support.Support.Direction;
 import view.BlockComponent;
+import view.PrimShapeBlock;
 import view.View;
 
 public class Controller extends SimpleApplication {
@@ -69,7 +70,7 @@ public class Controller extends SimpleApplication {
 	public int getDepth(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
-			return tree.getDepth(block);
+			return tree.getDepth(block, PrimShapeBlock.class);
 		} else {
 			return 1;
 		}

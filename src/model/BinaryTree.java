@@ -15,12 +15,16 @@ public class BinaryTree<T> {
 	
 	// Attaches new element to the parent node in tree
 	public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
+		// Get find parent node in tree
 		Node<T> parentNode = searchNode(parent, root);
+		
+		// Attach child tree depending on direction
 		if(dir == Direction.LEFT) {
 			parentNode.setLeft(childTree.getRootNode());
 		} else {
 			parentNode.setRight(childTree.getRootNode());
 		}
+		// Set parent reference
 		childTree.getRootNode().setParent(parentNode);
 		System.out.println(toString());
 	}
@@ -34,7 +38,7 @@ public class BinaryTree<T> {
 			return;
 		}
 		Node<T> parent = nodeToRemove.getParent();
-		// Check if root node neets deletion
+		// Check if root, else delete reference for node above
 		if(nodeToRemove != root) { 
 			if(nodeToRemove.equals(parent.getLeft())) {
 				parent.setLeft(null);
@@ -223,5 +227,4 @@ public class BinaryTree<T> {
 		    return sb;
 		}
 	}
-
 }

@@ -12,7 +12,6 @@ import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
-import model.Node;
 import support.Support.Direction;
 import view.BlockComponent;
 import view.PrimShapeBlock;
@@ -55,7 +54,7 @@ public class Controller extends SimpleApplication {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
-			// Delete children of block and block itself from treeMap and add to separate trees each
+			// Delete children of block from treeMap and add to separate trees each
 			List<BlockComponent> children = tree.getChildren(blockToRemove);
 			for(BlockComponent c : children) {
 				treeMap.remove(c);

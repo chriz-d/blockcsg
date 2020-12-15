@@ -118,20 +118,20 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(isFreshlySpawned) {
+			isFreshlySpawned = false;
+		}
+		
 		// Check if click actually is inside shape and not just bounding box
 		if(componentBelow != null ) {
 			// Pass on event (if a lower component exists)
 				componentBelow.dispatchEvent(SwingUtilities.convertMouseEvent(
 						e.getComponent(), e, componentBelow));
 				componentBelow = null;
-		} else if(componentToDrag.contains(e.getPoint()) && !ignoreClick) {
-			if(isFreshlySpawned) {
-				isFreshlySpawned = false;
-			}
+		} else if(!ignoreClick) {
 			// Check if mouse is inside workspace Panel
 			if(!Support.isOutOfBounds(view.getFrame().getMousePosition(), 
 					view.getWorkspacePanel().getBounds())) {
-				componentToDrag.getParent().remove(componentToDrag);
 				componentToDrag.setLocation(
 						componentToDrag.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
 						componentToDrag.getY());
@@ -143,7 +143,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				// Find closest snapping point and set component position to it if necessary
 				snapToClosestBlock();
 				
-				
 				// fix z ordering of other elements
 				Component[] components = view.getWorkspacePanel().getComponents();
 				if(components.length > 1) {
@@ -152,6 +151,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 					}
 				}
 				// Finally add to panel and give last element highest z order
+				componentToDrag.getParent().remove(componentToDrag);
 				view.getWorkspacePanel().add(componentToDrag);
 				view.getWorkspacePanel().setComponentZOrder(componentToDrag, 0);
 			} else { // Delete component, cause it's outside

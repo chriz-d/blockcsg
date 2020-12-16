@@ -12,7 +12,7 @@ public class BlockSocket implements Serializable {
 	private static final long serialVersionUID = 5343205691855604722L;
 
 	public enum SocketType {
-		RECTANGLE_SOCKET, RECTANGLE_PLUG, TRIANGLE_SOCKET, TRIANGLE_PLUG
+		RECTANGLE_SOCKET, RECTANGLE_PLUG
 	}
 	
 	private static Map<SocketType, SocketType> socketFit;
@@ -20,16 +20,16 @@ public class BlockSocket implements Serializable {
 	public Point position;
 	public SocketType type;
 	public Direction direction;
-	public boolean isUsed;
+	public boolean isDisabled;
 	
-	public BlockComponent parent;
 	public BlockSocket connectedSocket;
+	public BlockSocket opposite;
 	
 	public BlockSocket(Point position, SocketType type, Direction direction) {
 		this.position = position;
 		this.type = type;
 		this.direction = direction;
-		this.isUsed = false;
+		this.isDisabled = false;
 		connectedSocket = null;
 	}
 	
@@ -40,8 +40,6 @@ public class BlockSocket implements Serializable {
 			socketFit = new HashMap<SocketType, SocketType>();
 			socketFit.put(SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG);
 			socketFit.put(SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET);
-			socketFit.put(SocketType.TRIANGLE_SOCKET, SocketType.TRIANGLE_PLUG);
-			socketFit.put(SocketType.TRIANGLE_PLUG, SocketType.TRIANGLE_SOCKET);
 		}
 		return socketFit.get(s1) == s2;
 	}

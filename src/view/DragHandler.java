@@ -98,7 +98,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			
 			// Disconnect all sockets
-			componentToDrag.disconnectSocket();
+			componentToDrag.disconnectSockets();
 			
 			// Resize components
 			// Remove from tree
@@ -240,10 +240,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// TODO: Close other socket opposite of socket being closed
 			BlockSocket toDragSocket = componentToDrag.socketArr[dragSocketIndex];
 			BlockSocket closestSocket = closestBlock.socketArr[closestSocketIndex];
-			toDragSocket.isUsed = true;
-			closestSocket.isUsed = true;
-			toDragSocket.connectedSocket = closestSocket;
-			closestSocket.connectedSocket = toDragSocket;
+			componentToDrag.connectSocket(toDragSocket, closestSocket);
+			closestBlock.connectSocket(closestSocket, toDragSocket);
 		
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
@@ -270,7 +268,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	// returns if given sockets are compatible
 	private boolean isValidSocket(BlockSocket s1, BlockSocket s2) {
-		boolean isNotUsed = !s1.isUsed && !s2.isUsed;
+		boolean isNotUsed = !s1.isDisabled && !s2.isDisabled;
 		boolean isFittingSocket = BlockSocket.isFitting(s1.type, s2.type);
 		boolean isNotOnSameSide = s1.direction != s2.direction;
 		

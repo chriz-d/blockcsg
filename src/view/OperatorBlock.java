@@ -27,20 +27,19 @@ public class OperatorBlock extends BlockComponent {
 	final private int towerWidth = 30;	
 	final private int defaultSize = 100;
 	
-	// Coordinates of snap points
-	private Point[] snapPoints = {new Point(5, 59), new Point(40, 20), new Point(59, 20), new Point(93, 59)};
-	final private SocketType[] socketType = {SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_SOCKET, SocketType.RECTANGLE_PLUG};
-	final private Direction[] socketPos = {Direction.LEFT, Direction.LEFT, Direction.RIGHT, Direction.RIGHT};
-	
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());
 		labelHeight = 65;
 		color = 0xf8961e;
 		blockType = BlockType.Operator;
-		socketArr = new BlockSocket[snapPoints.length];
-		for(int i = 0; i < snapPoints.length; i++) {
-			socketArr[i] = new BlockSocket(snapPoints[i], socketType[i], socketPos[i]);
-		}
+		BlockSocket socket1 = new BlockSocket(new Point(5, 59), SocketType.RECTANGLE_PLUG, Direction.LEFT);
+		BlockSocket socket2 = new BlockSocket(new Point(40, 20), SocketType.RECTANGLE_SOCKET, Direction.LEFT);
+		BlockSocket socket3 = new BlockSocket(new Point(59, 20), SocketType.RECTANGLE_SOCKET, Direction.RIGHT);
+		BlockSocket socket4 = new BlockSocket(new Point(93, 59), SocketType.RECTANGLE_PLUG, Direction.RIGHT);
+		socket2.opposite = socket3;
+		socket3.opposite = socket2;
+		
+		socketArr = new BlockSocket[]{socket1, socket2, socket3, socket4};
 		
 		correctWidth(1);
 		// Set bounds
@@ -78,14 +77,14 @@ public class OperatorBlock extends BlockComponent {
 	private void drawTower(GeneralPathDecor path) {
 		for(int i = 0; i < towerShapeX.length; i++) {
 			path.lineToRelative(towerShapeX[i], towerShapeY[i]);
-			if(i == 1 && !socketArr[2].isUsed) {
+			if(i == 1 && socketArr[2].connectedSocket == null) {
 				drawSocket(path, 1);
-			} else if(i == 1 && socketArr[2].isUsed) { // Skip socket
+			} else if(i == 1 && socketArr[2].connectedSocket != null) { // Skip socket
 				path.lineToRelative(0, -10);
 			}
-			if(i == 4 && !socketArr[1].isUsed) {
+			if(i == 4 && socketArr[1].connectedSocket == null) {
 				drawSocket(path, -1);
-			} else if(i == 4 && socketArr[1].isUsed){ // Skip socket
+			} else if(i == 4 && socketArr[1].connectedSocket != null){ // Skip socket
 				path.lineToRelative(0, 10);
 			}
 		}
@@ -125,18 +124,34 @@ public class OperatorBlock extends BlockComponent {
 	}
 
 	@Override
-	public void disconnectSocket() {
-		socketArr[1].isUsed = false;
-		socketArr[2].isUsed = false;
+	public void disconnectSockets() {
+		socketArr[1].isDisabled = false;
+		socketArr[2].isDisabled = false;
 		if(socketArr[1].connectedSocket != null) {
-			socketArr[1].connectedSocket.isUsed = false;
+			socketArr[1].connectedSocket.isDisabled = false;
 			socketArr[1].connectedSocket.connectedSocket = null;
 			socketArr[1].connectedSocket = null;
 		}
 		if(socketArr[2].connectedSocket != null) {
-			socketArr[2].connectedSocket.isUsed = false;
+			socketArr[2].connectedSocket.isDisabled = false;
 			socketArr[2].connectedSocket.connectedSocket = null;
 			socketArr[2].connectedSocket = null;
+		}
+		if(socketArr[2].connectedSocket != null && socketArr[2].connectedSocket.opposite != null) {
+			socketArr[2].connectedSocket.opposite.isDisabled = false;
+		}
+		if(socketArr[1].connectedSocket != null && socketArr[1].connectedSocket.opposite != null) {
+			socketArr[1].connectedSocket.opposite.isDisabled = false;
+		}
+	}
+
+	@Override
+	public void connectSocket(BlockSocket socket1, BlockSocket socket2) {
+		socket1.isDisabled = true;
+		socket1.connectedSocket = socket2;
+		socket2.connectedSocket = socket1;
+		if(socket1.opposite != null) {
+			socket1.opposite.isDisabled = true;
 		}
 	}
 }

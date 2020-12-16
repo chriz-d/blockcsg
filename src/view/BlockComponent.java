@@ -67,7 +67,9 @@ public abstract class BlockComponent extends JComponent {
 	// returns the drawn path of needed shape
 	public abstract GeneralPath getGeneralPath();
 	
-	public abstract void disconnectSocket();
+	public abstract void disconnectSockets();
+	
+	public abstract void connectSocket(BlockSocket socket1, BlockSocket socket2);
 	
 	@Override
 	public String toString() {

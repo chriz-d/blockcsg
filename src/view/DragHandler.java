@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-
 import support.Support;
 import view.BlockSocket.SocketType;
 
@@ -104,6 +103,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Resize components
 			// Remove from tree
 			view.resizeTree(componentToDrag, true);
+			
+			// Repeat resize, this time only for dragged opponent and children
 			view.resizeTree(componentToDrag, false);
 			
 			// Switch layers

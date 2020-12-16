@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Point;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 
 import support.Support;
 

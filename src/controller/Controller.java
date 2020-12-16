@@ -9,8 +9,6 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import com.jme3.system.AppSettings;
-import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
 import support.Support.Direction;
@@ -77,6 +75,7 @@ public class Controller extends SimpleApplication {
 		if(tree != null) {
 			return tree.getDepth(block, PrimShapeBlock.class);
 		} else {
+			System.out.println("Element does not have tree. getDepth()");
 			return 1;
 		}
 	}

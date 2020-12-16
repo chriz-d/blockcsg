@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -120,6 +121,12 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			if(!isFreshlySpawned) {
 				componentToDrag.setLocation(componentToDrag.getX() + view.getBlockViewPanel().getComponent(0).getWidth(), componentToDrag.getY());
+			} else {
+				// Snap component to mouse pos, needed because scrollpane changes Y coordinate offset
+				Point mousePos = MouseInfo.getPointerInfo().getLocation();
+				SwingUtilities.convertPointFromScreen(mousePos, view.getTransferPanel());
+				// Minus 30 for middle of block and not edge
+				componentToDrag.setLocation(componentToDrag.getX(), (int)mousePos.getY() - 30);
 			}
 			// Save position for dragging
 			screenX = e.getXOnScreen();

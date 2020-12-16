@@ -9,6 +9,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
+import com.jme3.system.AppSettings;
+import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
 import support.Support.Direction;
@@ -36,6 +38,10 @@ public class Controller extends SimpleApplication {
 	public void createTree(BlockComponent blockToAdd) {
 		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
 		treeMap.put(blockToAdd, newTree);
+	}
+	
+	public void deleteTree(BlockComponent blockToDelete) {
+		treeMap.remove(blockToDelete);
 	}
 	
 	// Add a new block to required tree by map lookup
@@ -124,18 +130,18 @@ public class Controller extends SimpleApplication {
 		//org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
-//		java.awt.EventQueue.invokeLater(new Runnable() {
-//	    	public void run() {
-//	    		AppSettings settings = new AppSettings(true);
-//	    		settings.setWidth(640);
-//	    		settings.setHeight(480);
-//	    		controller.createCanvas();
-//	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
-//	    		ctx.setSystemListener(controller);
-//	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
-//	    		controller.startCanvas();
-//	    	}
-//	    });
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	    	public void run() {
+	    		AppSettings settings = new AppSettings(true);
+	    		settings.setWidth(640);
+	    		settings.setHeight(480);
+	    		controller.createCanvas();
+	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
+	    		ctx.setSystemListener(controller);
+	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
+	    		controller.startCanvas();
+	    	}
+	    });
 	}
 
 	@Override

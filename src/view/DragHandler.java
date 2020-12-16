@@ -184,13 +184,14 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				componentToDrag.getParent().remove(componentToDrag);
 				componentToDrag.removeMouseMotionListener(this);
 				componentToDrag.removeMouseListener(this);
-				
 				// delete children aswell
 				List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+				view.getController().deleteTree(componentToDrag);
 				for(BlockComponent child : children) {
 					child.getParent().remove(child);
 					child.removeMouseMotionListener(this);
 					child.removeMouseListener(this);
+					view.getController().deleteTree(child);
 				}
 			}
 			view.getFrame().repaint();

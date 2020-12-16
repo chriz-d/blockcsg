@@ -43,7 +43,7 @@ public class View {
 	public void initView() {
 		// Main JFrame
 		frame = new JFrame();
-		frame.setLayout(new GridLayout(1, 2));
+		frame.setLayout(new GridLayout(2, 1));
 		
 		frame.add(createBlockViewPanel());
 		frame.add(createJMonkeyPanel());
@@ -108,7 +108,6 @@ public class View {
 			vBox.add(block);
 		}
 		vBox.add(Box.createRigidArea(new Dimension(150, 30)));
-
 		return drawerPanel;
 	}
 	
@@ -117,8 +116,9 @@ public class View {
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent arg0) {
-				blockview.setBounds(0, 0, (frame.getWidth() + blockview.getComponent(0).getWidth() )/ 2, frame.getHeight()- 30);
-				transferPanel.setBounds(0, 0, (frame.getWidth() + blockview.getComponent(0).getWidth() )/ 2, frame.getHeight()- 30);
+				blockview.setBounds(0, 0, frame.getWidth() + 30, frame.getHeight()/ 2);
+				transferPanel.setBounds(0, 0, frame.getWidth() + 30, frame.getHeight()/ 2);
+				frame.repaint();
 			}
 		});
 	}

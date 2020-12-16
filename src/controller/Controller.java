@@ -127,7 +127,7 @@ public class Controller extends SimpleApplication {
 	}
 	
 	public static void main(String[] args) {
-		//org.swingexplorer.Launcher.launch();
+		org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();
 		controller.start();
 		java.awt.EventQueue.invokeLater(new Runnable() {

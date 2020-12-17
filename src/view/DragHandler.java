@@ -251,7 +251,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		// Check distance to found point
 		if(closestPoint != null && closestDistance < 25) {
 			// update socketState
-			// TODO: Close other socket opposite of socket being closed
 			BlockSocket toDragSocket = componentToSnap.socketArr[dragSocketIndex];
 			BlockSocket closestSocket = closestBlock.socketArr[closestSocketIndex];
 			componentToSnap.connectSocket(toDragSocket, closestSocket);

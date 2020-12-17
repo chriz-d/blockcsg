@@ -23,7 +23,7 @@ public class PrimShapeBlock extends BlockComponent {
 	public PrimShapeBlock(PrimShapeType primShapeType) {
 		label = Support.capitalizeNormal(primShapeType.toString());
 		labelHeight = 25;
-		color = 0x90be6d;
+		color = 0xef476f;
 		blockType = BlockType.PrimShape;
 		BlockSocket socket1 = new BlockSocket(new Point(5, 20), SocketType.RECTANGLE_SOCKET, Direction.LEFT);
 		BlockSocket socket2 = new BlockSocket(new Point(73, 20), SocketType.RECTANGLE_SOCKET, Direction.RIGHT);

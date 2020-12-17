@@ -69,7 +69,7 @@ public class View {
 		transferPanel.setBounds(0, 0, 400, 400);
 		blockViewPanel = new JPanel(new BorderLayout());
 		workspacePanel = new JPanel(null);
-		workspacePanel.setBackground(Color.LIGHT_GRAY);
+		workspacePanel.setBackground(new Color(0xedf6f9));
 		// Layered pane does not have layout manager, hence manual position and size
 		// needed
 		addBlockViewResizeHandler(blockViewPanel);

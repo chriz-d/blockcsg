@@ -30,7 +30,7 @@ public class OperatorBlock extends BlockComponent {
 	public OperatorBlock(OperatorBlockType operatorBlockType) {
 		label = Support.capitalizeNormal(operatorBlockType.toString());
 		labelHeight = 65;
-		color = 0xf8961e;
+		color = 0x118ab2;
 		blockType = BlockType.Operator;
 		BlockSocket socket1 = new BlockSocket(new Point(5, 59), SocketType.RECTANGLE_PLUG, Direction.LEFT);
 		BlockSocket socket2 = new BlockSocket(new Point(40, 20), SocketType.RECTANGLE_SOCKET, Direction.LEFT);

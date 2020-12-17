@@ -130,21 +130,6 @@ public class BinaryTree<T> {
 		}
 	}
 	
-	// Delete everything recursively below node
-	private void deleteTree(Node<T> root) {
-		Node<T> worker = root;
-		if(worker.getLeft() != null) {
-			deleteTree(worker.getLeft());
-			worker.getLeft().setParent(null);
-			worker.setLeft(null);
-		}
-		if(worker.getRight() != null) {
-			deleteTree(worker.getRight());
-			worker.getRight().setParent(null);
-			worker.setRight(null);
-		}
-	}
-	
 	// Search recursively the whole tree
 	private Node<T> searchNode(T searched, Node<T> root) {
 		if(root == null) {

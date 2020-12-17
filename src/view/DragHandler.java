@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import controller.Controller;
 import support.Support;
 import view.BlockSocket.SocketType;
 
@@ -169,7 +170,12 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				}
 				
 				// Find closest snapping point and set component position to it if necessary
-				snapToClosestBlock();
+				snapToClosestBlock(componentToDrag);
+				
+				// Check if one of children viable for snapping
+				for(BlockComponent child : children) {
+					snapToClosestBlock(child);
+				}
 				
 				// fix z ordering of other elements
 				Component[] components = view.getWorkspacePanel().getComponents();
@@ -207,11 +213,11 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	}
 	
 	// Searches all components for closest snapping point and calculates position
-	private void snapToClosestBlock() {
+	private void snapToClosestBlock(BlockComponent componentToSnap) {
 		// Remove all children of component to drag from list, or else it snaps to itself!
 		List<Component> componentList = 
 				new ArrayList<Component>(Arrays.asList(view.getWorkspacePanel().getComponents()));
-		List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+		List<BlockComponent> children = view.getController().getChildren(componentToSnap);
 		for(BlockComponent e : children) {
 			componentList.remove((Component)e);
 		}
@@ -220,7 +226,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		BlockComponent closestBlock = null;
 		int dragSocketIndex = 0;
 		int closestSocketIndex = 0;
-		BlockSocket[] dragBlockSckt = componentToDrag.socketArr;
+		BlockSocket[] dragBlockSckt = componentToSnap.socketArr;
 		// Iterate over sockets of dragged block, over all components and their own sockets
 		// and find closest snap point
 		for(int i = 0; i < dragBlockSckt.length; i++) {
@@ -229,7 +235,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				for(int j = 0; j < potClosest.socketArr.length; j++) {
 					if(isValidSocket(dragBlockSckt[i], potClosest.socketArr[j])) {
 						double distance = Support.getDistance(
-								Support.addPoints(dragBlockSckt[i].position, componentToDrag.getLocation()), 
+								Support.addPoints(dragBlockSckt[i].position, componentToSnap.getLocation()), 
 								Support.addPoints(potClosest.socketArr[j].position, potClosest.getLocation()));
 						if(closestDistance > distance) {
 							closestDistance = distance;
@@ -246,31 +252,38 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		if(closestPoint != null && closestDistance < 25) {
 			// update socketState
 			// TODO: Close other socket opposite of socket being closed
-			BlockSocket toDragSocket = componentToDrag.socketArr[dragSocketIndex];
+			BlockSocket toDragSocket = componentToSnap.socketArr[dragSocketIndex];
 			BlockSocket closestSocket = closestBlock.socketArr[closestSocketIndex];
-			componentToDrag.connectSocket(toDragSocket, closestSocket);
+			componentToSnap.connectSocket(toDragSocket, closestSocket);
 			closestBlock.connectSocket(closestSocket, toDragSocket);
 		
-			// Add to model
-			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
-				view.getController().addToTree(closestBlock, componentToDrag, toDragSocket.direction);
-			} else {
-				view.getController().addToTree(componentToDrag, closestBlock, closestSocket.direction);
-			}
-			
-			
 			// Finally, calculate coordinates for placement
 			// Convert found point to workspace coordinates
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
-			
 			spPos = Support.subPoints(spPos, dragBlockSckt[dragSocketIndex].position);
-			// Calculate delta for children repositioning
-			Point deltaPos = Support.subPoints(spPos, componentToDrag.getLocation());
-			componentToDrag.setLocation(spPos.x, spPos.y);
-			for(BlockComponent child : children) {
-				child.setLocation((int)(child.getX() + deltaPos.getX()),(int) (child.getY() + deltaPos.getY()));
+			
+			// Calculate delta for all nodes repositioning
+			Point deltaPos = Support.subPoints(spPos, componentToSnap.getLocation());
+			componentToSnap.setLocation(spPos.x, spPos.y);
+			
+			// Get all nodes and repos
+			Controller controller = view.getController();
+			List<BlockComponent> allNodes = controller.getChildren(controller.getRoot(componentToSnap));
+			allNodes.add(controller.getRoot(componentToSnap));
+			for(BlockComponent node : allNodes) {
+				if(!node.equals(componentToSnap)) {
+					node.setLocation((int)(node.getX() + deltaPos.getX()),(int) (node.getY() + deltaPos.getY()));
+				}
 			}
-			view.resizeTree(componentToDrag, false);
+
+			// Add to model
+			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
+				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
+			} else {
+				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
+			}
+			// Resize tree
+			view.resizeTree(componentToSnap, false);
 		}
 	}
 	

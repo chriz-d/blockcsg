@@ -14,6 +14,7 @@ import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
 import model.Shape;
+import net.wcomohundro.jme3.csg.CSGShape;
 import support.Support.Direction;
 import view.BlockComponent;
 import view.PrimShapeBlock;
@@ -162,10 +163,10 @@ public class Controller extends SimpleApplication {
 		this.lastSelected = new Shape(lastSelected);
 		
 		
-		this.lastSelected.generateCSGMesh();
-		if(this.lastSelected.getCSG().getMesh() != null) {
+		CSGShape csg = this.lastSelected.generateCSGMesh();
+		if(csg != null) {
 			rootNode.detachAllChildren();
-			rootNode.attachChild(this.lastSelected.getCSG());
+			rootNode.attachChild(csg);
 		}
 	}
 	

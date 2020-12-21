@@ -34,44 +34,53 @@ public class Shape {
 		csg.regenerate();
 	}
 	
-	public void generateCSGMesh() {
+	public CSGShape generateCSGMesh() {
 		if(block instanceof OperatorBlock) {
 			OperatorBlock opBlock = (OperatorBlock) block;
 			Controller controller = Controller.getInstance();
+			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
 			Shape left = controller.getLeftShape(block);
 			Shape right = controller.getRightShape(block);
-			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
 			switch(opBlock.opType) {
 			case DIFFERENCE: {
 				if(left != null) {
-					csg.addShape(left.getCSG().regenerate());
+					csg.addShape(left.generateCSGMesh());
 				}
 				if(right != null) {
-					csg.subtractShape(right.getCSG().regenerate());
+					csg.subtractShape(right.generateCSGMesh());
 				}
 			} break;
 			case INTERSECT: {
 				if(left != null) {
-					csg.addShape(left.getCSG().regenerate());
+					csg.addShape(left.generateCSGMesh());
 				}
 				if(right != null) {
-					csg.intersectShape(right.getCSG().regenerate());
+					csg.intersectShape(right.generateCSGMesh());
 				}
 			} break;
 			case UNION: {
 				if(left != null) {
-					csg.addShape(left.getCSG().regenerate());
+					csg.addShape(left.generateCSGMesh());
 				}
 				if(right != null) {
-					csg.addShape(right.getCSG().regenerate());
+					csg.addShape(right.generateCSGMesh());
 				}
 			} break;
 			}
-			csg.regenerate();
 		} else {
 			System.out.println("Not an operator block!");
 		}
-		
+		csg.regenerate();
+		if(csg.getMesh() != null) {
+			CSGShape result = new CSGShape("Result", csg.getMesh());
+			if(result != null) {
+				result.setMaterial(new Material(Controller.getInstance().getAssetManager(), 
+						"Common/MatDefs/Misc/ShowNormals.j3md"));
+				
+			}
+			return result;
+		}
+		return null;
 	}
 	
 	public BlockComponent getBlock() {

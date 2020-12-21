@@ -91,13 +91,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 		} else {
 			// Selection color
-			if(view.lastSelected != componentToDrag) {
-				if(view.lastSelected != null) {
-					view.lastSelected.color -= 10000; 
-				}
-				view.lastSelected = componentToDrag;
-				view.lastSelected.color += 10000;
-			}
+			setSelected(componentToDrag);
 			
 			// Disconnect all sockets
 			componentToDrag.disconnectSockets();
@@ -255,7 +249,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			BlockSocket closestSocket = closestBlock.socketArr[closestSocketIndex];
 			componentToSnap.connectSocket(toDragSocket, closestSocket);
 			closestBlock.connectSocket(closestSocket, toDragSocket);
-		
+			
+			
 			// Finally, calculate coordinates for placement
 			// Convert found point to workspace coordinates
 			Point spPos = Support.addPoints(closestPoint, closestBlock.getLocation());
@@ -278,9 +273,13 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
+				setSelected(componentToDrag);
 			} else {
 				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
+				setSelected(closestBlock);
 			}
+
+			
 			// Resize tree
 			view.resizeTree(componentToSnap, false);
 		}
@@ -314,5 +313,16 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 		}
 		return result;
+	}
+	
+	private void setSelected(BlockComponent block) {
+		Controller controller = Controller.getInstance();
+		if(controller.getLastSelected() != block) {
+			if(controller.getLastSelected() != null) {
+				controller.getLastSelected().color -= 10000; 
+			}
+			controller.setLastSelected(block);
+			controller.getLastSelected().color += 10000;
+		}
 	}
 }

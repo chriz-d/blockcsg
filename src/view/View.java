@@ -34,8 +34,6 @@ public class View {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
-	public BlockComponent lastSelected;
-	
 	public View(Controller controller) {
 		this.controller = controller;
 	}

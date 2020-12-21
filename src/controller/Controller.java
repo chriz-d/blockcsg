@@ -22,8 +22,9 @@ import view.View;
 public class Controller extends SimpleApplication {
 	
 	private static Controller controller;
-	
 	private View view;
+
+	private Shape lastSelected;
 	
 	// Map for quick access of trees for specific blocks
 	private Map<BlockComponent, BinaryTree<Shape>> treeMap;
@@ -133,11 +134,47 @@ public class Controller extends SimpleApplication {
 		} else {
 			return null;
 		}
-
+	}
+	
+	public Shape getLeftShape(BlockComponent block) {
+		BinaryTree<Shape> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getLeft(new Shape(block));
+		} else {
+			return null;
+		}
+	}
+	
+	public Shape getRightShape(BlockComponent block) {
+		BinaryTree<Shape> tree = treeMap.get(block);
+		if(tree != null) {
+			return tree.getRight(new Shape(block));
+		} else {
+			return null;
+		}
 	}
 	
 	public boolean hasTree(BlockComponent block) {
 		return treeMap.containsKey(block);
+	}
+	
+	public void setLastSelected(BlockComponent lastSelected) {
+		this.lastSelected = new Shape(lastSelected);
+		
+		
+		this.lastSelected.generateCSGMesh();
+		if(this.lastSelected.getCSG().getMesh() != null) {
+			rootNode.detachAllChildren();
+			rootNode.attachChild(this.lastSelected.getCSG());
+		}
+	}
+	
+	public BlockComponent getLastSelected() {
+		if(lastSelected != null) {
+			return lastSelected.getBlock();
+		} else {
+			return null;
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -161,11 +198,11 @@ public class Controller extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		flyCam.setDragToRotate(true);
-		Box b = new Box(1, 1, 1);
-		Geometry geom = new Geometry("Box", b);
-		Material mat = new Material(assetManager,"Common/MatDefs/Misc/ShowNormals.j3md");
-		geom.setMaterial(mat);
-		rootNode.attachChild(geom);
+//		Box b = new Box(1, 1, 1);
+//		Geometry geom = new Geometry("Box", b);
+//		Material mat = new Material(assetManager,"Common/MatDefs/Misc/ShowNormals.j3md");
+//		geom.setMaterial(mat);
+//		rootNode.attachChild(geom);
 		flyCam.setMoveSpeed(200);
 	}
 }

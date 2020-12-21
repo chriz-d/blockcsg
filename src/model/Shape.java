@@ -31,45 +31,48 @@ public class Shape {
 			case SPHERE: csg.addShape(new CSGShape("Sphere", new Sphere(20, 20, 1.3f))); break;
 			}
 		}
+		csg.regenerate();
 	}
 	
-//	public void generate() {
-//		if(block instanceof OperatorBlock) {
-//			OperatorBlock opBlock = (OperatorBlock) block;
-//			Controller controller = Controller.getInstance();
-//			BlockComponent left = controller.getLeft(block);
-//			BlockComponent right = controller.getRight(block);
-//			
-//			switch(opBlock.operatorType) {
-//			case DIFFERENCE: {
-//				if(left != null) {
-//					csg.subtractShape(left.getCSG());
-//				}
-//				if(right != null) {
-//					csg.subtractShape(right.getCSG());
-//				}
-//			} break;
-//			case INTERSECT: {
-//				if(left != null) {
-//					csg.intersectShape(left.getCSG());
-//				}
-//				if(right != null) {
-//					csg.intersectShape(right.getCSG());
-//				}
-//			} break;
-//			case UNION: {
-//				if(left != null) {
-//					csg.addShape(left.getCSG());
-//				}
-//				if(right != null) {
-//					csg.addShape(right.getCSG());
-//				}
-//			} break;
-//			}
-//		} else {
-//			System.out.println("Not an operator block!");
-//		}
-//	}
+	public void generateCSGMesh() {
+		if(block instanceof OperatorBlock) {
+			OperatorBlock opBlock = (OperatorBlock) block;
+			Controller controller = Controller.getInstance();
+			Shape left = controller.getLeftShape(block);
+			Shape right = controller.getRightShape(block);
+			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
+			switch(opBlock.opType) {
+			case DIFFERENCE: {
+				if(left != null) {
+					csg.addShape(left.getCSG().regenerate());
+				}
+				if(right != null) {
+					csg.subtractShape(right.getCSG().regenerate());
+				}
+			} break;
+			case INTERSECT: {
+				if(left != null) {
+					csg.addShape(left.getCSG().regenerate());
+				}
+				if(right != null) {
+					csg.intersectShape(right.getCSG().regenerate());
+				}
+			} break;
+			case UNION: {
+				if(left != null) {
+					csg.addShape(left.getCSG().regenerate());
+				}
+				if(right != null) {
+					csg.addShape(right.getCSG().regenerate());
+				}
+			} break;
+			}
+			csg.regenerate();
+		} else {
+			System.out.println("Not an operator block!");
+		}
+		
+	}
 	
 	public BlockComponent getBlock() {
 		return block;

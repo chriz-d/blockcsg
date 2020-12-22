@@ -36,6 +36,7 @@ public class Shape {
 	
 	public CSGShape generateCSGMesh() {
 		if(block instanceof OperatorBlock) {
+			csg = new CSGGeometry();
 			OperatorBlock opBlock = (OperatorBlock) block;
 			Controller controller = Controller.getInstance();
 			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));

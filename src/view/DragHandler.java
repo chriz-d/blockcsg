@@ -90,6 +90,10 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 						e.getComponent(), e, componentBelow));
 			}
 		} else {
+			// Selection color
+			unHighlight();
+			highlight(componentToDrag);
+
 			// Disconnect all sockets
 			componentToDrag.disconnectSockets();
 			
@@ -122,9 +126,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				// Add block to shapeMap, so it get's displayed while dragging
 				view.getController().addShape(componentToDrag);
 			}
-			// Selection color
-			unHighlight();
-			highlight(componentToDrag);
 			view.getController().setDisplayedMesh(componentToDrag);
 
 			// Save position for dragging

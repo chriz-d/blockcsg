@@ -27,6 +27,9 @@ public class Controller extends SimpleApplication {
 
 	private Shape lastSelected;
 	
+	private CSGShape csg;
+	private float updateTime = 0;
+	
 	// Map for quick access of trees for specific blocks
 	private Map<BlockComponent, BinaryTree<Shape>> treeMap;
 	
@@ -54,6 +57,7 @@ public class Controller extends SimpleApplication {
 	
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
+		rootNode.detachAllChildren();
 	}
 	
 	// Add a new block to required tree by map lookup
@@ -160,14 +164,14 @@ public class Controller extends SimpleApplication {
 	}
 	
 	public void setLastSelected(BlockComponent lastSelected) {
-		this.lastSelected = new Shape(lastSelected);
-		
-		
-		CSGShape csg = this.lastSelected.generateCSGMesh();
-		if(csg != null) {
-			rootNode.detachAllChildren();
-			rootNode.attachChild(csg);
+		Shape lastSelectedShape = new Shape(lastSelected);
+		if(lastSelected != null) {
+			// Do not regenerate mesh if it's the same (takes a long time)
+			if(!lastSelectedShape.equals(this.lastSelected)) {
+				csg = lastSelectedShape.generateCSGMesh();
+			}
 		}
+		this.lastSelected = lastSelectedShape;
 	}
 	
 	public BlockComponent getLastSelected() {
@@ -199,11 +203,19 @@ public class Controller extends SimpleApplication {
 	@Override
 	public void simpleInitApp() {
 		flyCam.setDragToRotate(true);
-//		Box b = new Box(1, 1, 1);
-//		Geometry geom = new Geometry("Box", b);
-//		Material mat = new Material(assetManager,"Common/MatDefs/Misc/ShowNormals.j3md");
-//		geom.setMaterial(mat);
-//		rootNode.attachChild(geom);
 		flyCam.setMoveSpeed(200);
+	}
+	
+	@Override
+	public void simpleUpdate(float tpf) {
+		updateTime += tpf;
+		if(updateTime > 0.2) {
+			updateTime = 0;
+			if(csg != null || rootNode.hasChild(csg)) {
+				rootNode.detachAllChildren();
+				rootNode.attachChild(csg);
+			}
+		}
+		super.simpleUpdate(tpf);
 	}
 }

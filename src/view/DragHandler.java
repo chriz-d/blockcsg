@@ -91,7 +91,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 		} else {
 			// Selection color
-			setSelected(componentToDrag);
+			unHighlight();
+			highlight(componentToDrag);
 			
 			// Disconnect all sockets
 			componentToDrag.disconnectSockets();
@@ -269,14 +270,14 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 					node.setLocation((int)(node.getX() + deltaPos.getX()),(int) (node.getY() + deltaPos.getY()));
 				}
 			}
-
+			unHighlight();
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
-				setSelected(componentToDrag);
+				highlight(componentToDrag);
 			} else {
 				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
-				setSelected(closestBlock);
+				highlight(closestBlock);
 			}
 
 			
@@ -315,14 +316,25 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		return result;
 	}
 	
-	private void setSelected(BlockComponent block) {
+	private void highlight(BlockComponent block) {
 		Controller controller = Controller.getInstance();
-		if(controller.getLastSelected() != block) {
-			if(controller.getLastSelected() != null) {
-				controller.getLastSelected().color -= 10000; 
-			}
-			controller.setLastSelected(block);
-			controller.getLastSelected().color += 10000;
+		controller.setLastSelected(block);
+		controller.getLastSelected().color += 10000;
+		List<BlockComponent> children = controller.getChildren(block);
+		for(BlockComponent child : children) {
+			child.color += 10000;
 		}
+	}
+	
+	private void unHighlight() {
+		Controller controller = Controller.getInstance();
+		if(controller.getLastSelected() != null) {
+			controller.getLastSelected().color -= 10000; 
+			List<BlockComponent> children = controller.getChildren(controller.getLastSelected());
+			for(BlockComponent child : children) {
+				child.color -= 10000;
+			}
+		}
+		controller.setLastSelected(null);
 	}
 }

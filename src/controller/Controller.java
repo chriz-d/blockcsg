@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.material.Material;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
@@ -31,10 +28,12 @@ public class Controller extends SimpleApplication {
 	private float updateTime = 0;
 	
 	// Map for quick access of trees for specific blocks
-	private Map<BlockComponent, BinaryTree<Shape>> treeMap;
+	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
+	private Map<BlockComponent, Shape> shapeMap;
 	
 	public Controller() {
-		treeMap = new HashMap<BlockComponent, BinaryTree<Shape>>();
+		treeMap = new HashMap<BlockComponent, BinaryTree<BlockComponent>>();
+		shapeMap = new HashMap<BlockComponent, Shape>();
 	}
 	
 	public static Controller getInstance() {
@@ -51,59 +50,62 @@ public class Controller extends SimpleApplication {
 	
 	// Create new tree for block
 	public void createTree(BlockComponent blockToAdd) {
-		BinaryTree<Shape> newTree = new BinaryTree<Shape>(new Shape(blockToAdd));
+		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
 		treeMap.put(blockToAdd, newTree);
+		
+		// Create shape for new block
+		shapeMap.put(blockToAdd, new Shape(blockToAdd));
 	}
 	
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
+		shapeMap.remove(blockToDelete);
 		rootNode.detachAllChildren();
 	}
 	
 	// Add a new block to required tree by map lookup
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
 		// Get trees of blocks
-		BinaryTree<Shape> parentTree = treeMap.get(parent);
-		BinaryTree<Shape> blockToAddTree = treeMap.get(blockToAdd);
+		BinaryTree<BlockComponent> parentTree = treeMap.get(parent);
+		BinaryTree<BlockComponent> blockToAddTree = treeMap.get(blockToAdd);
 		// Delete tree of child block and insert it into parent tree
 		treeMap.remove(blockToAdd);
 		treeMap.put(blockToAdd, parentTree);
-		parentTree.addElement(blockToAddTree, new Shape(parent), dir);
+		parentTree.addElement(blockToAddTree, parent, dir);
 	}
 	
 	public void removeFromTree(BlockComponent blockToRemove) {
 		// Get relevant tree
-		BinaryTree<Shape> tree = treeMap.get(blockToRemove);
+		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		if(tree != null) {
-			Shape shapeToRemove = new Shape(blockToRemove);
-			List<Shape> children = tree.getChildren(shapeToRemove);
+			List<BlockComponent> children = tree.getChildren(blockToRemove);
 			
 			// Delete element from tree, get branch as newTree
-			BinaryTree<Shape> newTree = tree.removeElement(shapeToRemove);
+			BinaryTree<BlockComponent> newTree = tree.removeElement(blockToRemove);
 			
 			//Remove actual element
 			treeMap.remove(blockToRemove);
 			treeMap.put(blockToRemove, newTree);
 			
 			// Delete children of block from treeMap and add to same seperate tree
-			for(Shape c : children) {
-				treeMap.remove(c.getBlock());
-				treeMap.put(c.getBlock(), newTree);
+			for(BlockComponent c : children) {
+				treeMap.remove(c);
+				treeMap.put(c, newTree);
 			}
 		}
 	}
 	
 	public int getDepth(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
-		return tree.getDepth(new Shape(block), PrimShapeBlock.class);
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		return tree.getDepth(block, PrimShapeBlock.class);
 	}
 	
 	public List<BlockComponent> getChildren(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
 			List<BlockComponent> childrenAsBlock = new ArrayList<>();
-			for(Shape e : tree.getChildren(new Shape(block))) {
-				childrenAsBlock.add(e.getBlock());
+			for(BlockComponent e : tree.getChildren(block)) {
+				childrenAsBlock.add(e);
 			}
 			return childrenAsBlock;
 		} else {
@@ -112,51 +114,38 @@ public class Controller extends SimpleApplication {
 	}
 	
 	public BlockComponent getRoot(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
-			return tree.getRoot().getBlock();
+			return tree.getRoot();
 		} else {
 			return null;
 		}
 	}
 	
 	public BlockComponent getLeft(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
-		Shape shape = tree.getLeft(new Shape(block));
-		if(shape != null) {
-			return shape.getBlock();
-		} else {
-			return null;
-		}
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		return tree.getLeft(block);
 	}
 	
 	public BlockComponent getRight(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
-
-		Shape shape = tree.getRight(new Shape(block));
-		if(shape != null) {
-			return shape.getBlock();
-		} else {
-			return null;
-		}
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		return tree.getRight(block);
 	}
 	
 	public Shape getLeftShape(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
-			return tree.getLeft(new Shape(block));
-		} else {
-			return null;
+			return shapeMap.get(tree.getLeft(block));
 		}
+		return null;
 	}
 	
 	public Shape getRightShape(BlockComponent block) {
-		BinaryTree<Shape> tree = treeMap.get(block);
+		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		if(tree != null) {
-			return tree.getRight(new Shape(block));
-		} else {
-			return null;
+			return shapeMap.get(tree.getRight(block));
 		}
+		return null;
 	}
 	
 	public boolean hasTree(BlockComponent block) {

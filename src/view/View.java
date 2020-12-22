@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import controller.Controller;
+import model.Shape;
 import view.OperatorBlock.OperatorBlockType;
 import view.PrimShapeBlock.PrimShapeType;
 
@@ -30,6 +31,8 @@ public class View {
 	private JPanel blockViewPanel;
 	private JPanel workspacePanel;
 	private JPanel jMonkeyPanel;
+	
+	private BlockComponent lastSelected;
 	
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
@@ -159,6 +162,15 @@ public class View {
 				}
 			}
 		}
+	}
+	
+	
+	public void setLastSelected(BlockComponent lastSelected) {
+		this.lastSelected = lastSelected;
+	}
+	
+	public BlockComponent getLastSelected() {
+		return lastSelected;
 	}
 	
 	public JFrame getFrame() {

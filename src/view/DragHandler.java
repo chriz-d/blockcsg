@@ -90,10 +90,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 						e.getComponent(), e, componentBelow));
 			}
 		} else {
-			// Selection color
-			unHighlight();
-			highlight(componentToDrag);
-			
 			// Disconnect all sockets
 			componentToDrag.disconnectSockets();
 			
@@ -123,7 +119,14 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				SwingUtilities.convertPointFromScreen(mousePos, view.getTransferPanel());
 				// Minus 30 for middle of block and not edge
 				componentToDrag.setLocation(componentToDrag.getX(), (int)mousePos.getY() - 30);
+				// Add block to shapeMap, so it get's displayed while dragging
+				view.getController().addShape(componentToDrag);
 			}
+			// Selection color
+			unHighlight();
+			highlight(componentToDrag);
+			view.getController().setDisplayedMesh(componentToDrag);
+
 			// Save position for dragging
 			screenX = e.getXOnScreen();
 			screenY = e.getYOnScreen();
@@ -275,9 +278,11 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
 				highlight(componentToDrag);
+				view.getController().setDisplayedMesh(componentToDrag);
 			} else {
 				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
 				highlight(closestBlock);
+				view.getController().setDisplayedMesh(closestBlock);
 			}
 
 			
@@ -318,8 +323,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private void highlight(BlockComponent block) {
 		Controller controller = Controller.getInstance();
-		controller.setLastSelected(block);
-		controller.getLastSelected().color += 10000;
+		view.setLastSelected(block);
+		view.getLastSelected().color += 10000;
 		List<BlockComponent> children = controller.getChildren(block);
 		for(BlockComponent child : children) {
 			child.color += 10000;
@@ -328,13 +333,13 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private void unHighlight() {
 		Controller controller = Controller.getInstance();
-		if(controller.getLastSelected() != null) {
-			controller.getLastSelected().color -= 10000; 
-			List<BlockComponent> children = controller.getChildren(controller.getLastSelected());
+		if(view.getLastSelected() != null) {
+			view.getLastSelected().color -= 10000; 
+			List<BlockComponent> children = controller.getChildren(view.getLastSelected());
 			for(BlockComponent child : children) {
 				child.color -= 10000;
 			}
 		}
-		controller.setLastSelected(null);
+		view.setLastSelected(null);
 	}
 }

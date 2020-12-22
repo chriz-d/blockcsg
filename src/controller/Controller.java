@@ -22,8 +22,6 @@ public class Controller extends SimpleApplication {
 	private static Controller controller;
 	private View view;
 
-	private Shape lastSelected;
-	
 	private CSGShape csg;
 	private float updateTime = 0;
 	
@@ -52,9 +50,6 @@ public class Controller extends SimpleApplication {
 	public void createTree(BlockComponent blockToAdd) {
 		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
 		treeMap.put(blockToAdd, newTree);
-		
-		// Create shape for new block
-		shapeMap.put(blockToAdd, new Shape(blockToAdd));
 	}
 	
 	public void deleteTree(BlockComponent blockToDelete) {
@@ -152,23 +147,13 @@ public class Controller extends SimpleApplication {
 		return treeMap.containsKey(block);
 	}
 	
-	public void setLastSelected(BlockComponent lastSelected) {
-		Shape lastSelectedShape = new Shape(lastSelected);
-		if(lastSelected != null) {
-			// Do not regenerate mesh if it's the same (takes a long time)
-			if(!lastSelectedShape.equals(this.lastSelected)) {
-				csg = lastSelectedShape.generateCSGMesh();
-			}
-		}
-		this.lastSelected = lastSelectedShape;
+	public void setDisplayedMesh(BlockComponent block) {
+		Shape shape = shapeMap.get(block);
+		csg = shape.generateCSGMesh();
 	}
 	
-	public BlockComponent getLastSelected() {
-		if(lastSelected != null) {
-			return lastSelected.getBlock();
-		} else {
-			return null;
-		}
+	public void addShape(BlockComponent block) {
+		shapeMap.put(block, new Shape(block));
 	}
 	
 	public static void main(String[] args) {

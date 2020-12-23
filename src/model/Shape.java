@@ -42,34 +42,22 @@ public class Shape {
 			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
 			Shape left = controller.getLeftShape(block);
 			Shape right = controller.getRightShape(block);
-			switch(opBlock.opType) {
-			case DIFFERENCE: {
-				if(left != null) {
+			if(left != null) {
+				CSGShape leftCSG = left.generateCSGMesh();
+				if(leftCSG != null) {
 					csg.addShape(left.generateCSGMesh());
 				}
-				if(right != null) {
-					csg.subtractShape(right.generateCSGMesh());
-				}
-			} break;
-			case INTERSECT: {
-				if(left != null) {
-					csg.addShape(left.generateCSGMesh());
-				}
-				if(right != null) {
-					csg.intersectShape(right.generateCSGMesh());
-				}
-			} break;
-			case UNION: {
-				if(left != null) {
-					csg.addShape(left.generateCSGMesh());
-				}
-				if(right != null) {
-					csg.addShape(right.generateCSGMesh());
-				}
-			} break;
 			}
-		} else {
-			System.out.println("Not an operator block!");
+			if(right != null) {
+				CSGShape rightCSG = right.generateCSGMesh();
+				if(rightCSG != null) {
+					switch(opBlock.opType) {
+					case DIFFERENCE: csg.subtractShape(right.generateCSGMesh()); break;
+					case INTERSECT: csg.intersectShape(right.generateCSGMesh()); break;
+					case UNION: csg.addShape(right.generateCSGMesh()); break;
+					}
+				}
+			}
 		}
 		csg.regenerate();
 		if(csg.getMesh() != null) {
@@ -90,17 +78,5 @@ public class Shape {
 	
 	public CSGGeometry getCSG() {
 		return csg;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null || !(obj instanceof Shape)) {
-			return false;
-		}
-		Shape other = (Shape) obj;
-		if(this.getBlock().equals(other.getBlock())) {
-			return true;
-		}
-		return false;
 	}
 }

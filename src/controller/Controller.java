@@ -57,7 +57,9 @@ public class Controller extends SimpleApplication {
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
+		view.setLastSelected(null);
 		rootNode.detachAllChildren();
+		csg = null;
 	}
 	
 	// Add a new block to required tree by map lookup

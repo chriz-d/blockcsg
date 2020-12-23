@@ -7,7 +7,11 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import support.Support;
-
+/**
+ * Adds event handlers to component and enables cloning when clicking on it.
+ * @author chriz
+ *
+ */
 public class SpawnHandler extends MouseAdapter {
 	
 	private BlockComponent spawnableComponent;

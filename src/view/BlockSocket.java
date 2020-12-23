@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import support.Support.Direction;
-
+/**
+ * Contains information about socket of a block and helper methods.
+ * @author chriz
+ *
+ */
 public class BlockSocket implements Serializable {
 	
 	private static final long serialVersionUID = 5343205691855604722L;
@@ -15,14 +19,20 @@ public class BlockSocket implements Serializable {
 		RECTANGLE_SOCKET, RECTANGLE_PLUG
 	}
 	
+	/** Map describing which SocketType fits what */
 	private static Map<SocketType, SocketType> socketFit;
 	
+	/** Relative position of socket to BlockComponent */
 	public Point position;
 	public SocketType type;
+	/** Direction the socket is facing */
 	public Direction direction;
+	/** Flag if socket is usable */
 	public boolean isDisabled;
 	
+	/** Reference to connected Socket, used for setting fields when disconnecting */
 	public BlockSocket connectedSocket;
+	/** Reference to socket on the other side of block. Used for disabling */
 	public BlockSocket opposite;
 	
 	public BlockSocket(Point position, SocketType type, Direction direction) {

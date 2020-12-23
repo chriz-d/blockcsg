@@ -7,7 +7,11 @@ import java.awt.geom.GeneralPath;
 import support.Support;
 import support.Support.Direction;
 import view.BlockSocket.SocketType;
-
+/**
+ * Primitive Shape block.
+ * @author chriz
+ *
+ */
 public class PrimShapeBlock extends BlockComponent {
 	
 	public enum PrimShapeType {

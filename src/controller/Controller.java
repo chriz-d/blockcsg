@@ -16,19 +16,26 @@ import support.Support.Direction;
 import view.BlockComponent;
 import view.PrimShapeBlock;
 import view.View;
-
+/**
+ * Controls the application. Creates the view and jMonkey viewport.
+ * Organizes the model (BinaryTrees).
+ * @author chriz
+ *
+ */
 public class Controller extends SimpleApplication {
-	
+	/** Singleton */
 	private static Controller controller;
+	/** GUI */
 	private View view;
-
+	/** Mesh for jMonkey to display */
 	private CSGShape csg;
+	/** Time passed since last update for jMonkey */
 	private float updateTime = 0;
 	
-	// Map for quick access of trees for specific blocks
+	/** Map containing trees of blocks. Every block has a tree. */
 	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
 	
-	// Map for assigning each block a csg mesh
+	/** Map for assigning each block a csg mesh */
 	private Map<BlockComponent, Shape> shapeMap;
 	
 	public Controller() {
@@ -36,6 +43,7 @@ public class Controller extends SimpleApplication {
 		shapeMap = new HashMap<BlockComponent, Shape>();
 	}
 	
+	/** Singleton */
 	public static Controller getInstance() {
 		if(controller == null) {
 			controller = new Controller();
@@ -43,17 +51,27 @@ public class Controller extends SimpleApplication {
 		return controller;
 	}
 	
+	/**
+	 * Starts application
+	 */
 	public void start() {
 		view = new View(this);
 		view.initView();
 	}
 	
-	// Create new tree for block
+	/**
+	 * Creates a new tree for specified block and adds it to map.
+	 * @param blockToAdd Block to create a tree for.
+	 */
 	public void createTree(BlockComponent blockToAdd) {
 		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
 		treeMap.put(blockToAdd, newTree);
 	}
 	
+	/**
+	 * Deletes a tree of a block and removes mesh from jMonkey viewport.
+	 * @param blockToDelete Block of which to delete tree.
+	 */
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
@@ -61,7 +79,12 @@ public class Controller extends SimpleApplication {
 		csg = null;
 	}
 	
-	// Add a new block to required tree by map lookup
+	/**
+	 * Adds a block to an existing tree.
+	 * @param blockToAdd Block to add.
+	 * @param parent Component to attach the new block to.
+	 * @param dir Direction of where to attach the new block to.
+	 */
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
 		// Get trees of blocks
 		BinaryTree<BlockComponent> parentTree = treeMap.get(parent);
@@ -72,6 +95,11 @@ public class Controller extends SimpleApplication {
 		parentTree.addElement(blockToAddTree, parent, dir);
 	}
 	
+	/**
+	 * Removes a block and its children from existing tree. Removed block and children
+	 * get put into separate tree and are added to map.
+	 * @param blockToRemove Block to remove.
+	 */
 	public void removeFromTree(BlockComponent blockToRemove) {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
@@ -96,6 +124,11 @@ public class Controller extends SimpleApplication {
 		return tree.getDepth(block, PrimShapeBlock.class);
 	}
 	
+	/**
+	 * Returns a list of all children below specified block.
+	 * @param block Parent block of which to get all children of.
+	 * @return
+	 */
 	public List<BlockComponent> getChildren(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		List<BlockComponent> childrenAsBlock = new ArrayList<>();

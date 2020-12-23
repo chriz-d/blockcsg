@@ -8,7 +8,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
-
+/**
+ * Describes a block for swing.
+ * @author chriz
+ *
+ */
 public abstract class BlockComponent extends JComponent {
 
 	private static final long serialVersionUID = -973194356557981053L;
@@ -17,21 +21,29 @@ public abstract class BlockComponent extends JComponent {
 		PrimShape, Operator, CSG
 	}
 	
-	// Coordinates of plug (relative)
+	/** Relative X-Coordinates of plug corners */
 	final private int plugShapeX[] = {0, -4, 0, -5,   0, 5, 0, 4};
+	/** Relative X-Coordinates of plug corners */
 	final private int plugShapeY[] = {0,  0, 5,  0, -20, 0, 5, 0};
 	
-	// Coordinates of socket (relative)
+	/** Relative X-Coordinates of socket corners */
 	final private int socketShapeX[] = {0, 5, 0, 5,   0, -5, 0, -5};
+	/** Relative Y-Coordinates of socket corners */
 	final private int socketShapeY[] = {0, 0, 5, 0, -20,  0, 5,  0};
 	final protected int socketWidth = 10;
 	
+	/** Text on the block */
 	public String label;
+	/** Height of the label */
 	public int labelHeight;
 	public int color;
 	public BlockType blockType;
+	/** Contains each socket and its info */
 	public BlockSocket[] socketArr; // Describes sockets from left to right
 	
+	/**
+	 * Drawing code for block.
+	 */
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -64,11 +76,16 @@ public abstract class BlockComponent extends JComponent {
 		g2.drawString(label, x, labelHeight);
 	}
 	
-	// returns the drawn path of needed shape
+	/**
+	 * Method for drawing the shape of the block using turtle graphics.
+	 * @return Returns drawn path for block
+	 */
 	public abstract GeneralPath getGeneralPath();
 	
+	/** Disconnects all sockets of block from everything they are connected to */
 	public abstract void disconnectSockets();
 	
+	/** Connects two sockets with each other */
 	public abstract void connectSocket(BlockSocket socket1, BlockSocket socket2);
 	
 	@Override
@@ -76,7 +93,6 @@ public abstract class BlockComponent extends JComponent {
 		return label;
 	}
 	
-	// Draws a socket
 	public void drawSocket(GeneralPathDecor path, int flip) {
 		for(int i = 0; i < socketShapeX.length; i++) {
 			path.lineToRelative(socketShapeX[i] * flip, socketShapeY[i] * flip);

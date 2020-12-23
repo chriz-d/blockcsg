@@ -11,12 +11,21 @@ import net.wcomohundro.jme3.csg.shape.CSGCylinder;
 import view.BlockComponent;
 import view.OperatorBlock;
 import view.PrimShapeBlock;
-
+/**
+ * Organizes CSG classes.
+ * @author chriz
+ *
+ */
 public class Shape {
 	
+	/** Block this object represents */
 	private BlockComponent block;
+	/** CSG Mesh */
 	private CSGGeometry csg;
 	
+	/**
+	 * Generates mesh depending on type of block
+	 */
 	public Shape(BlockComponent block) {
 		this.block = block;
 		csg = new CSGGeometry();
@@ -34,6 +43,11 @@ public class Shape {
 		csg.regenerate();
 	}
 	
+	/**
+	 * Recursively computes CSG of all children of block.
+	 * (Very slow!)
+	 * @return
+	 */
 	public CSGShape generateCSGMesh() {
 		if(block instanceof OperatorBlock) {
 			csg = new CSGGeometry();

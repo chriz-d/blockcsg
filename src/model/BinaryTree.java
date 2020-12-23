@@ -4,20 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 import support.Support.Direction;
-
+/**
+ * A generic implementation of unsorted binary trees. Insertion and deletion
+ * is being done by searching tree for specified elements. (In this project 
+ * trees stay very small in size, so searching isn't very expensive)
+ * 
+ * @author chriz
+ * @param <T> Type of BinaryTree.
+ */
 public class BinaryTree<T> {
-	
+	/** Root node of the tree. */
 	private Node<T> root;
 	
+	/** Creates a new tree with the specified element as the root. 
+	 * @param root Root of the tree.
+	 */
 	public BinaryTree(T root) {
 		this.root = new Node<T>(root);
 	}
 	
+	/**
+	 * Creates a new tree with the specified node as the new root.
+	 * @param root Root of the tree
+	 */
 	private BinaryTree(Node<T> root) {
 		this.root = root;
 	}
 	
-	// Attaches new element to the parent node in tree
+	/**
+	 * Attaches a new tree / branch to the tree at the specified node and direction.
+	 * @param childTree Node to attach the new element to.
+	 * @param parent Node in tree to attach the new element to.
+	 * @param dir Direction (Left / Right)
+	 */
 	public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
 		// Get find parent node in tree
 		Node<T> parentNode = searchNode(parent, root);
@@ -33,7 +52,12 @@ public class BinaryTree<T> {
 		System.out.println(toString());
 	}
 	
-	// Removes element from tree
+	/**
+	 * Removes a specified element from the tree and returns the deleted element
+	 * and its children as a new tree.
+	 * @param elem Element to delete.
+	 * @return A new tree containing deleted node as root and its children.
+	 */
 	public BinaryTree<T> removeElement(T elem) {
 		// Search element in tree
 		Node<T> nodeToRemove = searchNode(elem, root);
@@ -55,10 +79,18 @@ public class BinaryTree<T> {
 		return new BinaryTree<T>(nodeToRemove);
 	}
 	
+	/**
+	 * Return if tree contains specified element.
+	 * @param elem Element to search.
+	 * @return Boolean if element was found inside tree.
+	 */
 	public boolean contains(T elem) {
 		return (searchNode(elem, root) != null);
 	}
 	
+	/**
+	 * @return Boolean if tree is empty.
+	 */
 	public boolean isEmpty() {
 		return root == null;
 	}
@@ -71,13 +103,21 @@ public class BinaryTree<T> {
 		return root.getContent();
 	}
 	
-	/*
-	 * Returns max depth of the tree. Second parameter is used for filtering undesired nodes
+	/**
+	 * Returns the depth level of the lowest node starting from the specified node recursively.
+	 * @param elem Starting element for depth measurement
+	 * @param cls Class for filtering. Every element found in tree matching this class gets ignored.
+	 * @return Calculated depth level.
 	 */
-	public int getDepth(T elem, Class<?> cls) {
-		return getDepth(searchNode(elem, root), cls);
+	public int getDepth(T root, Class<?> cls) {
+		return getDepth(searchNode(root, this.root), cls);
 	}
 	
+	/**
+	 * Searches element and returns left child.
+	 * @param elem Element of which to return left child.
+	 * @return Left element of specified element.
+	 */
 	public T getLeft(T elem) {
 		Node<T> node = searchNode(elem, root);
 		if(node != null && node.getLeft() != null) {
@@ -87,6 +127,11 @@ public class BinaryTree<T> {
 		}
 	}
 	
+	/**
+	 * Searches element and returns right child.
+	 * @param elem Element of which to return right child.
+	 * @return Right element of specified element.
+	 */
 	public T getRight(T elem) {
 		Node<T> node = searchNode(elem, root);
 		if(node != null && node.getRight() != null) {
@@ -96,6 +141,9 @@ public class BinaryTree<T> {
 		}
 	}
 	
+	/**
+	 * Recursive helper method of getDepth()
+	 */
 	private int getDepth(Node<T> root, Class<?> cls) {
 		if(root == null || cls.isInstance(root.getContent())) {
 			return 0;
@@ -109,7 +157,11 @@ public class BinaryTree<T> {
 		}
 	}
 	
-	// Returns list of children below parent node
+	/**
+	 * Gets list of children below specified node
+	 * @param parent Element of which to return all children.
+	 * @return List of all found children.
+	 */
 	public List<T> getChildren(T parent) {
 		List<T> list = new ArrayList<T>();
 		Node<T> parentNode = searchNode(parent, root);
@@ -117,7 +169,9 @@ public class BinaryTree<T> {
 		return list;
 	}
 	
-	// Adds all children below node to given list recursively
+	/**
+	 * Recursive helper method of getChildren().
+	 */
 	private void getChildren(List<T> list, Node<T> root) {
 		Node<T> worker = root;
 		if(worker.getLeft() != null) {
@@ -130,7 +184,9 @@ public class BinaryTree<T> {
 		}
 	}
 	
-	// Search recursively the whole tree
+	/**
+	 * Helper method for finding elements inside tree, because it's unsorted. 
+	 */
 	private Node<T> searchNode(T searched, Node<T> root) {
 		if(root == null) {
 			return null;
@@ -154,6 +210,11 @@ public class BinaryTree<T> {
 	    return root.toString(new StringBuilder(), true, new StringBuilder()).toString();
 	}
 	
+	/**
+	 * Class for BinaryTree. Contains data and references for parent, left and right nodes.
+	 * @author chriz
+	 * @param <G>
+	 */
 	private class Node<G> {
 		
 		private G content;
@@ -195,10 +256,6 @@ public class BinaryTree<T> {
 		
 		public G getContent() {
 			return content;
-		}
-		
-		public void setContent(G content) {
-			this.content = content;
 		}
 		
 		// toString from https://stackoverflow.com/a/27153988

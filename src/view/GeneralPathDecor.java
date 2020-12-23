@@ -4,15 +4,21 @@ import java.awt.Point;
 import java.awt.geom.GeneralPath;
 
 import support.Support;
-
+/**
+ * Decorator class for GeneralPath to enable relative drawing.
+ * @author chriz
+ *
+ */
 public class GeneralPathDecor {
 	
+	/** Original GeneralPath */
 	private GeneralPath path;
 	
 	public GeneralPathDecor(GeneralPath path) {
 		this.path = path;
 	}
 	
+	/** Draws line relative to current position of GeneralPath */
 	public void lineToRelative(int x, int y) {
 		Point currentPos = Support.point2DToPoint(path.getCurrentPoint());
 		Point relativeMove = new Point(x, y);

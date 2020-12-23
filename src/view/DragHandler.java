@@ -17,7 +17,11 @@ import controller.Controller;
 import support.Support;
 import view.BlockSocket.SocketType;
 
-// Not able to use MouseAdapter, thanks diamond of death...
+/**
+ * Adds event handlers for dragging and dropping, snapping to fitting blocks.
+ * @author chriz
+ *
+ */
 public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private View view;

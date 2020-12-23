@@ -130,9 +130,6 @@ public class View {
 	 */
 	public void resizeTree(BlockComponent block, boolean doDelete) {
 		BlockComponent root = controller.getRoot(block);
-		if(root == null) {
-			return; // Block not existing
-		}
 		// Get every node in tree
 		List<BlockComponent> allNodes = controller.getChildren(root);
 		allNodes.add(root);

@@ -27,6 +27,8 @@ public class Controller extends SimpleApplication {
 	
 	// Map for quick access of trees for specific blocks
 	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
+	
+	// Map for assigning each block a csg mesh
 	private Map<BlockComponent, Shape> shapeMap;
 	
 	public Controller() {
@@ -72,21 +74,19 @@ public class Controller extends SimpleApplication {
 	public void removeFromTree(BlockComponent blockToRemove) {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
-		if(tree != null) {
-			List<BlockComponent> children = tree.getChildren(blockToRemove);
-			
-			// Delete element from tree, get branch as newTree
-			BinaryTree<BlockComponent> newTree = tree.removeElement(blockToRemove);
-			
-			//Remove actual element
-			treeMap.remove(blockToRemove);
-			treeMap.put(blockToRemove, newTree);
-			
-			// Delete children of block from treeMap and add to same seperate tree
-			for(BlockComponent c : children) {
-				treeMap.remove(c);
-				treeMap.put(c, newTree);
-			}
+		List<BlockComponent> children = tree.getChildren(blockToRemove);
+		
+		// Delete element from tree, get branch as newTree
+		BinaryTree<BlockComponent> newTree = tree.removeElement(blockToRemove);
+		
+		//Remove actual element
+		treeMap.remove(blockToRemove);
+		treeMap.put(blockToRemove, newTree);
+		
+		// Delete children of block from treeMap and add to same seperate tree
+		for(BlockComponent c : children) {
+			treeMap.remove(c);
+			treeMap.put(c, newTree);
 		}
 	}
 	
@@ -97,24 +97,16 @@ public class Controller extends SimpleApplication {
 	
 	public List<BlockComponent> getChildren(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
-		if(tree != null) {
-			List<BlockComponent> childrenAsBlock = new ArrayList<>();
-			for(BlockComponent e : tree.getChildren(block)) {
-				childrenAsBlock.add(e);
-			}
-			return childrenAsBlock;
-		} else {
-			return new ArrayList<BlockComponent>();
+		List<BlockComponent> childrenAsBlock = new ArrayList<>();
+		for(BlockComponent e : tree.getChildren(block)) {
+			childrenAsBlock.add(e);
 		}
+		return childrenAsBlock;
 	}
 	
 	public BlockComponent getRoot(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
-		if(tree != null) {
-			return tree.getRoot();
-		} else {
-			return null;
-		}
+		return tree.getRoot();
 	}
 	
 	public BlockComponent getLeft(BlockComponent block) {
@@ -129,18 +121,12 @@ public class Controller extends SimpleApplication {
 	
 	public Shape getLeftShape(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
-		if(tree != null) {
-			return shapeMap.get(tree.getLeft(block));
-		}
-		return null;
+		return shapeMap.get(tree.getLeft(block));
 	}
 	
 	public Shape getRightShape(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
-		if(tree != null) {
-			return shapeMap.get(tree.getRight(block));
-		}
-		return null;
+		return shapeMap.get(tree.getRight(block));
 	}
 	
 	public boolean hasTree(BlockComponent block) {

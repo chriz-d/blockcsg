@@ -90,6 +90,11 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 						e.getComponent(), e, componentBelow));
 			}
 		} else {
+			// If first time placing, create tree for block
+			if(!view.getController().hasTree(componentToDrag)) {
+				view.getController().createTree(componentToDrag);
+			}
+			
 			// Selection color
 			unHighlight();
 			highlight(componentToDrag);
@@ -123,9 +128,12 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				SwingUtilities.convertPointFromScreen(mousePos, view.getTransferPanel());
 				// Minus 30 for middle of block and not edge
 				componentToDrag.setLocation(componentToDrag.getX(), (int)mousePos.getY() - 30);
+				
 				// Add block to shapeMap, so it get's displayed while dragging
 				view.getController().addShape(componentToDrag);
 			}
+			
+			// Display mesh in jMonkey
 			view.getController().setDisplayedMesh(componentToDrag);
 
 			// Save position for dragging
@@ -161,11 +169,6 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 					child.setLocation(
 							child.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
 							child.getY());
-				}
-				
-				// If first time placing, create tree for block
-				if(!view.getController().hasTree(componentToDrag)) {
-					view.getController().createTree(componentToDrag);
 				}
 				
 				// Find closest snapping point and set component position to it if necessary

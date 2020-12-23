@@ -161,13 +161,30 @@ public class View {
 		}
 	}
 	
+	public void highlightBlocks(BlockComponent block) {
+		Controller controller = Controller.getInstance();
+		lastSelected = block;
+		lastSelected.color += 10000;
+		List<BlockComponent> children = controller.getChildren(block);
+		for(BlockComponent child : children) {
+			child.color += 10000;
+		}
+	}
+	
+	public void unHighlightBlocks() {
+		Controller controller = Controller.getInstance();
+		if(lastSelected != null) {
+			lastSelected.color -= 10000; 
+			List<BlockComponent> children = controller.getChildren(lastSelected);
+			for(BlockComponent child : children) {
+				child.color -= 10000;
+			}
+		}
+		lastSelected = null;
+	}
 	
 	public void setLastSelected(BlockComponent lastSelected) {
 		this.lastSelected = lastSelected;
-	}
-	
-	public BlockComponent getLastSelected() {
-		return lastSelected;
 	}
 	
 	public JFrame getFrame() {

@@ -96,8 +96,8 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 			
 			// Selection color
-			unHighlight();
-			highlight(componentToDrag);
+			view.unHighlightBlocks();
+			view.highlightBlocks(componentToDrag);
 
 			// Disconnect all sockets
 			componentToDrag.disconnectSockets();
@@ -196,6 +196,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 				}
 				
 			} else { // Delete component, cause it's outside
+				view.setLastSelected(null);
 				componentToDrag.getParent().remove(componentToDrag);
 				componentToDrag.removeMouseMotionListener(this);
 				componentToDrag.removeMouseListener(this);
@@ -235,7 +236,7 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			for(Component blockc : componentList) {
 				BlockComponent potClosest = (BlockComponent) blockc;
 				for(int j = 0; j < potClosest.socketArr.length; j++) {
-					if(isValidSocket(dragBlockSckt[i], potClosest.socketArr[j])) {
+					if(BlockSocket.isValidSocket(dragBlockSckt[i], potClosest.socketArr[j])) {
 						double distance = Support.getDistance(
 								Support.addPoints(dragBlockSckt[i].position, componentToSnap.getLocation()), 
 								Support.addPoints(potClosest.socketArr[j].position, potClosest.getLocation()));
@@ -277,31 +278,21 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 					node.setLocation((int)(node.getX() + deltaPos.getX()),(int) (node.getY() + deltaPos.getY()));
 				}
 			}
-			unHighlight();
+			view.unHighlightBlocks();
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
-				highlight(componentToDrag);
+				view.highlightBlocks(componentToDrag);
 				view.getController().setDisplayedMesh(componentToDrag);
 			} else {
 				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
-				highlight(closestBlock);
+				view.highlightBlocks(closestBlock);
 				view.getController().setDisplayedMesh(closestBlock);
 			}
 
-			
 			// Resize tree
 			view.resizeTree(componentToSnap, false);
 		}
-	}
-	
-	// returns if given sockets are compatible
-	private boolean isValidSocket(BlockSocket s1, BlockSocket s2) {
-		boolean isNotUsed = !s1.isDisabled && !s2.isDisabled;
-		boolean isFittingSocket = BlockSocket.isFitting(s1.type, s2.type);
-		boolean isNotOnSameSide = s1.direction != s2.direction;
-		
-		return isNotUsed && isFittingSocket && isNotOnSameSide;
 	}
 	
 	// Gets lower component with lowest z index
@@ -323,27 +314,5 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 			}
 		}
 		return result;
-	}
-	
-	private void highlight(BlockComponent block) {
-		Controller controller = Controller.getInstance();
-		view.setLastSelected(block);
-		view.getLastSelected().color += 10000;
-		List<BlockComponent> children = controller.getChildren(block);
-		for(BlockComponent child : children) {
-			child.color += 10000;
-		}
-	}
-	
-	private void unHighlight() {
-		Controller controller = Controller.getInstance();
-		if(view.getLastSelected() != null) {
-			view.getLastSelected().color -= 10000; 
-			List<BlockComponent> children = controller.getChildren(view.getLastSelected());
-			for(BlockComponent child : children) {
-				child.color -= 10000;
-			}
-		}
-		view.setLastSelected(null);
 	}
 }

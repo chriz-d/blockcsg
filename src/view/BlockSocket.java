@@ -34,7 +34,7 @@ public class BlockSocket implements Serializable {
 	}
 	
 	// Returns if given socket types are compatible using static map
-	public static boolean isFitting(SocketType s1, SocketType s2) {
+	private static boolean isFitting(SocketType s1, SocketType s2) {
 		// First time use, init list
 		if(socketFit == null) {
 			socketFit = new HashMap<SocketType, SocketType>();
@@ -42,6 +42,15 @@ public class BlockSocket implements Serializable {
 			socketFit.put(SocketType.RECTANGLE_PLUG, SocketType.RECTANGLE_SOCKET);
 		}
 		return socketFit.get(s1) == s2;
+	}
+	
+	// returns if given sockets are compatible
+	public static boolean isValidSocket(BlockSocket s1, BlockSocket s2) {
+		boolean isNotUsed = !s1.isDisabled && !s2.isDisabled;
+		boolean isFittingSocket = BlockSocket.isFitting(s1.type, s2.type);
+		boolean isNotOnSameSide = s1.direction != s2.direction;
+		
+		return isNotUsed && isFittingSocket && isNotOnSameSide;
 	}
 	
 	public void setPosition(int x, int y) {

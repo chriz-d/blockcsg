@@ -43,7 +43,10 @@ public class BlockSocket implements Serializable {
 		connectedSocket = null;
 	}
 	
-	// Returns if given socket types are compatible using static map
+	/**
+	 * On first time run, creates a static map for lookup. Then returns if
+	 * sockets are compatible.
+	 */
 	private static boolean isFitting(SocketType s1, SocketType s2) {
 		// First time use, init list
 		if(socketFit == null) {
@@ -54,7 +57,9 @@ public class BlockSocket implements Serializable {
 		return socketFit.get(s1) == s2;
 	}
 	
-	// returns if given sockets are compatible
+	/**
+	 * Checks multiple flags and determines if sockets are allowed to snap to each other.
+	 */
 	public static boolean isValidSocket(BlockSocket s1, BlockSocket s2) {
 		boolean isNotUsed = !s1.isDisabled && !s2.isDisabled;
 		boolean isFittingSocket = BlockSocket.isFitting(s1.type, s2.type);

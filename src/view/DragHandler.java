@@ -25,19 +25,24 @@ import view.BlockSocket.SocketType;
 public class DragHandler implements MouseListener, MouseMotionListener {
 	
 	private View view;
+	/** The component the event handler is attached to. */
 	private BlockComponent componentToDrag;
 	
-	// Is the component below componentToDrag, if this is not null
-	// all events need to passed to this instead
+	/**
+	 *  Reference to a component below componentToDrag. If this is not null
+	 * all events from componentToDrag need to be passed onto this one. 
+	 */
 	private Component componentBelow;
 	
+	/** Helper variable for dragging */
 	private int screenX = 0;
+	/** Helper variable for dragging */
 	private int screenY = 0;
 	
-	// Flag for setting component position correctly after initial spawning
+	/** Flag for initial offset when spawning, needed for compensating the offset of the drawer. */
 	private boolean isFreshlySpawned;
 	
-	// Flag for fixing dragging inside bounds of block, but still outside of blockshape
+	/** Flag for ignoring events */
 	private boolean ignoreClick;
 	
 	public DragHandler(BlockComponent componentToDrag, View view) {
@@ -219,7 +224,12 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		ignoreClick = false;
 	}
 	
-	// Searches all components for closest snapping point and calculates position
+	/**
+	 * Iterates through all blocks and their sockets in workspace and measures distance
+	 * to socket of given block. If distance is close enough, the given block gets moved
+	 * to the socket ("snapped").
+	 * @param componentToSnap
+	 */
 	private void snapToClosestBlock(BlockComponent componentToSnap) {
 		// Remove all children of component to drag from list, or else it snaps to itself!
 		List<Component> componentList = 
@@ -299,7 +309,11 @@ public class DragHandler implements MouseListener, MouseMotionListener {
 		}
 	}
 	
-	// Gets lower component with lowest z index
+	/**
+	 * Searches for component below point and component to drag
+	 * @param p
+	 * @return
+	 */
 	private Component getLowerComponent(Point p) {
 		Container parent = componentToDrag.getParent();
 		Component[] allComps = parent.getComponents();

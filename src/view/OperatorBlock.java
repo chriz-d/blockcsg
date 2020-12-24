@@ -8,7 +8,11 @@ import java.awt.geom.GeneralPath;
 import support.Support;
 import support.Support.Direction;
 import view.BlockSocket.SocketType;
-
+/**
+ * Describes the operator block of the GUI.
+ * @author chriz
+ *
+ */
 public class OperatorBlock extends BlockComponent {
 	
 	public enum OperatorBlockType {
@@ -17,12 +21,14 @@ public class OperatorBlock extends BlockComponent {
 	
 	private static final long serialVersionUID = -1526119201511001957L;
 	
-	// Coordinates of lower operator block (relative)
+	/** Relative X-Coordinates of corners */
 	private int operatorBlockCoordinatesX[] = {25, 55,  0,  0, -80,   0};
+	/** Relative Y-Coordinates of corners */
 	private int operatorBlockCoordinatesY[] = { 0,  0, 15, 24,   0, -14};
 	
-	// Coordinates of upper operator block (relative)
+	/** Relative X-Coordinates of "Tower" (upper) part of the block */
 	final private int towerShapeX[] = {0,   0,   0, 30, 0,   0};
+	/** Relative Y-Coordinates of "Tower" (upper) part of the block */
 	final private int towerShapeY[] = {0, -14, -15,  0, 15, 14};
 	final private int towerWidth = 30;	
 	final private int defaultSize = 100;
@@ -51,7 +57,9 @@ public class OperatorBlock extends BlockComponent {
 		this.setMaximumSize(new Dimension(100, 79));
 	}
 	
-	// returns the drawn path of needed shape
+	/**
+	 * Draws the block depending on state of the block
+	 */
 	@Override
 	public GeneralPath getGeneralPath() {
 		GeneralPathDecor path = new GeneralPathDecor(new GeneralPath());
@@ -76,7 +84,9 @@ public class OperatorBlock extends BlockComponent {
 		return path.getPath();
 	}
 	
-	// Draw the upper part of block
+	/**
+	 * Draws the upper part of the block depending on state
+	 */
 	private void drawTower(GeneralPathDecor path) {
 		for(int i = 0; i < towerShapeX.length; i++) {
 			path.lineToRelative(towerShapeX[i], towerShapeY[i]);
@@ -93,6 +103,10 @@ public class OperatorBlock extends BlockComponent {
 		}
 	}
 	
+	/**
+	 * Recalculates block width using given parameter. When changes to width are made
+	 * the socket positions and tower part need to be moved aswell.
+	 */
 	public int correctWidth(int depth) {
 		int newWidth = (depth * defaultSize);
 		int offset =  (newWidth - getPreferredSize().width) / 2;
@@ -117,6 +131,7 @@ public class OperatorBlock extends BlockComponent {
 		return offset;
 	}
 	
+	/** Overridden contains() method for supporting more than only rectangular shapes */
 	@Override
 	public boolean contains(Point point) {
 		boolean isInUpperPart = !Support.isOutOfBounds(point, 

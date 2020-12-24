@@ -7,14 +7,22 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+/**
+ * Contains helper methods for miscellaneous operations not worthy for their own class.
+ * @author chriz
+ *
+ */
 public class Support {
 	
 	public enum Direction {
 		LEFT, RIGHT
 	}
 	
-	// Creates deep copy of an object using java serialization
+	/**
+	 * Creates a deep copy of an object using serialization.
+	 * @param object Object to clone.
+	 * @return Cloned object.
+	 */
 	public static Object deepCopy(Object object) {
 		try {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -30,7 +38,7 @@ public class Support {
 		}
 	}
 
-	// Checks if point is inside of container
+	/** Returns if an point is out of bounds from a given rectangle */
 	public static boolean isOutOfBounds(Point point, Rectangle rectangle) {
 		if(point == null) {
 			return true;
@@ -54,6 +62,7 @@ public class Support {
 		return new Point(p1.x - p2.x, p1.y - p2.y);
 	}
 	
+	/** Capitalizes only the first letter in an all caps string, used for enums toString() */
 	public static String capitalizeNormal(String s) {
 		return s.substring(0, 1) + s.substring(1, s.length()).toLowerCase();
 	}

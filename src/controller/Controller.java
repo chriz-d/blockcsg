@@ -167,6 +167,7 @@ public class Controller extends SimpleApplication {
 		return treeMap.containsKey(block);
 	}
 	
+	/** Sets the mesh via lookup in map. Gets picked up by jMonkey thread. */
 	public void setDisplayedMesh(BlockComponent block) {
 		Shape shape = shapeMap.get(block);
 		csg = shape.generateCSGMesh();

@@ -93,13 +93,24 @@ public abstract class BlockComponent extends JComponent {
 		return label;
 	}
 	
+	/**
+	 * Draws a socket at given location. With the flip parameter the direction the
+	 * socket is facing can be changed. 0 means facing left and 1 facing right.
+	 * @param path GeneralPath used for drawing.
+	 * @param flip 0 or 1, if socket shall be flipped.
+	 */
 	public void drawSocket(GeneralPathDecor path, int flip) {
 		for(int i = 0; i < socketShapeX.length; i++) {
 			path.lineToRelative(socketShapeX[i] * flip, socketShapeY[i] * flip);
 		}
 	}
 	
-	// Draws a plug
+	/**
+	 * Draws a plug at given location. With the flip parameter the direction the
+	 * plug is facing can be changed. 0 means facing left and 1 facing right.
+	 * @param path GeneralPath used for drawing.
+	 * @param flip 0 or 1, if socket shall be flipped.
+	 */
 	public void drawPlug(GeneralPathDecor path, int flip) {
 		for(int i = 0; i < plugShapeX.length; i++) {
 			path.lineToRelative(plugShapeX[i] * flip, plugShapeY[i] * flip);

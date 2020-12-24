@@ -8,7 +8,7 @@ import support.Support;
 import support.Support.Direction;
 import view.BlockSocket.SocketType;
 /**
- * Primitive Shape block.
+ * Describes the primitve shape block of the GUI.
  * @author chriz
  *
  */
@@ -45,7 +45,9 @@ public class PrimShapeBlock extends BlockComponent {
 		this.setMaximumSize(new Dimension(80, 40));
 	}
 	
-	// returns the drawn path of needed shape
+	/**
+	 * Draws the block depending on state of the block
+	 */
 	@Override
 	public GeneralPath getGeneralPath() {
 		GeneralPathDecor path = new GeneralPathDecor(new GeneralPath());

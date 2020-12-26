@@ -205,11 +205,6 @@ public class BinaryTree<T> {
 		return null;
 	}
 	
-	@Override
-	public String toString() {
-	    return root.toString(new StringBuilder(), true, new StringBuilder()).toString();
-	}
-	
 	/**
 	 * Class for BinaryTree. Contains data and references for parent, left and right nodes.
 	 * @author chriz

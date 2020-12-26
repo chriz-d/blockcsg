@@ -257,17 +257,5 @@ public class BinaryTree<T> {
 		public G getContent() {
 			return content;
 		}
-		
-		// toString from https://stackoverflow.com/a/27153988
-		public StringBuilder toString(StringBuilder prefix, boolean isTail, StringBuilder sb) {
-		    if(right!=null) {
-		        right.toString(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
-		    }
-		    sb.append(prefix).append(isTail ? "└── " : "┌── ").append(content.toString()).append("\n");
-		    if(left!=null) {
-		        left.toString(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
-		    }
-		    return sb;
-		}
 	}
 }

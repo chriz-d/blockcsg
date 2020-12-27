@@ -30,8 +30,9 @@ public class OperatorBlock extends BlockComponent {
 	final private int towerShapeX[] = {0,   0,   0, 30, 0,   0};
 	/** Relative Y-Coordinates of "Tower" (upper) part of the block */
 	final private int towerShapeY[] = {0, -14, -15,  0, 15, 14};
-	final private int towerWidth = 30;	
-	final private int defaultSize = 100;
+	final private int towerWidth = 30;
+	/** Size used when computing new width, should be always bigger than 2 times primshape + towerwidth */
+	final private int defaultSize = (85 * 2) + towerWidth + (towerWidth / 2 - 1);
 	
 	public OperatorBlockType opType;
 	
@@ -50,11 +51,12 @@ public class OperatorBlock extends BlockComponent {
 		
 		socketArr = new BlockSocket[]{socket1, socket2, socket3, socket4};
 		
-		correctWidth(1);
 		// Set bounds
 		this.setMinimumSize(new Dimension(100, 79));
 		this.setPreferredSize(new Dimension(100, 79));
 		this.setMaximumSize(new Dimension(100, 79));
+
+		correctWidth(1);
 	}
 	
 	/**
@@ -108,7 +110,10 @@ public class OperatorBlock extends BlockComponent {
 	 * the socket positions and tower part need to be moved aswell.
 	 */
 	public int correctWidth(int depth) {
-		int newWidth = (depth * defaultSize);
+		int newWidth = ((depth- 1) * defaultSize);
+		if(depth == 1) { // Set to minimal width
+			newWidth = 80;
+		}
 		int offset =  (newWidth - getPreferredSize().width) / 2;
 		int middlePartNewWidth = newWidth - socketWidth * 2;
 		int towerStartPos = (middlePartNewWidth / 2) - (towerWidth / 2);

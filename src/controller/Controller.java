@@ -6,11 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.input.ChaseCamera;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.MouseAxisTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.material.Material;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
+import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
 import model.Shape;
+import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
 import support.Support.Direction;
 import view.BlockComponent;
@@ -197,8 +206,9 @@ public class Controller extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+		flyCam.setEnabled(false);
 		flyCam.setDragToRotate(true);
-		flyCam.setMoveSpeed(200);
+		enableCameraControls();
 	}
 	
 	@Override
@@ -206,11 +216,25 @@ public class Controller extends SimpleApplication {
 		updateTime += tpf;
 		if(updateTime > 0.2) {
 			updateTime = 0;
-			if(csg != null || rootNode.hasChild(csg)) {
+			if(csg != null && !rootNode.hasChild(csg)) {
 				rootNode.detachAllChildren();
 				rootNode.attachChild(csg);
 			}
 		}
 		super.simpleUpdate(tpf);
+	}
+	
+	/**
+	 * Adds camera controls to JMonkeys input manager (Rotation around center 0,0,0)
+	 */
+	private void enableCameraControls() {
+		inputManager.addMapping("Rotate Left", new MouseAxisTrigger(MouseInput.AXIS_X, true));
+		inputManager.addMapping("Rotate Right", new MouseAxisTrigger(MouseInput.AXIS_X, false));
+		inputManager.addMapping("Rotate Up", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
+		inputManager.addMapping("Rotate Down", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
+		inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		JMEKeyListener listener = new JMEKeyListener(cam);
+		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
+		inputManager.addListener(listener, new String[] {"Click"});
 	}
 }

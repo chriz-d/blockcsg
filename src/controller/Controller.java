@@ -181,10 +181,10 @@ public class Controller extends SimpleApplication {
 		return treeMap.containsKey(block);
 	}
 	
-	/** Sets the mesh via lookup in map. Gets picked up by jMonkey thread. */
+	/** Gets desired mesh by map lookup and computes complete mesh in thread */
 	public void setDisplayedMesh(BlockComponent block) {
 		Shape shape = shapeMap.get(block);
-		currentDisplayedObject = shape.generateCSGMesh();
+		new Thread(new CSGCalculator(shape)).start();
 	}
 	
 	public void addShape(BlockComponent block) {
@@ -251,5 +251,10 @@ public class Controller extends SimpleApplication {
 		JMEKeyListener listener = new JMEKeyListener(node);
 		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
 		inputManager.addListener(listener, new String[] {"Click"});
+	}
+	
+	/** Used by thread for setting variable */
+	public void setcurrentDisplayedObject(CSGShape shape) {
+		currentDisplayedObject = shape;
 	}
 }

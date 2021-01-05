@@ -24,10 +24,11 @@ import model.BinaryTree;
 import model.Shape;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
+import support.ObjExporter;
 import support.Support.Direction;
-import view.BlockComponent;
-import view.PrimShapeBlock;
 import view.View;
+import view.block.BlockComponent;
+import view.block.PrimShapeBlock;
 /**
  * Controls the application. Creates the view and jMonkey viewport.
  * Organizes the model (BinaryTrees).

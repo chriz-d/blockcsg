@@ -1,4 +1,4 @@
-package view;
+package view.block.blockHandler;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import support.Support;
+import view.View;
+import view.block.BlockComponent;
 /**
  * Adds event handlers to component and enables cloning when clicking on it.
  * @author chriz

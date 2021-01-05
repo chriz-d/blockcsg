@@ -1,4 +1,4 @@
-package view;
+package view.block;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -6,7 +6,8 @@ import java.awt.geom.GeneralPath;
 
 import support.Support;
 import support.Support.Direction;
-import view.BlockSocket.SocketType;
+import view.GeneralPathDecor;
+import view.block.BlockSocket.SocketType;
 /**
  * Describes the primitve shape block of the GUI.
  * @author chriz

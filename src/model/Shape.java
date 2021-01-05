@@ -8,9 +8,9 @@ import controller.Controller;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
 import net.wcomohundro.jme3.csg.shape.CSGCylinder;
-import view.BlockComponent;
-import view.OperatorBlock;
-import view.PrimShapeBlock;
+import view.block.BlockComponent;
+import view.block.OperatorBlock;
+import view.block.PrimShapeBlock;
 /**
  * Organizes CSG classes.
  * @author chriz

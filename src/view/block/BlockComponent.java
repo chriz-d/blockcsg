@@ -1,4 +1,4 @@
-package view;
+package view.block;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -8,6 +8,8 @@ import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
+
+import view.GeneralPathDecor;
 /**
  * Describes a block for swing.
  * @author chriz

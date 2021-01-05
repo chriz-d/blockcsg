@@ -1,4 +1,4 @@
-package view;
+package view.block.blockHandler;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -15,7 +15,10 @@ import javax.swing.SwingUtilities;
 
 import controller.Controller;
 import support.Support;
-import view.BlockSocket.SocketType;
+import view.View;
+import view.block.BlockComponent;
+import view.block.BlockSocket;
+import view.block.BlockSocket.SocketType;
 
 /**
  * Adds event handlers for dragging and dropping, snapping to fitting blocks.

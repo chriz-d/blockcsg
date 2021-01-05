@@ -1,4 +1,4 @@
-package view;
+package view.block;
 
 import java.awt.Point;
 import java.io.Serializable;

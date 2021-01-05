@@ -5,6 +5,9 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
@@ -12,14 +15,21 @@ import java.util.List;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import controller.Controller;
 import model.Shape;
-import view.OperatorBlock.OperatorBlockType;
-import view.PrimShapeBlock.PrimShapeType;
+import view.block.BlockComponent;
+import view.block.OperatorBlock;
+import view.block.PrimShapeBlock;
+import view.block.OperatorBlock.OperatorBlockType;
+import view.block.PrimShapeBlock.PrimShapeType;
+import view.block.blockHandler.SpawnHandler;
 /**
  * Organizes the GUI using Swing.
  * @author chriz
@@ -54,8 +64,13 @@ public class View {
 	 * Creates and displays GUI.
 	 */
 	public void initView() {
+		// Enable Anti Aliasing for GUI Elements
+		System.setProperty("awt.useSystemAAFontSettings","on");
+		System.setProperty("swing.aatext", "true");
+		
 		// Main JFrame
 		frame = new JFrame();
+		addMenuToolbar();
 		frame.setLayout(new GridLayout(2, 1));
 		
 		frame.add(createBlockViewPanel());
@@ -122,6 +137,21 @@ public class View {
 		}
 		vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 		return drawerPanel;
+	}
+	
+	private void addMenuToolbar() {
+		JMenuBar bar = new JMenuBar();
+		JMenu file = new JMenu("File");
+		JMenu help = new JMenu("Help");
+		JMenuItem controls = new JMenuItem("Controls");
+		JMenuItem about = new JMenuItem("About");
+		JMenuItem export = new JMenuItem("Export highlighted model");
+		help.add(controls);
+		help.add(about);
+		file.add(export);
+		bar.add(help);
+		bar.add(file);
+		frame.setJMenuBar(bar);
 	}
 	
 	/**

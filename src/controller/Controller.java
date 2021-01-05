@@ -90,7 +90,7 @@ public class Controller extends SimpleApplication {
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
-		rootNode.detachAllChildren();
+		rootNode.detachChild(lastDisplayedObject);
 		currentDisplayedObject = null;
 	}
 	

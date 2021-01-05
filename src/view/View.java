@@ -29,6 +29,7 @@ import view.block.OperatorBlock;
 import view.block.PrimShapeBlock;
 import view.block.OperatorBlock.OperatorBlockType;
 import view.block.PrimShapeBlock.PrimShapeType;
+import view.block.blockHandler.HandlerManager;
 import view.block.blockHandler.SpawnHandler;
 import view.menuBarHandler.AboutHandler;
 import view.menuBarHandler.ControlsHandler;
@@ -129,13 +130,17 @@ public class View {
 		for(PrimShapeType e : PrimShapeType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			PrimShapeBlock block = new PrimShapeBlock(e);
-			block.addMouseListener(new SpawnHandler(block, this));
+			HandlerManager hm = new HandlerManager(block, this);
+			hm.addSpawnHandler();
+			block.addMouseListener(hm);
 			vBox.add(block);
 		}
 		for(OperatorBlockType e : OperatorBlockType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			OperatorBlock block = new OperatorBlock(e);
-			block.addMouseListener(new SpawnHandler(block, this));
+			HandlerManager hm = new HandlerManager(block, this);
+			hm.addSpawnHandler();
+			block.addMouseListener(hm);
 			vBox.add(block);
 		}
 		vBox.add(Box.createRigidArea(new Dimension(150, 30)));

@@ -14,7 +14,7 @@ import view.block.BlockComponent;
  * @author chriz
  *
  */
-public class SpawnHandler extends MouseAdapter {
+public class SpawnHandler implements ICustomHandler {
 	
 	private BlockComponent spawnableComponent;
 	private View view;
@@ -36,20 +36,30 @@ public class SpawnHandler extends MouseAdapter {
         int index = Arrays.asList(parent.getComponents()).indexOf(spawnableComponent);
         parent.remove(spawnableComponent);
         view.getTransferPanel().add(spawnableComponent);
-//        addDragHandler(component);
-        DragHandler dragger = new DragHandler(spawnableComponent, view);
-        spawnableComponent.addMouseListener(dragger);
-        spawnableComponent.addMouseMotionListener(dragger);
+
+        HandlerManager hm = (HandlerManager) spawnableComponent.getMouseListeners()[0];
+        hm.addDragHandler();
+        spawnableComponent.addMouseMotionListener(hm);
         parent.add(spawnedComp, index);
-        spawnedComp.addMouseListener(new SpawnHandler(spawnedComp, view));
+        HandlerManager newHm = new HandlerManager(spawnedComp, view);
+        newHm.addSpawnHandler();
+        spawnedComp.addMouseListener(newHm);
         
 		view.getFrame().repaint();
 		// Delegate initial mouse press for drag operation
-		spawnableComponent.getMouseListeners()[1].mousePressed(e);
-		removeBlockSpawnHandler(spawnableComponent);
+		hm.removeSpawnHandler();
+		hm.mousePressed(e);
 	}
-	
-	private void removeBlockSpawnHandler(Component component) {
-		component.removeMouseListener(component.getMouseListeners()[0]);
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

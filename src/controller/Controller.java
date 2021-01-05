@@ -212,6 +212,7 @@ public class Controller extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp() {
+		setPauseOnLostFocus(false);
 		flyCam.setEnabled(false);
 		flyCam.setDragToRotate(true);
 		CameraNode camNode = new CameraNode("Camera", cam);
@@ -257,5 +258,9 @@ public class Controller extends SimpleApplication {
 	/** Used by thread for setting variable */
 	public void setcurrentDisplayedObject(CSGShape shape) {
 		currentDisplayedObject = shape;
+	}
+	
+	public Mesh getCurrentDisplayedMesh() {
+		return currentDisplayedObject.getMesh();
 	}
 }

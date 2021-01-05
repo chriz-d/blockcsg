@@ -30,6 +30,9 @@ import view.block.PrimShapeBlock;
 import view.block.OperatorBlock.OperatorBlockType;
 import view.block.PrimShapeBlock.PrimShapeType;
 import view.block.blockHandler.SpawnHandler;
+import view.menuBarHandler.AboutHandler;
+import view.menuBarHandler.ControlsHandler;
+import view.menuBarHandler.ExportHandler;
 /**
  * Organizes the GUI using Swing.
  * @author chriz
@@ -140,18 +143,31 @@ public class View {
 	}
 	
 	private void addMenuToolbar() {
+		// Create each menu item
 		JMenuBar bar = new JMenuBar();
 		JMenu file = new JMenu("File");
+		JMenu spacer = new JMenu("|");
+		spacer.setEnabled(false);
 		JMenu help = new JMenu("Help");
 		JMenuItem controls = new JMenuItem("Controls");
 		JMenuItem about = new JMenuItem("About");
 		JMenuItem export = new JMenuItem("Export highlighted model");
+		
+		// Add menu items to each other
 		help.add(controls);
 		help.add(about);
 		file.add(export);
-		bar.add(help);
 		bar.add(file);
+		bar.add(spacer);
+		bar.add(help);
+		
+		// Set Menu bar for frame
 		frame.setJMenuBar(bar);
+		
+		// Add event handler for menu items
+		about.addActionListener(new AboutHandler());
+		controls.addActionListener(new ControlsHandler());
+		export.addActionListener(new ExportHandler());
 	}
 	
 	/**

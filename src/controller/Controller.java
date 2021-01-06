@@ -30,8 +30,6 @@ import view.block.PrimShapeBlock;
  *
  */
 public class Controller extends SimpleApplication {
-	/** Singleton */
-	private static Controller controller;
 	/** GUI */
 	private View view;
 	/** Mesh for jMonkey to display */
@@ -52,14 +50,6 @@ public class Controller extends SimpleApplication {
 		shapeMap = new HashMap<BlockComponent, Shape>();
 	}
 	
-	/** Singleton */
-	public static Controller getInstance() {
-		if(controller == null) {
-			controller = new Controller();
-		}
-		return controller;
-	}
-	
 	/**
 	 * Starts application
 	 */
@@ -67,19 +57,6 @@ public class Controller extends SimpleApplication {
 	public void start() {
 		view = new View(this);
 		view.initView();
-		java.awt.EventQueue.invokeLater(new Runnable() {
-	    	@Override
-			public void run() {
-	    		AppSettings settings = new AppSettings(true);
-	    		settings.setWidth(640);
-	    		settings.setHeight(480);
-	    		controller.createCanvas();
-	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
-	    		ctx.setSystemListener(controller);
-	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
-	    		controller.startCanvas();
-	    	}
-	    });
 	}
 	
 	/**
@@ -193,17 +170,30 @@ public class Controller extends SimpleApplication {
 	/** Gets desired mesh by map lookup and computes complete mesh in thread */
 	public void setDisplayedMesh(BlockComponent block) {
 		Shape shape = shapeMap.get(block);
-		new Thread(new CSGCalculator(shape)).start();
+		new Thread(new CSGCalculator(this, shape)).start();
 	}
 	
 	public void addShape(BlockComponent block) {
-		shapeMap.put(block, new Shape(block));
+		shapeMap.put(block, new Shape(this, block));
 	}
 	
 	public static void main(String[] args) {
 		//org.swingexplorer.Launcher.launch();
-		Controller controller = Controller.getInstance();
+		Controller controller = new Controller();
 		controller.start();
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	    	@Override
+			public void run() {
+	    		AppSettings settings = new AppSettings(true);
+	    		settings.setWidth(640);
+	    		settings.setHeight(480);
+	    		controller.createCanvas();
+	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
+	    		ctx.setSystemListener(controller);
+	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
+	    		controller.startCanvas();
+	    	}
+	    });
 	}
 
 	@Override

@@ -8,15 +8,17 @@ import model.Shape;
  */
 public class CSGCalculator implements Runnable {
 
+	private Controller controller;
 	private Shape shape;
 	
-	public CSGCalculator(Shape shape) {
+	public CSGCalculator(Controller controller, Shape shape) {
+		this.controller = controller;
 		this.shape = shape;
 	}
 	
 	@Override
 	public void run() {
-		Controller.getInstance().setcurrentDisplayedObject(shape.generateCSGMesh());
+		controller.setcurrentDisplayedObject(shape.generateCSGMesh());
 	}
 
 }

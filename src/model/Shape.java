@@ -23,15 +23,18 @@ public class Shape {
 	/** CSG Mesh */
 	private CSGGeometry csg;
 	
+	private Controller controller;
+	
 	/**
 	 * Generates mesh depending on type of block
 	 */
-	public Shape(BlockComponent block) {
+	public Shape(Controller controller, BlockComponent block) {
+		this.controller = controller;
 		this.block = block;
 		csg = new CSGGeometry();
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
-			csg.setMaterial(new Material(Controller.getInstance().getAssetManager(), 
+			csg.setMaterial(new Material(controller.getAssetManager(), 
 					"Common/MatDefs/Misc/ShowNormals.j3md"));
 			switch (primBlock.primType) {
 			case CUBE: csg.addShape(new CSGShape("Cube", new Box(1, 1, 1))); break;
@@ -52,7 +55,6 @@ public class Shape {
 		if(block instanceof OperatorBlock) {
 			csg = new CSGGeometry();
 			OperatorBlock opBlock = (OperatorBlock) block;
-			Controller controller = Controller.getInstance();
 			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
 			Shape left = controller.getLeftShape(block);
 			Shape right = controller.getRightShape(block);
@@ -77,7 +79,7 @@ public class Shape {
 		if(csg.getMesh() != null) {
 			CSGShape result = new CSGShape("Result", csg.getMesh());
 			if(result != null) {
-				result.setMaterial(new Material(Controller.getInstance().getAssetManager(), 
+				result.setMaterial(new Material(controller.getAssetManager(), 
 						"Common/MatDefs/Misc/ShowNormals.j3md"));
 				
 			}

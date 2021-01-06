@@ -14,7 +14,13 @@ import support.ObjExporter;
  *
  */
 public class ExportHandler implements ActionListener {
-
+	
+	private Controller controller;
+	
+	public ExportHandler(Controller controller) {
+		this.controller = controller;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = new JFileChooser();
@@ -22,7 +28,7 @@ public class ExportHandler implements ActionListener {
 		if(val == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			ObjExporter.exportMesh(file.getAbsolutePath() + ".obj", 
-					Controller.getInstance().getCurrentDisplayedMesh());
+					controller.getCurrentDisplayedMesh());
 		}
 	}
 

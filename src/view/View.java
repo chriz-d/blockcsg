@@ -171,7 +171,7 @@ public class View {
 		// Add event handler for menu items
 		about.addActionListener(new AboutHandler());
 		controls.addActionListener(new ControlsHandler());
-		export.addActionListener(new ExportHandler());
+		export.addActionListener(new ExportHandler(controller));
 	}
 	
 	/**
@@ -234,7 +234,6 @@ public class View {
 	 * @param block Block to highlight to.
 	 */
 	public void highlightBlocks(BlockComponent block) {
-		Controller controller = Controller.getInstance();
 		lastSelected = block;
 		lastSelected.color += 10000;
 		List<BlockComponent> children = controller.getChildren(block);
@@ -248,7 +247,6 @@ public class View {
 	 * @param block Block to remove highlight from.
 	 */
 	public void unHighlightBlocks() {
-		Controller controller = Controller.getInstance();
 		if(lastSelected != null) {
 			lastSelected.color -= 10000; 
 			List<BlockComponent> children = controller.getChildren(lastSelected);

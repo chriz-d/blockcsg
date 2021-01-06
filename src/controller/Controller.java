@@ -75,7 +75,6 @@ public class Controller extends SimpleApplication {
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
-		rootNode.detachChild(lastDisplayedObject);
 		currentDisplayedObject = null;
 	}
 	
@@ -202,7 +201,7 @@ public class Controller extends SimpleApplication {
 		flyCam.setEnabled(false);
 		flyCam.setDragToRotate(true);
 		CameraNode camNode = new CameraNode("Camera", cam);
-		camNode.setLocalTranslation(0, 0, -10);
+		camNode.setLocalTranslation(0, 0, -8);
 		Node node = new Node("pivot");
 		node.attachChild(camNode);
 		camNode.getCamera().lookAt(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
@@ -222,6 +221,8 @@ public class Controller extends SimpleApplication {
 				}
 				rootNode.attachChild(currentDisplayedObject);
 				lastDisplayedObject = currentDisplayedObject;
+			} else if(currentDisplayedObject == null && currentDisplayedObject != lastDisplayedObject) {
+				rootNode.detachChild(lastDisplayedObject);
 			}
 		}
 		super.simpleUpdate(tpf);

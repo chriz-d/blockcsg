@@ -30,16 +30,16 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 		Quaternion newRotation = null;
 		if(name.equals("Rotate Left") && mouseButtonPressed) {
 			newRotation = new Quaternion();
-			newRotation.fromAngleAxis(FastMath.HALF_PI/80, Vector3f.UNIT_Y);
+			newRotation.fromAngleAxis(FastMath.HALF_PI/30, Vector3f.UNIT_Y);
 		} else if(name.equals("Rotate Right") && mouseButtonPressed) {
 			newRotation = new Quaternion();
-			newRotation.fromAngleAxis(-FastMath.HALF_PI/80, Vector3f.UNIT_Y);
+			newRotation.fromAngleAxis(-FastMath.HALF_PI/30, Vector3f.UNIT_Y);
 		} else if(name.equals("Rotate Up") && mouseButtonPressed) {
 			newRotation = new Quaternion();
-			newRotation.fromAngleAxis(FastMath.HALF_PI/80, Vector3f.UNIT_X);
+			newRotation.fromAngleAxis(FastMath.HALF_PI/30, Vector3f.UNIT_X);
 		} else if(name.equals("Rotate Down") && mouseButtonPressed) {
 			newRotation = new Quaternion();
-			newRotation.fromAngleAxis(-FastMath.HALF_PI/80, Vector3f.UNIT_X);
+			newRotation.fromAngleAxis(-FastMath.HALF_PI/30, Vector3f.UNIT_X);
 		}
 		if(newRotation != null) {
 			node.setLocalRotation(node.getLocalRotation().mult(newRotation));

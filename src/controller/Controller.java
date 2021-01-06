@@ -186,6 +186,9 @@ public class Controller extends SimpleApplication {
 	    		AppSettings settings = new AppSettings(true);
 	    		settings.setWidth(640);
 	    		settings.setHeight(480);
+	    		settings.setFrameRate(60);
+	    		settings.setSamples(4);
+	    		controller.setSettings(settings);
 	    		controller.createCanvas();
 	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
 	    		ctx.setSystemListener(controller);
@@ -207,7 +210,6 @@ public class Controller extends SimpleApplication {
 		camNode.getCamera().lookAt(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
 		rootNode.attachChild(node);
 		enableCameraControls(node);
-		System.out.println(cam.getLocation());
 	}
 	
 	@Override

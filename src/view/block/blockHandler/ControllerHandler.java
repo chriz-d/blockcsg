@@ -5,29 +5,26 @@ import java.awt.event.MouseEvent;
 import view.View;
 import view.block.BlockComponent;
 /**
- * An Event handler responsible for resizing the blocks of a tree, when a given size is reached.
+ * An event handler for managing tree creation within the controller.
  * @author chriz
  *
  */
-public class ResizeHandler implements ICustomHandler {
-	
+public class ControllerHandler implements ICustomHandler {
+
 	private View view;
 	private BlockComponent attachedComponent;
 	
-	public ResizeHandler(BlockComponent attachedComponent, View view) {
+	public ControllerHandler(BlockComponent attachedComponent, View view) {
 		this.attachedComponent = attachedComponent;
 		this.view = view;
 	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// Resize components
-		// Remove from tree
-		view.resizeTree(attachedComponent, true);
-		
-		// Repeat resize, this time only for dragged opponent and children
-		view.resizeTree(attachedComponent, false);
-		
+		// If first time placing, create tree for block
+		if(!view.getController().hasTree(attachedComponent)) {
+			view.getController().createTree(attachedComponent);
+		}
 	}
 
 	@Override
@@ -38,8 +35,7 @@ public class ResizeHandler implements ICustomHandler {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// Resize tree
-		view.resizeTree(attachedComponent, false);
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -8,8 +8,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import javax.swing.SwingUtilities;
 
 import support.Support;
@@ -51,9 +49,12 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(attachedComponent.contains(e.getPoint())) {
-			for(ICustomHandler handler : handlers) {
-				handler.mousePressed(e);
+			for(int i = 0; i < handlers.size(); i++) {
+				handlers.get(i).mousePressed(e);
 			}
+//			for(ICustomHandler handler : handlers) {
+//				handler.mousePressed(e);
+//			}
 		} else {
 			componentBelow = getLowerComponent(e.getPoint());
 			if(componentBelow != null) {
@@ -116,7 +117,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		// Search for component under componentToDrag and pick the one with lowest z index
 		for(Component e : allComps) {
 			Point pe = Support.subPoints(pWorkSpace, e.getLocation());
-			if(!e.equals((Component)attachedComponent) && e.contains(pe)) {
+			if(!e.equals(attachedComponent) && e.contains(pe)) {
 				if(parent.getComponentZOrder(e) < zIndex) {
 					result = e;
 					zIndex = parent.getComponentZOrder(e);
@@ -131,7 +132,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	}
 	
 	public void addSnapHandler() {
-		handlers.add(new SnapHandler());
+		handlers.add(new SnapHandler(attachedComponent, view));
 	}
 	
 	public void addSpawnHandler() {
@@ -139,7 +140,19 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	}
 	
 	public void addResizeHandler() {
-		handlers.add(new ResizeHandler());
+		handlers.add(new ResizeHandler(attachedComponent, view));
+	}
+	
+	public void addDeletionHandler() {
+		handlers.add(new DeletionHandler(attachedComponent, view));
+	}
+	
+	public void addLayerSwitchHandler() {
+		handlers.add(new LayerSwitchHandler(attachedComponent, view));
+	}
+	
+	public void addControllerHandler() {
+		handlers.add(new ControllerHandler(attachedComponent, view));
 	}
 	
 	public void removeDragHandler() {

@@ -1,8 +1,6 @@
 package view.block.blockHandler;
 
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
@@ -10,7 +8,8 @@ import support.Support;
 import view.View;
 import view.block.BlockComponent;
 /**
- * Adds event handlers to component and enables cloning when clicking on it.
+ * An event handler enabling the component to be cloned when clicking. Initializes the other
+ * event handlers.
  * @author chriz
  *
  */
@@ -26,7 +25,6 @@ public class SpawnHandler implements ICustomHandler {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("Spawn!");
 		// Clone component and place at old components position
         BlockComponent spawnedComp = (BlockComponent) Support.deepCopy(spawnableComponent);
         spawnedComp.setBounds(spawnableComponent.getX(), spawnableComponent.getY(), spawnableComponent.getWidth(), spawnableComponent.getHeight());
@@ -38,7 +36,13 @@ public class SpawnHandler implements ICustomHandler {
         view.getTransferPanel().add(spawnableComponent);
 
         HandlerManager hm = (HandlerManager) spawnableComponent.getMouseListeners()[0];
+        hm.addControllerHandler();
+        hm.addLayerSwitchHandler();
         hm.addDragHandler();
+        hm.addSnapHandler();
+        hm.addResizeHandler();
+        hm.addDeletionHandler();
+        
         spawnableComponent.addMouseMotionListener(hm);
         parent.add(spawnedComp, index);
         HandlerManager newHm = new HandlerManager(spawnedComp, view);

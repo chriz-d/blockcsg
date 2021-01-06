@@ -6,25 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.input.ChaseCamera;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.CameraNode;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
 import model.Shape;
-import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
-import support.ObjExporter;
 import support.Support.Direction;
 import view.View;
 import view.block.BlockComponent;
@@ -69,6 +63,7 @@ public class Controller extends SimpleApplication {
 	/**
 	 * Starts application
 	 */
+	@Override
 	public void start() {
 		view = new View(this);
 		view.initView();
@@ -197,7 +192,8 @@ public class Controller extends SimpleApplication {
 		Controller controller = Controller.getInstance();
 		controller.start();
 		java.awt.EventQueue.invokeLater(new Runnable() {
-	    	public void run() {
+	    	@Override
+			public void run() {
 	    		AppSettings settings = new AppSettings(true);
 	    		settings.setWidth(640);
 	    		settings.setHeight(480);

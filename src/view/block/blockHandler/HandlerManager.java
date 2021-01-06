@@ -37,6 +37,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	
 	private View view;
 	
+	/** List of all active event handlers */
 	private List<ICustomHandler> handlers;
 
 	public HandlerManager(BlockComponent attachedComponent, View view) {
@@ -48,13 +49,11 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// No iterator used here due to possible recursive access.
 		if(attachedComponent.contains(e.getPoint())) {
 			for(int i = 0; i < handlers.size(); i++) {
 				handlers.get(i).mousePressed(e);
 			}
-//			for(ICustomHandler handler : handlers) {
-//				handler.mousePressed(e);
-//			}
 		} else {
 			componentBelow = getLowerComponent(e.getPoint());
 			if(componentBelow != null) {
@@ -68,11 +67,11 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
 		if(ignoreAction) {
 			return;
 		}
 		
+		// Check if component below is meant
 		if(componentBelow == null) {
 			for(ICustomHandler handler : handlers) {
 				handler.mouseDragged(e);
@@ -91,6 +90,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 			return;
 		}
 		
+		// Check if component below is meant
 		if(componentBelow == null) {
 			for(ICustomHandler handler : handlers) {
 				handler.mouseReleased(e);
@@ -127,83 +127,18 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		return result;
 	}
 	
-	public void addDragHandler() {
-		handlers.add(new DragHandler(attachedComponent, view));
+	public void addHandler(ICustomHandler handler) {
+		handlers.add(handler);
 	}
 	
-	public void addSnapHandler() {
-		handlers.add(new SnapHandler(attachedComponent, view));
-	}
-	
-	public void addSpawnHandler() {
-		handlers.add(new SpawnHandler(attachedComponent, view));
-	}
-	
-	public void addResizeHandler() {
-		handlers.add(new ResizeHandler(attachedComponent, view));
-	}
-	
-	public void addDeletionHandler() {
-		handlers.add(new DeletionHandler(attachedComponent, view));
-	}
-	
-	public void addLayerSwitchHandler() {
-		handlers.add(new LayerSwitchHandler(attachedComponent, view));
-	}
-	
-	public void addControllerHandler() {
-		handlers.add(new ControllerHandler(attachedComponent, view));
-	}
-	
-	public void removeDragHandler() {
-		ICustomHandler toDelete = null;
-		for(ICustomHandler handler : handlers) {
-			if(handler instanceof DragHandler) {
-				toDelete = handler;
-			}
-		}
-		if(toDelete != null) {
-			handlers.remove(toDelete);
-		}
-	}
-	
-	public void removeSnapHandler() {
-		ICustomHandler toDelete = null;
-		for(ICustomHandler handler : handlers) {
-			if(handler instanceof SnapHandler) {
-				toDelete = handler;
-			}
-		}
-		if(toDelete != null) {
-			handlers.remove(toDelete);
-		}
-	}
-	
+	/** Just removes spawnhandler */
 	public void removeSpawnHandler() {
-		ICustomHandler toDelete = null;
-		for(ICustomHandler handler : handlers) {
-			if(handler instanceof SpawnHandler) {
-				toDelete = handler;
+		for(int i = 0; i < handlers.size(); i++) {
+			if(handlers.get(i) instanceof SpawnHandler) {
+				handlers.remove(i);
 			}
 		}
-		if(toDelete != null) {
-			handlers.remove(toDelete);
-		}
 	}
-	
-	public void removeResizeHandler() {
-		ICustomHandler toDelete = null;
-		for(ICustomHandler handler : handlers) {
-			if(handler instanceof ResizeHandler) {
-				toDelete = handler;
-			}
-		}
-		if(toDelete != null) {
-			handlers.remove(toDelete);
-		}
-	}
-
-	
 	
 	// Dead weight
 	@Override

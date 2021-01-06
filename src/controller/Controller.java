@@ -67,6 +67,19 @@ public class Controller extends SimpleApplication {
 	public void start() {
 		view = new View(this);
 		view.initView();
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	    	@Override
+			public void run() {
+	    		AppSettings settings = new AppSettings(true);
+	    		settings.setWidth(640);
+	    		settings.setHeight(480);
+	    		controller.createCanvas();
+	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
+	    		ctx.setSystemListener(controller);
+	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
+	    		controller.startCanvas();
+	    	}
+	    });
 	}
 	
 	/**
@@ -191,19 +204,6 @@ public class Controller extends SimpleApplication {
 		//org.swingexplorer.Launcher.launch();
 		Controller controller = Controller.getInstance();
 		controller.start();
-		java.awt.EventQueue.invokeLater(new Runnable() {
-	    	@Override
-			public void run() {
-	    		AppSettings settings = new AppSettings(true);
-	    		settings.setWidth(640);
-	    		settings.setHeight(480);
-	    		controller.createCanvas();
-	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
-	    		ctx.setSystemListener(controller);
-	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
-	    		controller.startCanvas();
-	    	}
-	    });
 	}
 
 	@Override

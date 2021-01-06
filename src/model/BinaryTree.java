@@ -49,7 +49,6 @@ public class BinaryTree<T> {
 		}
 		// Set parent reference
 		childTree.getRootNode().setParent(parentNode);
-		System.out.println(toString());
 	}
 	
 	/**
@@ -75,7 +74,6 @@ public class BinaryTree<T> {
 			}
 		}
 		nodeToRemove.setParent(null);
-		System.out.println(toString());
 		return new BinaryTree<T>(nodeToRemove);
 	}
 	

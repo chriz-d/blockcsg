@@ -26,6 +26,7 @@ import view.block.PrimShapeBlock;
 import view.block.OperatorBlock.OperatorBlockType;
 import view.block.PrimShapeBlock.PrimShapeType;
 import view.block.blockHandler.HandlerManager;
+import view.block.blockHandler.SpawnHandler;
 import view.menuBarHandler.AboutHandler;
 import view.menuBarHandler.ControlsHandler;
 import view.menuBarHandler.ExportHandler;
@@ -120,21 +121,24 @@ public class View {
 		JPanel drawerPanel = new JPanel(new BorderLayout());
 		Box vBox = Box.createVerticalBox();
 		JScrollPane scrollPane = new JScrollPane(vBox, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(12);
 		scrollPane.setBorder(null);
 		drawerPanel.add(scrollPane, BorderLayout.CENTER);
+		// Fill drawer with PrimitiveBlocks
 		for(PrimShapeType e : PrimShapeType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			PrimShapeBlock block = new PrimShapeBlock(e);
 			HandlerManager hm = new HandlerManager(block, this);
-			hm.addSpawnHandler();
+			hm.addHandler(new SpawnHandler(block, this));
 			block.addMouseListener(hm);
 			vBox.add(block);
 		}
+		// Fill drawer with OperatorBlocks
 		for(OperatorBlockType e : OperatorBlockType.values()) {
 			vBox.add(Box.createRigidArea(new Dimension(150, 30)));
 			OperatorBlock block = new OperatorBlock(e);
 			HandlerManager hm = new HandlerManager(block, this);
-			hm.addSpawnHandler();
+			hm.addHandler(new SpawnHandler(block, this));
 			block.addMouseListener(hm);
 			vBox.add(block);
 		}

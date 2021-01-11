@@ -46,7 +46,7 @@ public class SpawnHandler implements ICustomHandler {
         spawnableComponent.addMouseMotionListener(hm);
         parent.add(spawnedComp, index);
         HandlerManager newHm = new HandlerManager(spawnedComp, view);
-        newHm.addHandler(new SpawnHandler(spawnableComponent, view));
+        newHm.addHandler(new SpawnHandler(spawnedComp, view));
         spawnedComp.addMouseListener(newHm);
         
 		view.getFrame().repaint();

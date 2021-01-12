@@ -239,7 +239,7 @@ public class Controller extends SimpleApplication {
 		inputManager.addMapping("Rotate Up", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
 		inputManager.addMapping("Rotate Down", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
 		inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		JMEKeyListener listener = new JMEKeyListener(node);
+		JMEKeyListener listener = new JMEKeyListener(node, this);
 		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
 		inputManager.addListener(listener, new String[] {"Click"});
 	}

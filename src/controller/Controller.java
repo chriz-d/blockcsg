@@ -176,6 +176,10 @@ public class Controller extends SimpleApplication {
 		shapeMap.put(block, new Shape(this, block));
 	}
 	
+	public Shape getShape(BlockComponent block) {
+		return shapeMap.get(block);
+	}
+	
 	public static void main(String[] args) {
 		//org.swingexplorer.Launcher.launch();
 		Controller controller = new Controller();

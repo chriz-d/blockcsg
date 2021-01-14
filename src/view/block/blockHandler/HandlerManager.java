@@ -70,7 +70,6 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		if(ignoreAction) {
 			return;
 		}
-		
 		// Check if component below is meant
 		if(componentBelow == null) {
 			for(ICustomHandler handler : handlers) {

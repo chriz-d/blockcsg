@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import controller.Controller;
+import controller.JME;
 import support.ObjExporter;
 /**
  * Creates the save dialog and invokes exporter to specified path.
@@ -28,7 +29,7 @@ public class ExportHandler implements ActionListener {
 		if(val == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			ObjExporter.exportMesh(file.getAbsolutePath() + ".obj", 
-					controller.getCurrentDisplayedMesh());
+					JME.getInstance().getCurrentDisplayedMesh());
 		}
 	}
 

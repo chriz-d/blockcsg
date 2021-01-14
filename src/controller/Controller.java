@@ -29,15 +29,10 @@ import view.block.PrimShapeBlock;
  * @author chriz
  *
  */
-public class Controller extends SimpleApplication {
+public class Controller {
+	
 	/** GUI */
 	private View view;
-	/** Mesh for jMonkey to display */
-	private CSGShape currentDisplayedObject;
-	private CSGShape lastDisplayedObject;
-	
-	/** Time passed since last update for jMonkey */
-	private float updateTime = 0;
 	
 	/** Map containing trees of blocks. Every block has a tree. */
 	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
@@ -48,15 +43,32 @@ public class Controller extends SimpleApplication {
 	public Controller() {
 		treeMap = new HashMap<BlockComponent, BinaryTree<BlockComponent>>();
 		shapeMap = new HashMap<BlockComponent, Shape>();
+		
 	}
 	
 	/**
 	 * Starts application
 	 */
-	@Override
 	public void start() {
 		view = new View(this);
 		view.initView();
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	    	@Override
+			public void run() {
+	    		JME jme = JME.getInstance();
+	    		AppSettings settings = new AppSettings(true);
+	    		settings.setWidth(640);
+	    		settings.setHeight(480);
+	    		settings.setFrameRate(60);
+	    		settings.setSamples(4);
+	    		jme.setSettings(settings);
+	    		jme.createCanvas();
+	    		JmeCanvasContext ctx = (JmeCanvasContext) jme.getContext();
+	    		ctx.setSystemListener(jme);
+	    		view.setJMonkeyWindow(ctx.getCanvas());
+	    		jme.startCanvas();
+	    	}
+	    });
 	}
 	
 	/**
@@ -75,7 +87,7 @@ public class Controller extends SimpleApplication {
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
-		currentDisplayedObject = null;
+		JME.getInstance().setcurrentDisplayedObject(null);
 	}
 	
 	/**
@@ -169,7 +181,7 @@ public class Controller extends SimpleApplication {
 	/** Gets desired mesh by map lookup and computes complete mesh in thread */
 	public void setDisplayedMesh(BlockComponent block) {
 		Shape shape = shapeMap.get(block);
-		new Thread(new CSGCalculator(this, shape)).start();
+		new Thread(new CSGCalculator(shape)).start();
 	}
 	
 	public void addShape(BlockComponent block) {
@@ -178,82 +190,5 @@ public class Controller extends SimpleApplication {
 	
 	public Shape getShape(BlockComponent block) {
 		return shapeMap.get(block);
-	}
-	
-	public static void main(String[] args) {
-		//org.swingexplorer.Launcher.launch();
-		Controller controller = new Controller();
-		controller.start();
-		java.awt.EventQueue.invokeLater(new Runnable() {
-	    	@Override
-			public void run() {
-	    		AppSettings settings = new AppSettings(true);
-	    		settings.setWidth(640);
-	    		settings.setHeight(480);
-	    		settings.setFrameRate(60);
-	    		settings.setSamples(4);
-	    		controller.setSettings(settings);
-	    		controller.createCanvas();
-	    		JmeCanvasContext ctx = (JmeCanvasContext) controller.getContext();
-	    		ctx.setSystemListener(controller);
-	    		controller.view.setJMonkeyWindow(ctx.getCanvas());
-	    		controller.startCanvas();
-	    	}
-	    });
-	}
-
-	@Override
-	public void simpleInitApp() {
-		setPauseOnLostFocus(false);
-		flyCam.setEnabled(false);
-		flyCam.setDragToRotate(true);
-		CameraNode camNode = new CameraNode("Camera", cam);
-		camNode.setLocalTranslation(0, 0, -8);
-		Node node = new Node("pivot");
-		node.attachChild(camNode);
-		camNode.getCamera().lookAt(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
-		rootNode.attachChild(node);
-		enableCameraControls(node);
-	}
-	
-	@Override
-	public void simpleUpdate(float tpf) {
-		updateTime += tpf;
-		if(updateTime > 0.2) {
-			updateTime = 0;
-			if(currentDisplayedObject != null && !rootNode.hasChild(currentDisplayedObject)) {
-				if(lastDisplayedObject != null) {
-					rootNode.detachChild(lastDisplayedObject);
-				}
-				rootNode.attachChild(currentDisplayedObject);
-				lastDisplayedObject = currentDisplayedObject;
-			} else if(currentDisplayedObject == null && currentDisplayedObject != lastDisplayedObject) {
-				rootNode.detachChild(lastDisplayedObject);
-			}
-		}
-		super.simpleUpdate(tpf);
-	}
-	
-	/**
-	 * Adds camera controls to JMonkeys input manager (Rotation around center 0,0,0)
-	 */
-	private void enableCameraControls(Node node) {
-		inputManager.addMapping("Rotate Left", new MouseAxisTrigger(MouseInput.AXIS_X, true));
-		inputManager.addMapping("Rotate Right", new MouseAxisTrigger(MouseInput.AXIS_X, false));
-		inputManager.addMapping("Rotate Up", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
-		inputManager.addMapping("Rotate Down", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-		inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		JMEKeyListener listener = new JMEKeyListener(node, this);
-		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
-		inputManager.addListener(listener, new String[] {"Click"});
-	}
-	
-	/** Used by thread for setting variable */
-	public void setcurrentDisplayedObject(CSGShape shape) {
-		currentDisplayedObject = shape;
-	}
-	
-	public Mesh getCurrentDisplayedMesh() {
-		return currentDisplayedObject.getMesh();
 	}
 }

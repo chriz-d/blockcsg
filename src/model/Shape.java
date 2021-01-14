@@ -5,6 +5,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 
 import controller.Controller;
+import controller.JME;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
 import net.wcomohundro.jme3.csg.shape.CSGCylinder;
@@ -34,7 +35,7 @@ public class Shape {
 		csg = new CSGGeometry();
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
-			csg.setMaterial(new Material(controller.getAssetManager(), 
+			csg.setMaterial(new Material(JME.getInstance().getAssetManager(), 
 					"Common/MatDefs/Misc/ShowNormals.j3md"));
 			switch (primBlock.primType) {
 			case CUBE: csg.addShape(new CSGShape("Cube", new Box(1, 1, 1))); break;
@@ -55,7 +56,7 @@ public class Shape {
 		if(block instanceof OperatorBlock) {
 			csg = new CSGGeometry();
 			OperatorBlock opBlock = (OperatorBlock) block;
-			csg.setMaterial(new Material(controller.getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
+			csg.setMaterial(new Material(JME.getInstance().getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
 			Shape left = controller.getLeftShape(block);
 			Shape right = controller.getRightShape(block);
 			if(left != null) {
@@ -79,7 +80,7 @@ public class Shape {
 		if(csg.getMesh() != null) {
 			CSGShape result = new CSGShape("Result", csg.getMesh());
 			if(result != null) {
-				result.setMaterial(new Material(controller.getAssetManager(), 
+				result.setMaterial(new Material(JME.getInstance().getAssetManager(), 
 						"Common/MatDefs/Misc/ShowNormals.j3md"));
 				
 			}

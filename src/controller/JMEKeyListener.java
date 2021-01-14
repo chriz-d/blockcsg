@@ -12,12 +12,10 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 
 	private boolean mouseButtonPressed;
 	private Node node;
-	private Controller controller;
 	private Vector2f oldMousePos;
 	
-	public JMEKeyListener(Node node, Controller controller ) {
+	public JMEKeyListener(Node node) {
 		this.node = node;
-		this.controller = controller;
 	}
 	
 	@Override
@@ -25,16 +23,16 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 		if(name.equals("Click")) {
 			mouseButtonPressed = keyPressed;
 			if(keyPressed) {
-				controller.getInputManager().setCursorVisible(false);
+				JME.getInstance().getInputManager().setCursorVisible(false);
 			} else {
-				controller.getInputManager().setCursorVisible(true);
+				JME.getInstance().getInputManager().setCursorVisible(true);
 			}
 		}
 	}
 
 	@Override
 	public void onAnalog(String name, float keyPressed, float tpf) {
-		Vector2f newMousePos = controller.getInputManager().getCursorPosition();
+		Vector2f newMousePos = JME.getInstance().getInputManager().getCursorPosition();
 		if(oldMousePos == null) {
 			oldMousePos = newMousePos;
 		}

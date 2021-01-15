@@ -43,7 +43,6 @@ public class Controller {
 	public Controller() {
 		treeMap = new HashMap<BlockComponent, BinaryTree<BlockComponent>>();
 		shapeMap = new HashMap<BlockComponent, Shape>();
-		
 	}
 	
 	/**
@@ -85,9 +84,9 @@ public class Controller {
 	 * @param blockToDelete Block of which to delete tree.
 	 */
 	public void deleteTree(BlockComponent blockToDelete) {
+		JME.getInstance().removeObjectFromSceneGraph(shapeMap.get(blockToDelete).getCSG());;
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
-		JME.getInstance().setcurrentDisplayedObject(null);
 	}
 	
 	/**
@@ -162,16 +161,6 @@ public class Controller {
 	public BlockComponent getRight(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getRight(block);
-	}
-	
-	public Shape getLeftShape(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
-		return shapeMap.get(tree.getLeft(block));
-	}
-	
-	public Shape getRightShape(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
-		return shapeMap.get(tree.getRight(block));
 	}
 	
 	public boolean hasTree(BlockComponent block) {

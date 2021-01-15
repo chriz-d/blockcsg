@@ -57,8 +57,8 @@ public class Shape {
 			csg = new CSGGeometry();
 			OperatorBlock opBlock = (OperatorBlock) block;
 			csg.setMaterial(new Material(JME.getInstance().getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
-			Shape left = controller.getLeftShape(block);
-			Shape right = controller.getRightShape(block);
+			Shape left = controller.getShape(controller.getLeft(block));
+			Shape right = controller.getShape(controller.getRight(block));
 			if(left != null) {
 				CSGShape leftCSG = left.generateCSGMesh();
 				if(leftCSG != null) {

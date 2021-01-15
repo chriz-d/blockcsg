@@ -16,7 +16,7 @@ public class CSGCalculator implements Runnable {
 	
 	@Override
 	public void run() {
-		JME.getInstance().setcurrentDisplayedObject(shape.generateCSGMesh());
+		JME.getInstance().addObjectToSceneGraph((shape.generateCSGMesh()));
 	}
 
 }

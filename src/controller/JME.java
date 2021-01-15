@@ -1,26 +1,30 @@
 package controller;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.CameraNode;
-import com.jme3.scene.Mesh;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-
-import net.wcomohundro.jme3.csg.CSGShape;
+import com.jme3.util.SkyFactory;
 
 public class JME extends SimpleApplication {
 	
-	/** Time passed since last update for jMonkey */
-	private float updateTime = 0;
-	
 	/** Mesh for jMonkey to display */
-	private CSGShape currentDisplayedObject;
-	private CSGShape lastDisplayedObject;
+	private Queue<Geometry> meshesToAdd;
+	private Queue<Geometry> meshesToRemove;
 	
 	private static JME instance;
+	
+	public JME() {
+		meshesToAdd = new ConcurrentLinkedQueue<>();
+		meshesToRemove = new ConcurrentLinkedQueue<>();
+	}
 	
 	public static JME getInstance() {
 		if(instance == null) {
@@ -59,28 +63,25 @@ public class JME extends SimpleApplication {
 	
 	@Override
 	public void simpleUpdate(float tpf) {
-		updateTime += tpf;
-		if(updateTime > 0.2) {
-			updateTime = 0;
-			if(currentDisplayedObject != null && !rootNode.hasChild(currentDisplayedObject)) {
-				if(lastDisplayedObject != null) {
-					rootNode.detachChild(lastDisplayedObject);
-				}
-				rootNode.attachChild(currentDisplayedObject);
-				lastDisplayedObject = currentDisplayedObject;
-			} else if(currentDisplayedObject == null && currentDisplayedObject != lastDisplayedObject) {
-				rootNode.detachChild(lastDisplayedObject);
-			}
+		for(Geometry geom : meshesToRemove) {
+			rootNode.detachChild(geom);
 		}
+		for(Geometry geom : meshesToAdd) {
+			rootNode.attachChild(geom);
+		}
+		
 		super.simpleUpdate(tpf);
 	}
 	
-	/** Used by thread for setting variable */
-	public void setcurrentDisplayedObject(CSGShape shape) {
-		currentDisplayedObject = shape;
+	public void addObjectToSceneGraph(Geometry geom) {
+		meshesToAdd.add(geom);
 	}
 	
-	public Mesh getCurrentDisplayedMesh() {
-		return currentDisplayedObject.getMesh();
+	public void removeObjectFromSceneGraph(Geometry geom) {
+		meshesToRemove.add(geom);
+	}
+	
+	public void highlightObject() {
+		
 	}
 }

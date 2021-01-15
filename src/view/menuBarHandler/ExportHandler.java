@@ -24,13 +24,13 @@ public class ExportHandler implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		JFileChooser fc = new JFileChooser();
-		int val = fc.showSaveDialog(null);
-		if(val == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
-			ObjExporter.exportMesh(file.getAbsolutePath() + ".obj", 
-					JME.getInstance().getCurrentDisplayedMesh());
-		}
+//		JFileChooser fc = new JFileChooser();
+//		int val = fc.showSaveDialog(null);
+//		if(val == JFileChooser.APPROVE_OPTION) {
+//			File file = fc.getSelectedFile();
+//			ObjExporter.exportMesh(file.getAbsolutePath() + ".obj", 
+//					JME.getInstance().getCurrentDisplayedMesh());
+//		}
 	}
 
 }

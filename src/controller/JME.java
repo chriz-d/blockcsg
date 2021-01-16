@@ -73,11 +73,11 @@ public class JME extends SimpleApplication {
 		super.simpleUpdate(tpf);
 	}
 	
-	public void addObjectToSceneGraph(Geometry geom) {
+	public void addToSceneGraph(Geometry geom) {
 		meshesToAdd.add(geom);
 	}
 	
-	public void removeObjectFromSceneGraph(Geometry geom) {
+	public void removeFromSceneGraph(Geometry geom) {
 		meshesToRemove.add(geom);
 	}
 	

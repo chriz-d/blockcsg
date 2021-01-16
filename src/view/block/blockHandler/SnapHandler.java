@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import controller.Controller;
+import controller.TreeManager;
 import support.Support;
 import view.View;
 import view.block.BlockComponent;
@@ -111,7 +111,7 @@ public class SnapHandler implements ICustomHandler {
 			componentToSnap.setLocation(spPos.x, spPos.y);
 			
 			// Get all nodes and repos
-			Controller controller = view.getController();
+			TreeManager controller = view.getController();
 			List<BlockComponent> allNodes = controller.getChildren(controller.getRoot(componentToSnap));
 			allNodes.add(controller.getRoot(componentToSnap));
 			for(BlockComponent node : allNodes) {

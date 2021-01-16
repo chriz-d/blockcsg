@@ -34,16 +34,12 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	/** Flag for ignoring events */
 	private boolean ignoreAction;
 
-	
-	private View view;
-	
 	/** List of all active event handlers */
 	private List<ICustomHandler> handlers;
 
 	public HandlerManager(BlockComponent attachedComponent, View view) {
 		this.attachedComponent = attachedComponent;
 		handlers = new ArrayList<ICustomHandler>();
-		this.view = view;
 		ignoreAction = false;
 	}
 	

@@ -6,7 +6,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import controller.Controller;
+import controller.TreeManager;
 import controller.JME;
 import support.ObjExporter;
 /**
@@ -16,9 +16,9 @@ import support.ObjExporter;
  */
 public class ExportHandler implements ActionListener {
 	
-	private Controller controller;
+	private TreeManager controller;
 	
-	public ExportHandler(Controller controller) {
+	public ExportHandler(TreeManager controller) {
 		this.controller = controller;
 	}
 	

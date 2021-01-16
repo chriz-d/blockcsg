@@ -6,7 +6,6 @@ import java.awt.geom.GeneralPath;
 
 import support.Support;
 import support.Support.Direction;
-import view.GeneralPathDecor;
 import view.block.BlockSocket.SocketType;
 /**
  * Describes the primitve shape block of the GUI.

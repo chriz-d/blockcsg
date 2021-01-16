@@ -1,6 +1,7 @@
 package controller;
 
-import model.Shape;
+import model.CSGModel;
+import net.wcomohundro.jme3.csg.CSGShape;
 /**
  * Class for calculating csg in seperate thread to prevent GUI lockup
  * @author chriz
@@ -8,15 +9,18 @@ import model.Shape;
  */
 public class CSGCalculator implements Runnable {
 
-	private Shape shape;
+	private CSGModel shape;
 	
-	public CSGCalculator(Shape shape) {
+	public CSGCalculator(CSGModel shape) {
 		this.shape = shape;
 	}
 	
 	@Override
 	public void run() {
-		JME.getInstance().addObjectToSceneGraph((shape.generateCSGMesh()));
+		CSGShape result = shape.generateCSGMesh();
+		if(result != null) {
+			JME.getInstance().addToSceneGraph(result);
+		}
 	}
 
 }

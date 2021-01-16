@@ -23,8 +23,8 @@ import javax.swing.border.EmptyBorder;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
-import controller.Controller;
-import model.Shape;
+import controller.TreeManager;
+import model.CSGModel;
 import view.View;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
@@ -180,8 +180,8 @@ public class PopUpHandler implements ICustomHandler {
 		c.gridx = 2;
 		posPanel.add(zPosSpinner, c);
 		
-		Controller controller = view.getController();
-		Shape shape = controller.getShape(attachedComponent);
+		TreeManager controller = view.getController();
+		CSGModel shape = controller.getShape(attachedComponent);
 		Vector3f pos = shape.getCSG().getLocalTranslation();
 		xPosSpinner.setValue(pos.x);
 		yPosSpinner.setValue(pos.y);

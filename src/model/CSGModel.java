@@ -4,7 +4,7 @@ import com.jme3.material.Material;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 
-import controller.Controller;
+import controller.TreeManager;
 import controller.JME;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
@@ -17,19 +17,19 @@ import view.block.PrimShapeBlock;
  * @author chriz
  *
  */
-public class Shape {
+public class CSGModel {
 	
 	/** Block this object represents */
 	private BlockComponent block;
 	/** CSG Mesh */
 	private CSGGeometry csg;
 	
-	private Controller controller;
+	private TreeManager controller;
 	
 	/**
 	 * Generates mesh depending on type of block
 	 */
-	public Shape(Controller controller, BlockComponent block) {
+	public CSGModel(TreeManager controller, BlockComponent block) {
 		this.controller = controller;
 		this.block = block;
 		csg = new CSGGeometry();
@@ -57,8 +57,8 @@ public class Shape {
 			csg = new CSGGeometry();
 			OperatorBlock opBlock = (OperatorBlock) block;
 			csg.setMaterial(new Material(JME.getInstance().getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
-			Shape left = controller.getShape(controller.getLeft(block));
-			Shape right = controller.getShape(controller.getRight(block));
+			CSGModel left = controller.getShape(controller.getLeft(block));
+			CSGModel right = controller.getShape(controller.getRight(block));
 			if(left != null) {
 				CSGShape leftCSG = left.generateCSGMesh();
 				if(leftCSG != null) {

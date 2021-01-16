@@ -8,8 +8,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.JComponent;
-
-import view.GeneralPathDecor;
 /**
  * Describes a block for swing.
  * @author chriz

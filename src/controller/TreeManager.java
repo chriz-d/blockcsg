@@ -17,7 +17,7 @@ import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
 import model.BinaryTree;
-import model.Shape;
+import model.CSGModel;
 import net.wcomohundro.jme3.csg.CSGShape;
 import support.Support.Direction;
 import view.View;
@@ -29,45 +29,17 @@ import view.block.PrimShapeBlock;
  * @author chriz
  *
  */
-public class Controller {
-	
-	/** GUI */
-	private View view;
+public class TreeManager {
 	
 	/** Map containing trees of blocks. Every block has a tree. */
 	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
 	
 	/** Map for assigning each block a csg mesh */
-	private Map<BlockComponent, Shape> shapeMap;
+	private Map<BlockComponent, CSGModel> shapeMap;
 	
-	public Controller() {
+	public TreeManager() {
 		treeMap = new HashMap<BlockComponent, BinaryTree<BlockComponent>>();
-		shapeMap = new HashMap<BlockComponent, Shape>();
-	}
-	
-	/**
-	 * Starts application
-	 */
-	public void start() {
-		view = new View(this);
-		view.initView();
-		java.awt.EventQueue.invokeLater(new Runnable() {
-	    	@Override
-			public void run() {
-	    		JME jme = JME.getInstance();
-	    		AppSettings settings = new AppSettings(true);
-	    		settings.setWidth(640);
-	    		settings.setHeight(480);
-	    		settings.setFrameRate(60);
-	    		settings.setSamples(4);
-	    		jme.setSettings(settings);
-	    		jme.createCanvas();
-	    		JmeCanvasContext ctx = (JmeCanvasContext) jme.getContext();
-	    		ctx.setSystemListener(jme);
-	    		view.setJMonkeyWindow(ctx.getCanvas());
-	    		jme.startCanvas();
-	    	}
-	    });
+		shapeMap = new HashMap<BlockComponent, CSGModel>();
 	}
 	
 	/**
@@ -84,7 +56,7 @@ public class Controller {
 	 * @param blockToDelete Block of which to delete tree.
 	 */
 	public void deleteTree(BlockComponent blockToDelete) {
-		JME.getInstance().removeObjectFromSceneGraph(shapeMap.get(blockToDelete).getCSG());;
+		JME.getInstance().removeFromSceneGraph(shapeMap.get(blockToDelete).getCSG());;
 		treeMap.remove(blockToDelete);
 		shapeMap.remove(blockToDelete);
 	}
@@ -169,15 +141,15 @@ public class Controller {
 	
 	/** Gets desired mesh by map lookup and computes complete mesh in thread */
 	public void setDisplayedMesh(BlockComponent block) {
-		Shape shape = shapeMap.get(block);
+		CSGModel shape = shapeMap.get(block);
 		new Thread(new CSGCalculator(shape)).start();
 	}
 	
 	public void addShape(BlockComponent block) {
-		shapeMap.put(block, new Shape(this, block));
+		shapeMap.put(block, new CSGModel(this, block));
 	}
 	
-	public Shape getShape(BlockComponent block) {
+	public CSGModel getShape(BlockComponent block) {
 		return shapeMap.get(block);
 	}
 }

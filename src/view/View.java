@@ -19,7 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import controller.Controller;
+import com.jme3.system.AppSettings;
+import com.jme3.system.JmeCanvasContext;
+
+import controller.CSGModelManager;
+import controller.JME;
+import controller.TreeManager;
 import view.block.BlockComponent;
 import view.block.OperatorBlock;
 import view.block.PrimShapeBlock;
@@ -37,7 +42,9 @@ import view.menuBarHandler.ExportHandler;
  */
 public class View {
 	
-	private Controller controller;
+	private TreeManager controller;
+	
+	private CSGModelManager modelMan;
 	
 	/** Main window */
 	private JFrame frame;
@@ -56,8 +63,9 @@ public class View {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
-	public View(Controller controller) {
+	public View(TreeManager controller, CSGModelManager modelMan) {
 		this.controller = controller;
+		this.modelMan = modelMan;
 	}
 	
 	/**
@@ -80,15 +88,36 @@ public class View {
 		frame.setTitle("CSG Editor");
 		frame.setMinimumSize(new Dimension(800, 300));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		startJME();
 		frame.setVisible(true);
 	}
 
-	public Controller getController() {
+	public TreeManager getController() {
 		return controller;
 	}
 	
-	public void setJMonkeyWindow(Canvas canvas) {
-		jMonkeyPanel.add(canvas, BorderLayout.CENTER);
+	public CSGModelManager getCSGModelManager() {
+		return modelMan;
+	}
+	
+	private void startJME() {
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	    	@Override
+			public void run() {
+	    		JME jme = JME.getInstance();
+	    		AppSettings settings = new AppSettings(true);
+	    		settings.setWidth(640);
+	    		settings.setHeight(480);
+	    		settings.setFrameRate(60);
+	    		settings.setSamples(4);
+	    		jme.setSettings(settings);
+	    		jme.createCanvas();
+	    		JmeCanvasContext ctx = (JmeCanvasContext) jme.getContext();
+	    		ctx.setSystemListener(jme);
+	    		jMonkeyPanel.add(ctx.getCanvas(), BorderLayout.CENTER);
+	    		jme.startCanvas();
+	    	}
+	    });
 	}
 	
 	private JLayeredPane createBlockViewPanel() {

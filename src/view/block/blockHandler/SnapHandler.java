@@ -30,6 +30,10 @@ public class SnapHandler implements ICustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		BlockComponent root = view.getController().getRoot(attachedComponent);
+		if(!root.equals(attachedComponent)) {
+			view.getCSGModelManager().invokeCSGCalculation(root);
+		}
 		// Disconnect all sockets
 		attachedComponent.disconnectSockets();
 	}
@@ -127,13 +131,12 @@ public class SnapHandler implements ICustomHandler {
 				view.highlightBlocks(attachedComponent);
 				view.getCSGModelManager().undisplayCSGModel(closestBlock);
 				view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
-				//view.getCSGModelManager().displayCSGModel(attachedComponent);
 			} else {
 				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
-				view.highlightBlocks(closestBlock);
+				BlockComponent root = view.getController().getRoot(closestBlock);
+				view.highlightBlocks(root);
 				view.getCSGModelManager().undisplayCSGModel(attachedComponent);
-				view.getCSGModelManager().invokeCSGCalculation(closestBlock);
-				//view.getCSGModelManager().displayCSGModel(closestBlock);
+				view.getCSGModelManager().invokeCSGCalculation(root);
 			}
 		}
 	}

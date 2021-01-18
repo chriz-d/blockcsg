@@ -46,6 +46,8 @@ public class View {
 	
 	private CSGModelManager modelMan;
 	
+	private JME jme;
+	
 	/** Main window */
 	private JFrame frame;
 	/** Transparent panel for dragging elements above other panels */
@@ -63,9 +65,10 @@ public class View {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
-	public View(TreeManager controller, CSGModelManager modelMan) {
+	public View(TreeManager controller, CSGModelManager modelMan, JME jme) {
 		this.controller = controller;
 		this.modelMan = modelMan;
+		this.jme = jme;
 	}
 	
 	/**
@@ -104,7 +107,6 @@ public class View {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 	    	@Override
 			public void run() {
-	    		JME jme = JME.getInstance();
 	    		AppSettings settings = new AppSettings(true);
 	    		settings.setWidth(640);
 	    		settings.setHeight(480);

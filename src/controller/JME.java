@@ -19,18 +19,9 @@ public class JME extends SimpleApplication {
 	private Queue<Geometry> meshesToAdd;
 	private Queue<Geometry> meshesToRemove;
 	
-	private static JME instance;
-	
 	public JME() {
 		meshesToAdd = new ConcurrentLinkedQueue<>();
 		meshesToRemove = new ConcurrentLinkedQueue<>();
-	}
-	
-	public static JME getInstance() {
-		if(instance == null) {
-			instance = new JME();
-		}
-		return instance;
 	}
 	
 	@Override
@@ -56,7 +47,7 @@ public class JME extends SimpleApplication {
 		inputManager.addMapping("Rotate Up", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
 		inputManager.addMapping("Rotate Down", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
 		inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		JMEKeyListener listener = new JMEKeyListener(node);
+		JMEKeyListener listener = new JMEKeyListener(getInputManager(), node);
 		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
 		inputManager.addListener(listener, new String[] {"Click"});
 	}

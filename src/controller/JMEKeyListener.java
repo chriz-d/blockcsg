@@ -1,5 +1,6 @@
 package controller;
 
+import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.FastMath;
@@ -10,11 +11,14 @@ import com.jme3.scene.Node;
 
 public class JMEKeyListener implements AnalogListener, ActionListener {
 
-	private boolean mouseButtonPressed;
+	private InputManager inputMan;
 	private Node node;
+	
+	private boolean mouseButtonPressed;
 	private Vector2f oldMousePos;
 	
-	public JMEKeyListener(Node node) {
+	public JMEKeyListener(InputManager inputMan, Node node) {
+		this.inputMan = inputMan;
 		this.node = node;
 	}
 	
@@ -23,16 +27,16 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 		if(name.equals("Click")) {
 			mouseButtonPressed = keyPressed;
 			if(keyPressed) {
-				JME.getInstance().getInputManager().setCursorVisible(false);
+				inputMan.setCursorVisible(false);
 			} else {
-				JME.getInstance().getInputManager().setCursorVisible(true);
+				inputMan.setCursorVisible(true);
 			}
 		}
 	}
 
 	@Override
 	public void onAnalog(String name, float keyPressed, float tpf) {
-		Vector2f newMousePos = JME.getInstance().getInputManager().getCursorPosition();
+		Vector2f newMousePos = inputMan.getCursorPosition();
 		if(oldMousePos == null) {
 			oldMousePos = newMousePos;
 		}

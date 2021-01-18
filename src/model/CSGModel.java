@@ -1,5 +1,6 @@
 package model;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Box;
@@ -30,16 +31,19 @@ public class CSGModel {
 	
 	private CSGModelManager modelMan;
 	
+	private AssetManager assetMan;
+	
 	/**
 	 * Generates mesh depending on type of block
 	 */
-	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block) {
+	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block,
+			AssetManager assetMan) {
 		this.controller = controller;
 		this.block = block;
 		this.modelMan = modelMan;
+		this.assetMan = assetMan;
 		csg = new CSGGeometry("New Element", new Mesh());
-		csg.setMaterial(new Material(JME.getInstance().getAssetManager(), 
-				"Common/MatDefs/Misc/ShowNormals.j3md"));
+		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
 			switch (primBlock.primType) {

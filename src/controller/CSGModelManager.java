@@ -9,15 +9,17 @@ import view.block.BlockComponent;
 public class CSGModelManager {
 	
 	private TreeManager treeMan;
+	private JME jme;
 	private Map<BlockComponent, CSGModel> modelMap;
 	
-	public CSGModelManager(TreeManager treeMan) {
-		modelMap = new HashMap<>();
+	public CSGModelManager(TreeManager treeMan, JME jme) {
 		this.treeMan = treeMan;
+		this.jme = jme;
+		modelMap = new HashMap<>();
 	}
 	
 	public void createCSGModel(BlockComponent block) {
-		modelMap.put(block, new CSGModel(treeMan, this, block));
+		modelMap.put(block, new CSGModel(treeMan, this, block, jme.getAssetManager()));
 	}
 	
 	public void deleteCSGModel(BlockComponent block) {
@@ -30,12 +32,12 @@ public class CSGModelManager {
 	
 	public void displayCSGModel(BlockComponent block) {
 		CSGModel model = modelMap.get(block);
-		JME.getInstance().addToSceneGraph(model.getCSG());
+		jme.addToSceneGraph(model.getCSG());
 	}
 	
 	public void undisplayCSGModel(BlockComponent block) {
 		CSGModel model = modelMap.get(block);
-		JME.getInstance().removeFromSceneGraph(model.getCSG());
+		jme.removeFromSceneGraph(model.getCSG());
 	}
 	
 	public CSGModel getCSG(BlockComponent block) {

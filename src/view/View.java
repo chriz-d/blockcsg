@@ -221,44 +221,6 @@ public class View {
 	}
 	
 	/**
-	 * Resizes the operatorblocks of a tree.
-	 * @param block Block if which tree gets resized.
-	 * @param doDelete Flag for deleting the specified block beforehand.
-	 */
-	public void resizeTree(BlockComponent block, boolean doDelete) {
-		BlockComponent root = controller.getRoot(block);
-		// Get every node in tree
-		List<BlockComponent> allNodes = controller.getChildren(root);
-		allNodes.add(root);
-		if(doDelete) {
-			allNodes.remove(block);
-			controller.removeFromTree(block);
-		}
-		// Iterate over list and fix width of each component and translate children
-		for(BlockComponent e : allNodes) {
-			if(e instanceof OperatorBlock) {
-				int width = ((OperatorBlock) e).correctWidth(controller.getDepth(e));
-				// Translate children to the left (<--)
-				if(controller.getLeft(e) != null) {
-					List<BlockComponent> childrenToMoveLeft = controller.getChildren(controller.getLeft(e));
-					childrenToMoveLeft.add(controller.getLeft(e));
-					for(BlockComponent f : childrenToMoveLeft) {
-						f.setLocation((int)f.getLocation().getX() - width, (int)f.getLocation().getY());
-					}
-				}
-				// Translate children to the right (-->)
-				if(controller.getRight(e) != null) {
-					List<BlockComponent> childrenToMoveRight = controller.getChildren(controller.getRight(e));
-					childrenToMoveRight.add(controller.getRight(e));
-					for(BlockComponent f : childrenToMoveRight) {
-						f.setLocation((int)f.getLocation().getX() + width, (int)f.getLocation().getY());
-					}
-				}
-			}
-		}
-	}
-	
-	/**
 	 * Highlights block and its children and removes old highlighted block.
 	 * @param block Block to highlight to.
 	 */

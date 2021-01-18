@@ -51,7 +51,7 @@ public class DragHandler implements ICustomHandler {
 		view.highlightBlocks(componentToDrag);
 		
 		// Display mesh in jMonkey
-		view.getController().setDisplayedMesh(componentToDrag);
+		view.getCSGModelManager().displayCSGModel(componentToDrag);
 
 		// Save position for dragging
 		screenX = e.getXOnScreen();

@@ -66,9 +66,11 @@ public class JME extends SimpleApplication {
 		for(Geometry geom : meshesToRemove) {
 			rootNode.detachChild(geom);
 		}
+		meshesToRemove.clear();
 		for(Geometry geom : meshesToAdd) {
 			rootNode.attachChild(geom);
 		}
+		meshesToAdd.clear();
 		
 		super.simpleUpdate(tpf);
 	}

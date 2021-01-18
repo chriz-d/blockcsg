@@ -119,16 +119,21 @@ public class SnapHandler implements ICustomHandler {
 					node.setLocation((int)(node.getX() + deltaPos.getX()),(int) (node.getY() + deltaPos.getY()));
 				}
 			}
+			
 			view.unHighlightBlocks();
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
 				view.highlightBlocks(attachedComponent);
-				view.getController().setDisplayedMesh(attachedComponent);
+				view.getCSGModelManager().undisplayCSGModel(closestBlock);
+				view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
+				//view.getCSGModelManager().displayCSGModel(attachedComponent);
 			} else {
 				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
 				view.highlightBlocks(closestBlock);
-				view.getController().setDisplayedMesh(closestBlock);
+				view.getCSGModelManager().undisplayCSGModel(attachedComponent);
+				view.getCSGModelManager().invokeCSGCalculation(closestBlock);
+				//view.getCSGModelManager().displayCSGModel(closestBlock);
 			}
 		}
 	}

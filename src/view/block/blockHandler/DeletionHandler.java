@@ -36,9 +36,13 @@ public class DeletionHandler implements ICustomHandler {
 			// delete children aswell
 			List<BlockComponent> children = view.getController().getChildren(attachedComponent);
 			view.getController().deleteTree(attachedComponent);
+			view.getCSGModelManager().undisplayCSGModel(attachedComponent);
+			view.getCSGModelManager().deleteCSGModel(attachedComponent);
 			for(BlockComponent child : children) {
 				child.getParent().remove(child);
 				view.getController().deleteTree(child);
+				view.getCSGModelManager().undisplayCSGModel(child);
+				view.getCSGModelManager().deleteCSGModel(child);
 			}
 		}
 	}

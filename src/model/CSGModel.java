@@ -1,10 +1,12 @@
 package model;
 
 import com.jme3.material.Material;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 
 import controller.TreeManager;
+import controller.CSGModelManager;
 import controller.JME;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
@@ -26,17 +28,20 @@ public class CSGModel {
 	
 	private TreeManager controller;
 	
+	private CSGModelManager modelMan;
+	
 	/**
 	 * Generates mesh depending on type of block
 	 */
-	public CSGModel(TreeManager controller, BlockComponent block) {
+	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block) {
 		this.controller = controller;
 		this.block = block;
-		csg = new CSGGeometry();
+		this.modelMan = modelMan;
+		csg = new CSGGeometry("New Element", new Mesh());
+		csg.setMaterial(new Material(JME.getInstance().getAssetManager(), 
+				"Common/MatDefs/Misc/ShowNormals.j3md"));
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
-			csg.setMaterial(new Material(JME.getInstance().getAssetManager(), 
-					"Common/MatDefs/Misc/ShowNormals.j3md"));
 			switch (primBlock.primType) {
 			case CUBE: csg.addShape(new CSGShape("Cube", new Box(1, 1, 1))); break;
 			case CYLINDER: csg.addShape(new CSGShape("Cylinder", new CSGCylinder(20, 20, 0.5f, 2))); break;
@@ -47,46 +52,36 @@ public class CSGModel {
 		csg.regenerate();
 	}
 	
+	public void startCSGGeneration() {
+		csg.addShape(generateCSGMesh());
+	}
+	
 	/**
 	 * Recursively computes CSG of all children of block.
 	 * (Very slow!)
 	 * @return
 	 */
-	public CSGShape generateCSGMesh() {
+	private CSGShape generateCSGMesh() {
 		if(block instanceof OperatorBlock) {
-			csg = new CSGGeometry();
+			csg.removeAllShapes();
 			OperatorBlock opBlock = (OperatorBlock) block;
-			csg.setMaterial(new Material(JME.getInstance().getAssetManager(), "Common/MatDefs/Misc/ShowNormals.j3md"));
-			CSGModel left = controller.getShape(controller.getLeft(block));
-			CSGModel right = controller.getShape(controller.getRight(block));
+			CSGModel left = modelMan.getCSG(controller.getLeft(block));
+			CSGModel right = modelMan.getCSG(controller.getRight(block));
 			if(left != null) {
 				CSGShape leftCSG = left.generateCSGMesh();
-				if(leftCSG != null) {
-					csg.addShape(left.generateCSGMesh());
-				}
+				csg.addShape(leftCSG);
 			}
 			if(right != null) {
 				CSGShape rightCSG = right.generateCSGMesh();
-				if(rightCSG != null) {
-					switch(opBlock.opType) {
-					case DIFFERENCE: csg.subtractShape(right.generateCSGMesh()); break;
-					case INTERSECT: csg.intersectShape(right.generateCSGMesh()); break;
-					case UNION: csg.addShape(right.generateCSGMesh()); break;
-					}
+				switch(opBlock.opType) {
+				case DIFFERENCE: csg.subtractShape(rightCSG); break;
+				case INTERSECT: csg.intersectShape(rightCSG); break;
+				case UNION: csg.addShape(rightCSG); break;
 				}
 			}
 		}
-		csg.regenerate();
-		if(csg.getMesh() != null) {
-			CSGShape result = new CSGShape("Result", csg.getMesh());
-			if(result != null) {
-				result.setMaterial(new Material(JME.getInstance().getAssetManager(), 
-						"Common/MatDefs/Misc/ShowNormals.j3md"));
-				
-			}
-			return result;
-		}
-		return null;
+		CSGShape newShape = csg.regenerate();
+		return newShape;
 	}
 	
 	public BlockComponent getBlock() {

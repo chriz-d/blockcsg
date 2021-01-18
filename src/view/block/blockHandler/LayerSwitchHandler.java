@@ -51,9 +51,6 @@ public class LayerSwitchHandler implements ICustomHandler {
 			SwingUtilities.convertPointFromScreen(mousePos, view.getTransferPanel());
 			// Minus 30 for middle of block and not edge
 			attachedComponent.setLocation(attachedComponent.getX(), (int)mousePos.getY() - 30);
-			
-			// Add block to shapeMap, so it get's displayed while dragging
-			view.getController().addShape(attachedComponent);
 		}
 	}
 

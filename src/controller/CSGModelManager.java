@@ -17,11 +17,15 @@ public class CSGModelManager {
 	}
 	
 	public void createCSGModel(BlockComponent block) {
-		modelMap.put(block, new CSGModel(treeMan, block));
+		modelMap.put(block, new CSGModel(treeMan, this, block));
 	}
 	
-	public void deleteCSGModel(BlockComponent model) {
-		modelMap.remove(model);
+	public void deleteCSGModel(BlockComponent block) {
+		modelMap.remove(block);
+	}
+	
+	public boolean hasCSGModel(BlockComponent block) {
+		return modelMap.containsKey(block);
 	}
 	
 	public void displayCSGModel(BlockComponent block) {
@@ -32,5 +36,13 @@ public class CSGModelManager {
 	public void undisplayCSGModel(BlockComponent block) {
 		CSGModel model = modelMap.get(block);
 		JME.getInstance().removeFromSceneGraph(model.getCSG());
+	}
+	
+	public CSGModel getCSG(BlockComponent block) {
+		return modelMap.get(block);
+	}
+	
+	public void invokeCSGCalculation(BlockComponent block) {
+		new Thread(new CSGCalculator(modelMap.get(block), this)).start();
 	}
 }

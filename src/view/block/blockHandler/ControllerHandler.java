@@ -25,6 +25,10 @@ public class ControllerHandler implements ICustomHandler {
 		if(!view.getController().hasTree(attachedComponent)) {
 			view.getController().createTree(attachedComponent);
 		}
+		if(!view.getCSGModelManager().hasCSGModel(attachedComponent)) {
+			view.getCSGModelManager().createCSGModel(attachedComponent);
+			view.getCSGModelManager().displayCSGModel(attachedComponent);
+		}
 	}
 
 	@Override

@@ -34,12 +34,8 @@ public class TreeManager {
 	/** Map containing trees of blocks. Every block has a tree. */
 	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
 	
-	/** Map for assigning each block a csg mesh */
-	private Map<BlockComponent, CSGModel> shapeMap;
-	
 	public TreeManager() {
 		treeMap = new HashMap<BlockComponent, BinaryTree<BlockComponent>>();
-		shapeMap = new HashMap<BlockComponent, CSGModel>();
 	}
 	
 	/**
@@ -56,9 +52,7 @@ public class TreeManager {
 	 * @param blockToDelete Block of which to delete tree.
 	 */
 	public void deleteTree(BlockComponent blockToDelete) {
-		JME.getInstance().removeFromSceneGraph(shapeMap.get(blockToDelete).getCSG());;
 		treeMap.remove(blockToDelete);
-		shapeMap.remove(blockToDelete);
 	}
 	
 	/**
@@ -137,19 +131,5 @@ public class TreeManager {
 	
 	public boolean hasTree(BlockComponent block) {
 		return treeMap.containsKey(block);
-	}
-	
-	/** Gets desired mesh by map lookup and computes complete mesh in thread */
-	public void setDisplayedMesh(BlockComponent block) {
-		CSGModel shape = shapeMap.get(block);
-		new Thread(new CSGCalculator(shape)).start();
-	}
-	
-	public void addShape(BlockComponent block) {
-		shapeMap.put(block, new CSGModel(this, block));
-	}
-	
-	public CSGModel getShape(BlockComponent block) {
-		return shapeMap.get(block);
 	}
 }

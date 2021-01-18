@@ -42,7 +42,7 @@ import view.menuBarHandler.ExportHandler;
  */
 public class View {
 	
-	private TreeManager controller;
+	private TreeManager treeMan;
 	
 	private CSGModelManager modelMan;
 	
@@ -65,8 +65,8 @@ public class View {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
-	public View(TreeManager controller, CSGModelManager modelMan, JME jme) {
-		this.controller = controller;
+	public View(TreeManager treeMan, CSGModelManager modelMan, JME jme) {
+		this.treeMan = treeMan;
 		this.modelMan = modelMan;
 		this.jme = jme;
 	}
@@ -95,8 +95,8 @@ public class View {
 		frame.setVisible(true);
 	}
 
-	public TreeManager getController() {
-		return controller;
+	public TreeManager getTreeManager() {
+		return treeMan;
 	}
 	
 	public CSGModelManager getCSGModelManager() {
@@ -202,7 +202,7 @@ public class View {
 		// Add event handler for menu items
 		about.addActionListener(new AboutHandler());
 		controls.addActionListener(new ControlsHandler());
-		export.addActionListener(new ExportHandler(controller));
+		export.addActionListener(new ExportHandler(treeMan));
 	}
 	
 	/**
@@ -229,7 +229,7 @@ public class View {
 	public void highlightBlocks(BlockComponent block) {
 		lastSelected = block;
 		lastSelected.color += 10000;
-		List<BlockComponent> children = controller.getChildren(block);
+		List<BlockComponent> children = treeMan.getChildren(block);
 		for(BlockComponent child : children) {
 			child.color += 10000;
 		}
@@ -242,7 +242,7 @@ public class View {
 	public void unHighlightBlocks() {
 		if(lastSelected != null) {
 			lastSelected.color -= 10000; 
-			List<BlockComponent> children = controller.getChildren(lastSelected);
+			List<BlockComponent> children = treeMan.getChildren(lastSelected);
 			for(BlockComponent child : children) {
 				child.color -= 10000;
 			}

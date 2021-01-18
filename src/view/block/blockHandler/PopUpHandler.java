@@ -98,7 +98,7 @@ public class PopUpHandler implements ICustomHandler {
 				float zPos = Float.valueOf(zSpinner.getValue().toString());
 				
 				Vector3f newPos = new Vector3f(xPos, yPos, zPos);
-				view.getController().getShape(attachedComponent).getCSG().setLocalTranslation(newPos);
+				view.getTreeManager().getShape(attachedComponent).getCSG().setLocalTranslation(newPos);
 				popup.setVisible(false);
 			}
 		});
@@ -180,7 +180,7 @@ public class PopUpHandler implements ICustomHandler {
 		c.gridx = 2;
 		posPanel.add(zPosSpinner, c);
 		
-		TreeManager controller = view.getController();
+		TreeManager controller = view.getTreeManager();
 		CSGModel shape = controller.getShape(attachedComponent);
 		Vector3f pos = shape.getCSG().getLocalTranslation();
 		xPosSpinner.setValue(pos.x);

@@ -34,7 +34,7 @@ public class LayerSwitchHandler implements ICustomHandler {
 		// Switch layers
 		attachedComponent.getParent().remove(attachedComponent);
 		view.getTransferPanel().add(attachedComponent);
-		List<BlockComponent> children = view.getController().getChildren(attachedComponent);
+		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		for(BlockComponent child : children) {
 			child.getParent().remove(child);
 			view.getTransferPanel().add(child);
@@ -69,7 +69,7 @@ public class LayerSwitchHandler implements ICustomHandler {
 		attachedComponent.setLocation(
 				attachedComponent.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 
 				attachedComponent.getY());
-		List<BlockComponent> children = view.getController().getChildren(attachedComponent);
+		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		for(BlockComponent child : children) {
 			child.setLocation(
 					child.getX() - view.getBlockViewPanel().getComponent(0).getWidth(), 

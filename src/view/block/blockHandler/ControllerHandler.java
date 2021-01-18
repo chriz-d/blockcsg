@@ -22,8 +22,8 @@ public class ControllerHandler implements ICustomHandler {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// If first time placing, create tree for block
-		if(!view.getController().hasTree(attachedComponent)) {
-			view.getController().createTree(attachedComponent);
+		if(!view.getTreeManager().hasTree(attachedComponent)) {
+			view.getTreeManager().createTree(attachedComponent);
 		}
 		if(!view.getCSGModelManager().hasCSGModel(attachedComponent)) {
 			view.getCSGModelManager().createCSGModel(attachedComponent);

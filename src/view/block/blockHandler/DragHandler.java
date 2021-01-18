@@ -34,7 +34,7 @@ public class DragHandler implements ICustomHandler {
 		// Move component
 		componentToDrag.setLocation(componentToDrag.getX() + deltaX, componentToDrag.getY() + deltaY);
 		// Move children
-		List<BlockComponent> children = view.getController().getChildren(componentToDrag);
+		List<BlockComponent> children = view.getTreeManager().getChildren(componentToDrag);
 		if(children != null) {
 			for(BlockComponent child : children) {
 				child.setLocation(child.getX() + deltaX, child.getY() + deltaY);

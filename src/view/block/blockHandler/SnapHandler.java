@@ -30,7 +30,7 @@ public class SnapHandler implements ICustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		BlockComponent root = view.getController().getRoot(attachedComponent);
+		BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
 		if(!root.equals(attachedComponent)) {
 			view.getCSGModelManager().invokeCSGCalculation(root);
 		}
@@ -45,7 +45,7 @@ public class SnapHandler implements ICustomHandler {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		List<BlockComponent> children = view.getController().getChildren(attachedComponent);
+		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		// Find closest snapping point and set component position to it if necessary
 		snapToClosestBlock(attachedComponent);
 		
@@ -65,7 +65,7 @@ public class SnapHandler implements ICustomHandler {
 		// Remove all children of component to drag from list, or else it snaps to itself!
 		List<Component> componentList = 
 				new ArrayList<Component>(Arrays.asList(view.getWorkspacePanel().getComponents()));
-		List<BlockComponent> children = view.getController().getChildren(componentToSnap);
+		List<BlockComponent> children = view.getTreeManager().getChildren(componentToSnap);
 		for(BlockComponent e : children) {
 			componentList.remove(e);
 		}
@@ -115,7 +115,7 @@ public class SnapHandler implements ICustomHandler {
 			componentToSnap.setLocation(spPos.x, spPos.y);
 			
 			// Get all nodes and repos
-			TreeManager controller = view.getController();
+			TreeManager controller = view.getTreeManager();
 			List<BlockComponent> allNodes = controller.getChildren(controller.getRoot(componentToSnap));
 			allNodes.add(controller.getRoot(componentToSnap));
 			for(BlockComponent node : allNodes) {
@@ -127,13 +127,13 @@ public class SnapHandler implements ICustomHandler {
 			view.unHighlightBlocks();
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
-				view.getController().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
+				view.getTreeManager().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
 				view.highlightBlocks(attachedComponent);
 				view.getCSGModelManager().undisplayCSGModel(closestBlock);
 				view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
 			} else {
-				view.getController().addToTree(componentToSnap, closestBlock, closestSocket.direction);
-				BlockComponent root = view.getController().getRoot(closestBlock);
+				view.getTreeManager().addToTree(componentToSnap, closestBlock, closestSocket.direction);
+				BlockComponent root = view.getTreeManager().getRoot(closestBlock);
 				view.highlightBlocks(root);
 				view.getCSGModelManager().undisplayCSGModel(attachedComponent);
 				view.getCSGModelManager().invokeCSGCalculation(root);

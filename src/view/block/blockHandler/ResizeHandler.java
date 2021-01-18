@@ -52,7 +52,7 @@ public class ResizeHandler implements ICustomHandler {
 	 * @param doDelete Flag for deleting the specified block beforehand.
 	 */
 	public void resizeTree(BlockComponent block, boolean doDelete) {
-		TreeManager controller =  view.getController();
+		TreeManager controller =  view.getTreeManager();
 		BlockComponent root = controller.getRoot(block);
 		// Get every node in tree
 		List<BlockComponent> allNodes = controller.getChildren(root);

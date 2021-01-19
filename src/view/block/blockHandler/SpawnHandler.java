@@ -36,7 +36,7 @@ public class SpawnHandler implements ICustomHandler {
         view.getTransferPanel().add(spawnableComponent);
 
         HandlerManager hm = (HandlerManager) spawnableComponent.getMouseListeners()[0];
-        //hm.addHandler(new PopUpHandler(spawnableComponent, view));
+        hm.addHandler(new PopUpHandler(spawnableComponent, view));
         hm.addHandler(new ControllerHandler(spawnableComponent, view));
         hm.addHandler(new LayerSwitchHandler(spawnableComponent, view));
         hm.addHandler(new DragHandler(spawnableComponent, view));

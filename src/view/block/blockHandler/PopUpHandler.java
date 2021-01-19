@@ -98,7 +98,16 @@ public class PopUpHandler implements ICustomHandler {
 				float zPos = Float.valueOf(zSpinner.getValue().toString());
 				
 				Vector3f newPos = new Vector3f(xPos, yPos, zPos);
-				view.getTreeManager().getShape(attachedComponent).getCSG().setLocalTranslation(newPos);
+				view.getCSGModelManager().getCSG(attachedComponent).getCSG().setLocalTranslation(newPos);
+				xSpinner = (JSpinner)components.get("xRotSpinner");
+				ySpinner = (JSpinner)components.get("yRotSpinner");
+				zSpinner = (JSpinner)components.get("zRotSpinner");
+				float xRot = Float.valueOf(xSpinner.getValue().toString());
+				float yRot = Float.valueOf(ySpinner.getValue().toString());
+				float zRot = Float.valueOf(zSpinner.getValue().toString());
+				
+				newPos = new Vector3f(xRot, yRot, zRot);
+				view.getCSGModelManager().getCSG(attachedComponent).getCSG().rotate(xRot, yRot, zRot);
 				popup.setVisible(false);
 			}
 		});
@@ -180,8 +189,7 @@ public class PopUpHandler implements ICustomHandler {
 		c.gridx = 2;
 		posPanel.add(zPosSpinner, c);
 		
-		TreeManager controller = view.getTreeManager();
-		CSGModel shape = controller.getShape(attachedComponent);
+		CSGModel shape = view.getCSGModelManager().getCSG(attachedComponent);
 		Vector3f pos = shape.getCSG().getLocalTranslation();
 		xPosSpinner.setValue(pos.x);
 		yPosSpinner.setValue(pos.y);

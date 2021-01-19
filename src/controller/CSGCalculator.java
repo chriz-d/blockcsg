@@ -1,5 +1,7 @@
 package controller;
 
+import com.jme3.math.Vector3f;
+
 import model.CSGModel;
 import net.wcomohundro.jme3.csg.CSGShape;
 /**

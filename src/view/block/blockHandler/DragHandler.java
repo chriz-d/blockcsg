@@ -15,7 +15,7 @@ public class DragHandler implements ICustomHandler {
 	
 	private View view;
 	/** The component the event handler is attached to. */
-	private BlockComponent componentToDrag;
+	private BlockComponent attachedComponent;
 	
 	/** Helper variable for dragging */
 	private int screenX = 0;
@@ -23,7 +23,7 @@ public class DragHandler implements ICustomHandler {
 	private int screenY = 0;
 	
 	public DragHandler(BlockComponent componentToDrag, View view) {
-		this.componentToDrag = componentToDrag;
+		this.attachedComponent = componentToDrag;
 		this.view = view;
 	}
 	
@@ -32,9 +32,9 @@ public class DragHandler implements ICustomHandler {
 		int deltaX = e.getXOnScreen() - screenX;
 		int deltaY = e.getYOnScreen() - screenY;
 		// Move component
-		componentToDrag.setLocation(componentToDrag.getX() + deltaX, componentToDrag.getY() + deltaY);
+		attachedComponent.setLocation(attachedComponent.getX() + deltaX, attachedComponent.getY() + deltaY);
 		// Move children
-		List<BlockComponent> children = view.getTreeManager().getChildren(componentToDrag);
+		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		if(children != null) {
 			for(BlockComponent child : children) {
 				child.setLocation(child.getX() + deltaX, child.getY() + deltaY);
@@ -48,14 +48,18 @@ public class DragHandler implements ICustomHandler {
 	public void mousePressed(MouseEvent e) {
 		// Selection color
 		view.unHighlightBlocks();
-		view.highlightBlocks(componentToDrag);
+		view.highlightBlocks(attachedComponent);
 		
-		// Display mesh in jMonkey
-		view.getCSGModelManager().displayCSGModel(componentToDrag);
+		// Recalculate prev connected CSG without this component
+		view.getCSGModelManager().displayCSGModel(attachedComponent);
 
 		// Save position for dragging
 		screenX = e.getXOnScreen();
 		screenY = e.getYOnScreen();
+		
+		// Disconnect all sockets
+		attachedComponent.disconnectSockets();
+		
 		view.getFrame().repaint();
 	}
 

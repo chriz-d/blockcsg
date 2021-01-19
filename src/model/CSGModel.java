@@ -57,7 +57,10 @@ public class CSGModel {
 	}
 	
 	public void startCSGGeneration() {
-		csg.addShape(generateCSGMesh());
+		generateCSGMesh();
+//		if(shape != null) {
+//			csg.addShape(shape);
+//		}
 	}
 	
 	/**
@@ -67,7 +70,8 @@ public class CSGModel {
 	 */
 	private CSGShape generateCSGMesh() {
 		if(block instanceof OperatorBlock) {
-			csg.removeAllShapes();
+			csg = new CSGGeometry("New Element", new Mesh());
+			csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
 			OperatorBlock opBlock = (OperatorBlock) block;
 			CSGModel left = modelMan.getCSG(controller.getLeft(block));
 			CSGModel right = modelMan.getCSG(controller.getRight(block));

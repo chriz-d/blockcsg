@@ -26,10 +26,15 @@ public class ResizeHandler implements ICustomHandler {
 	public void mousePressed(MouseEvent e) {
 		// Resize components
 		// Remove from tree
-		resizeTree(attachedComponent, true);
-		
+		BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
+		view.getTreeManager().removeFromTree(attachedComponent);
+		resizeTree(root);
+		if(!root.equals(attachedComponent)) {
+			view.getCSGModelManager().invokeCSGCalculation(root);
+		}
 		// Repeat resize, this time only for dragged opponent and children
-		resizeTree(attachedComponent, false);
+		resizeTree(attachedComponent);
+		//view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
 		
 	}
 
@@ -42,7 +47,7 @@ public class ResizeHandler implements ICustomHandler {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// Resize tree
-		resizeTree(attachedComponent, false);
+		resizeTree(attachedComponent);
 		
 	}
 
@@ -51,16 +56,12 @@ public class ResizeHandler implements ICustomHandler {
 	 * @param block Block if which tree gets resized.
 	 * @param doDelete Flag for deleting the specified block beforehand.
 	 */
-	public void resizeTree(BlockComponent block, boolean doDelete) {
+	public void resizeTree(BlockComponent block) {
 		TreeManager controller =  view.getTreeManager();
 		BlockComponent root = controller.getRoot(block);
 		// Get every node in tree
 		List<BlockComponent> allNodes = controller.getChildren(root);
 		allNodes.add(root);
-		if(doDelete) {
-			allNodes.remove(block);
-			controller.removeFromTree(block);
-		}
 		// Iterate over list and fix width of each component and translate children
 		for(BlockComponent e : allNodes) {
 			if(e instanceof OperatorBlock) {

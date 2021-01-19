@@ -30,12 +30,6 @@ public class SnapHandler implements ICustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
-		if(!root.equals(attachedComponent)) {
-			view.getCSGModelManager().invokeCSGCalculation(root);
-		}
-		// Disconnect all sockets
-		attachedComponent.disconnectSockets();
 	}
 
 	@Override

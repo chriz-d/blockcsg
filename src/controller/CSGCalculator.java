@@ -26,5 +26,5 @@ public class CSGCalculator implements Runnable {
 		modelMan.displayCSGModel(shape.getBlock());
 		//JME.getInstance().addToSceneGraph(shape.getCSG());
 	}
-
+	
 }

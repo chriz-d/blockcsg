@@ -40,7 +40,7 @@ public class CSGModelManager {
 		jme.removeFromSceneGraph(model.getCSG());
 	}
 	
-	public CSGModel getCSG(BlockComponent block) {
+	public CSGModel getCSGModel(BlockComponent block) {
 		return modelMap.get(block);
 	}
 	

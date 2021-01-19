@@ -35,11 +35,11 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	private boolean ignoreAction;
 
 	/** List of all active event handlers */
-	private List<ICustomHandler> handlers;
+	private List<CustomHandler> handlers;
 
 	public HandlerManager(BlockComponent attachedComponent, View view) {
 		this.attachedComponent = attachedComponent;
-		handlers = new ArrayList<ICustomHandler>();
+		handlers = new ArrayList<CustomHandler>();
 		ignoreAction = false;
 	}
 	
@@ -68,7 +68,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		}
 		// Check if component below is meant
 		if(componentBelow == null) {
-			for(ICustomHandler handler : handlers) {
+			for(CustomHandler handler : handlers) {
 				handler.mouseDragged(e);
 			}
 		} else {
@@ -87,7 +87,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		
 		// Check if component below is meant
 		if(componentBelow == null) {
-			for(ICustomHandler handler : handlers) {
+			for(CustomHandler handler : handlers) {
 				handler.mouseReleased(e);
 			}
 		} else {
@@ -122,7 +122,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		return result;
 	}
 	
-	public void addHandler(ICustomHandler handler) {
+	public void addHandler(CustomHandler handler) {
 		handlers.add(handler);
 	}
 	

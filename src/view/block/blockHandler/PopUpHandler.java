@@ -29,15 +29,12 @@ import view.View;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
 
-public class PopUpHandler implements ICustomHandler {
+public class PopUpHandler extends CustomHandler {
 
-	private View view;
-	private BlockComponent attachedComponent;
 	private Map<String, Component> components;
 	
 	public PopUpHandler(BlockComponent attachedComponent,View view) {
-		this.attachedComponent = attachedComponent;
-		this.view = view;
+		super(attachedComponent, view);
 		components = new HashMap<>();
 	}
 	

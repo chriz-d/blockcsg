@@ -11,20 +11,27 @@ import view.block.BlockComponent;
  * @author chriz
  *
  */
-public class DragHandler implements ICustomHandler {
-	
-	private View view;
-	/** The component the event handler is attached to. */
-	private BlockComponent attachedComponent;
+public class DragHandler extends CustomHandler {
 	
 	/** Helper variable for dragging */
 	private int screenX = 0;
 	/** Helper variable for dragging */
 	private int screenY = 0;
 	
-	public DragHandler(BlockComponent componentToDrag, View view) {
-		this.attachedComponent = componentToDrag;
-		this.view = view;
+	public DragHandler(BlockComponent attachedComponent, View view) {
+		super(attachedComponent, view);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// Recalculate prev connected CSG without this component
+		//view.getCSGModelManager().displayCSGModel(attachedComponent);
+		
+		// Save position for dragging
+		screenX = e.getXOnScreen();
+		screenY = e.getYOnScreen();
+		
+		view.getFrame().repaint();
 	}
 	
 	@Override
@@ -42,25 +49,6 @@ public class DragHandler implements ICustomHandler {
 		}
 		screenX = e.getXOnScreen();
 		screenY = e.getYOnScreen();
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// Selection color
-		view.unHighlightBlocks();
-		view.highlightBlocks(attachedComponent);
-		
-		// Recalculate prev connected CSG without this component
-		view.getCSGModelManager().displayCSGModel(attachedComponent);
-
-		// Save position for dragging
-		screenX = e.getXOnScreen();
-		screenY = e.getYOnScreen();
-		
-		// Disconnect all sockets
-		attachedComponent.disconnectSockets();
-		
-		view.getFrame().repaint();
 	}
 
 	@Override

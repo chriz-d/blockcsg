@@ -13,38 +13,36 @@ import view.block.BlockComponent;
  * @author chriz
  *
  */
-public class SpawnHandler implements ICustomHandler {
+public class SpawnHandler extends CustomHandler {
 	
-	private BlockComponent spawnableComponent;
-	private View view;
-	
-	public SpawnHandler(BlockComponent spawnableComponent, View view) {
-		this.spawnableComponent = spawnableComponent;
-		this.view = view;
+	public SpawnHandler(BlockComponent attachedComponent, View view) {
+		super(attachedComponent, view);
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// Clone component and place at old components position
-        BlockComponent spawnedComp = (BlockComponent) Support.deepCopy(spawnableComponent);
-        spawnedComp.setBounds(spawnableComponent.getX(), spawnableComponent.getY(), spawnableComponent.getWidth(), spawnableComponent.getHeight());
+        BlockComponent spawnedComp = (BlockComponent) Support.deepCopy(attachedComponent);
+        spawnedComp.setBounds(attachedComponent.getX(), attachedComponent.getY(), attachedComponent.getWidth(), attachedComponent.getHeight());
         
-        Container parent = spawnableComponent.getParent();
+        Container parent = attachedComponent.getParent();
         // Get index of old element for inserting clone into same position
-        int index = Arrays.asList(parent.getComponents()).indexOf(spawnableComponent);
-        parent.remove(spawnableComponent);
-        view.getTransferPanel().add(spawnableComponent);
+        int index = Arrays.asList(parent.getComponents()).indexOf(attachedComponent);
+        parent.remove(attachedComponent);
+        view.getTransferPanel().add(attachedComponent);
 
-        HandlerManager hm = (HandlerManager) spawnableComponent.getMouseListeners()[0];
-        hm.addHandler(new PopUpHandler(spawnableComponent, view));
-        hm.addHandler(new ControllerHandler(spawnableComponent, view));
-        hm.addHandler(new LayerSwitchHandler(spawnableComponent, view));
-        hm.addHandler(new DragHandler(spawnableComponent, view));
-        hm.addHandler(new SnapHandler(spawnableComponent, view));
-        hm.addHandler(new ResizeHandler(spawnableComponent, view));
-        hm.addHandler(new DeletionHandler(spawnableComponent, view));
+        HandlerMemory mem = new HandlerMemory();
+        HandlerManager hm = (HandlerManager) attachedComponent.getMouseListeners()[0];
+        hm.addHandler(new PopUpHandler(attachedComponent, view));
+        hm.addHandler(new ControllerHandler(attachedComponent, view, mem));
+        hm.addHandler(new LayerSwitchHandler(attachedComponent, view));
+        hm.addHandler(new DragHandler(attachedComponent, view));
+        hm.addHandler(new SnapHandler(attachedComponent, view));
+        hm.addHandler(new ResizeHandler(attachedComponent, view, mem));
+        hm.addHandler(new HighlighterHandler(attachedComponent, view));
+        hm.addHandler(new DeletionHandler(attachedComponent, view));
         
-        spawnableComponent.addMouseMotionListener(hm);
+        attachedComponent.addMouseMotionListener(hm);
         parent.add(spawnedComp, index);
         HandlerManager newHm = new HandlerManager(spawnedComp, view);
         newHm.addHandler(new SpawnHandler(spawnedComp, view));

@@ -9,14 +9,13 @@ import view.block.BlockComponent;
  * @author chriz
  *
  */
-public class ControllerHandler implements ICustomHandler {
+public class ControllerHandler extends CustomHandler {
 
-	private View view;
-	private BlockComponent attachedComponent;
+	private HandlerMemory mem;
 	
-	public ControllerHandler(BlockComponent attachedComponent, View view) {
-		this.attachedComponent = attachedComponent;
-		this.view = view;
+	public ControllerHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
+		super(attachedComponent, view);
+		this.mem = mem;
 	}
 	
 	@Override
@@ -29,6 +28,8 @@ public class ControllerHandler implements ICustomHandler {
 			view.getCSGModelManager().createCSGModel(attachedComponent);
 			view.getCSGModelManager().displayCSGModel(attachedComponent);
 		}
+		mem.setOldRoot(view.getTreeManager().getRoot(attachedComponent));
+		view.getTreeManager().removeFromTree(attachedComponent);
 	}
 
 	@Override

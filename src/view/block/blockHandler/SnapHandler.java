@@ -18,18 +18,16 @@ import view.block.BlockSocket.SocketType;
  * @author chriz
  *
  */
-public class SnapHandler implements ICustomHandler {
+public class SnapHandler extends CustomHandler {
 
-	private View view;
-	private BlockComponent attachedComponent;
-	
-	public SnapHandler(BlockComponent attachedComponent,View view) {
-		this.attachedComponent = attachedComponent;
-		this.view = view;
+	public SnapHandler(BlockComponent attachedComponent, View view) {
+		super(attachedComponent, view);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// Disconnect all sockets
+		attachedComponent.disconnectSockets();
 	}
 
 	@Override
@@ -118,17 +116,14 @@ public class SnapHandler implements ICustomHandler {
 				}
 			}
 			
-			view.unHighlightBlocks();
 			// Add to model
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getTreeManager().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
-				view.highlightBlocks(attachedComponent);
 				view.getCSGModelManager().undisplayCSGModel(closestBlock);
 				view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
 			} else {
 				view.getTreeManager().addToTree(componentToSnap, closestBlock, closestSocket.direction);
 				BlockComponent root = view.getTreeManager().getRoot(closestBlock);
-				view.highlightBlocks(root);
 				view.getCSGModelManager().undisplayCSGModel(attachedComponent);
 				view.getCSGModelManager().invokeCSGCalculation(root);
 			}

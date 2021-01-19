@@ -15,17 +15,13 @@ import view.block.BlockComponent;
  * @author chriz
  *
  */
-public class LayerSwitchHandler implements ICustomHandler {
-
-	private View view;
-	private BlockComponent attachedComponent;
+public class LayerSwitchHandler extends CustomHandler {
 	
 	/** Flag for initial offset when spawning, needed for compensating the offset of the drawer. */
 	private boolean isFreshlySpawned;
 	
 	public LayerSwitchHandler(BlockComponent attachedComponent,View view) {
-		this.attachedComponent = attachedComponent;
-		this.view = view;
+		super(attachedComponent, view);
 		isFreshlySpawned = true;
 	}
 

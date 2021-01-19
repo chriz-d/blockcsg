@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -59,8 +60,7 @@ public class View {
 	/** Hosts jMonkey viewport */
 	private JPanel jMonkeyPanel;
 	
-	/** Reference of the last selected element, used for highlighting */
-	private BlockComponent lastSelected;
+	private List<BlockComponent> highlightedBlocks;
 	
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
@@ -69,6 +69,7 @@ public class View {
 		this.treeMan = treeMan;
 		this.modelMan = modelMan;
 		this.jme = jme;
+		highlightedBlocks = new ArrayList<>();
 	}
 	
 	/**
@@ -222,38 +223,6 @@ public class View {
 		});
 	}
 	
-	/**
-	 * Highlights block and its children and removes old highlighted block.
-	 * @param block Block to highlight to.
-	 */
-	public void highlightBlocks(BlockComponent block) {
-		lastSelected = block;
-		lastSelected.color += 10000;
-		List<BlockComponent> children = treeMan.getChildren(block);
-		for(BlockComponent child : children) {
-			child.color += 10000;
-		}
-	}
-	
-	/**
-	 * Removes old highlighted block.
-	 * @param block Block to remove highlight from.
-	 */
-	public void unHighlightBlocks() {
-		if(lastSelected != null) {
-			lastSelected.color -= 10000; 
-			List<BlockComponent> children = treeMan.getChildren(lastSelected);
-			for(BlockComponent child : children) {
-				child.color -= 10000;
-			}
-		}
-		lastSelected = null;
-	}
-	
-	public void setLastSelected(BlockComponent lastSelected) {
-		this.lastSelected = lastSelected;
-	}
-	
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -268,5 +237,13 @@ public class View {
 	
 	public JPanel getTransferPanel() {
 		return transferPanel;
+	}
+	
+	public List<BlockComponent> getHighlightedBlocks() {
+		return highlightedBlocks;
+	}
+	
+	public void setHighlightedBlocks(List<BlockComponent> highlightedBlocks) {
+		this.highlightedBlocks = highlightedBlocks;
 	}
 }

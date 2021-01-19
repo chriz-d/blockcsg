@@ -12,26 +12,22 @@ import view.block.OperatorBlock;
  * @author chriz
  *
  */
-public class ResizeHandler implements ICustomHandler {
+public class ResizeHandler extends CustomHandler {
 	
-	private View view;
-	private BlockComponent attachedComponent;
+	private HandlerMemory mem;
 	
-	public ResizeHandler(BlockComponent attachedComponent, View view) {
-		this.attachedComponent = attachedComponent;
-		this.view = view;
+	public ResizeHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
+		super(attachedComponent, view);
+		this.mem = mem;
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// Resize components
 		// Remove from tree
-		BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
+		BlockComponent root = mem.getOldRoot();
 		view.getTreeManager().removeFromTree(attachedComponent);
 		resizeTree(root);
-		if(!root.equals(attachedComponent)) {
-			view.getCSGModelManager().invokeCSGCalculation(root);
-		}
 		// Repeat resize, this time only for dragged opponent and children
 		resizeTree(attachedComponent);
 		//view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
@@ -48,7 +44,6 @@ public class ResizeHandler implements ICustomHandler {
 	public void mouseReleased(MouseEvent e) {
 		// Resize tree
 		resizeTree(attachedComponent);
-		
 	}
 
 	/**

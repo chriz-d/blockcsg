@@ -11,14 +11,10 @@ import view.block.BlockComponent;
  * @author chriz
  *
  */
-public class DeletionHandler implements ICustomHandler {
+public class DeletionHandler extends CustomHandler {
 
-	private View view;
-	private BlockComponent attachedComponent;
-	
-	public DeletionHandler(BlockComponent attachedComponent,View view) {
-		this.attachedComponent = attachedComponent;
-		this.view = view;
+	public DeletionHandler(BlockComponent attachedComponent, View view) {
+		super(attachedComponent, view);
 	}
 	
 	@Override
@@ -31,7 +27,7 @@ public class DeletionHandler implements ICustomHandler {
 	public void mouseReleased(MouseEvent e) {
 		if(Support.isOutOfBounds(view.getFrame().getMousePosition(), 
 				view.getWorkspacePanel().getBounds())) {
-			view.setLastSelected(null);
+			
 			attachedComponent.getParent().remove(attachedComponent);
 			// delete children aswell
 			List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);

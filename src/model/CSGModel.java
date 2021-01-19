@@ -2,9 +2,14 @@ package model;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.VertexBuffer;
+import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
+import com.jme3.util.BufferUtils;
 
 import controller.TreeManager;
 import controller.CSGModelManager;
@@ -73,21 +78,32 @@ public class CSGModel {
 			CSGModel right = modelMan.getCSGModel(controller.getRight(block));
 			if(left != null) {
 				CSGShape leftCSG = left.generateCSGMesh();
-				csgBlender.addShape(leftCSG);
+				if(leftCSG != null) {
+					csgBlender.addShape(leftCSG);
+				}
 			}
 			if(right != null) {
 				CSGShape rightCSG = right.generateCSGMesh();
-				switch(opBlock.opType) {
-				case DIFFERENCE: csgBlender.subtractShape(rightCSG); break;
-				case INTERSECT: csgBlender.intersectShape(rightCSG); break;
-				case UNION: csgBlender.addShape(rightCSG); break;
+				if(rightCSG != null) {
+					switch(opBlock.opType) {
+					case DIFFERENCE: csgBlender.subtractShape(rightCSG); break;
+					case INTERSECT: csgBlender.intersectShape(rightCSG); break;
+					case UNION: csgBlender.addShape(rightCSG); break;
+					}
 				}
 			}
 		} else {
 			csgBlender.addShape(csg);
 		}
 		csgBlender.regenerate();
-		csg = new CSGShape("ReturnVal", csgBlender.getMesh());
+		
+		if(csgBlender.getMesh() == null) {
+			csg = new CSGShape("ReturnVal", new Mesh());
+			csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+			return null;
+		} else {
+			csg = new CSGShape("ReturnVal", csgBlender.getMesh());
+		}
 		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
 		return csg;
 	}

@@ -125,14 +125,11 @@ public class SnapHandler extends CustomHandler {
 				view.getTreeManager().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
 				mem.setElementToHide(closestBlock);
 				mem.addElementToInvokeCSG(attachedComponent);
-				HandlerManager closestBlockHm = (HandlerManager)closestBlock.getMouseListeners()[0];
-				closestBlockHm.getHandlerMemory().setSnapOccurred(true);
 			} else {
 				view.getTreeManager().addToTree(componentToSnap, closestBlock, closestSocket.direction);
 				BlockComponent root = view.getTreeManager().getRoot(closestBlock);
 				mem.setElementToHide(attachedComponent);
 				mem.addElementToInvokeCSG(root);
-				mem.setSnapOccurred(true);
 			}
 		}
 	}

@@ -32,7 +32,7 @@ public class SpawnHandler extends CustomHandler {
         view.getTransferPanel().add(attachedComponent);
 
         HandlerManager hm = (HandlerManager) attachedComponent.getMouseListeners()[0];
-        HandlerMemory mem = hm.getHandlerMemory();
+        HandlerMemory mem = new HandlerMemory();
         hm.addHandler(new PopUpHandler(attachedComponent, view));
         hm.addHandler(new ControllerHandler(attachedComponent, view, mem));
         hm.addHandler(new LayerSwitchHandler(attachedComponent, view));

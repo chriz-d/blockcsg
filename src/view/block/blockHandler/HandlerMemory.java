@@ -9,8 +9,6 @@ public class HandlerMemory {
 	
 	private BlockComponent oldRoot;
 	private BlockComponent elementToHide;
-	private boolean snapOccurred;
-	
 
 	private List<BlockComponent> invokeList;
 	
@@ -40,13 +38,5 @@ public class HandlerMemory {
 	
 	public void setElementToHide(BlockComponent elementToHide) {
 		this.elementToHide = elementToHide;
-	}
-
-	public boolean isSnapOccurred() {
-		return snapOccurred;
-	}
-
-	public void setSnapOccurred(boolean snapOccurred) {
-		this.snapOccurred = snapOccurred;
 	}
 }

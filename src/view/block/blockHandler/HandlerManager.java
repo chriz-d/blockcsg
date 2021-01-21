@@ -33,8 +33,6 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	
 	/** Flag for ignoring events */
 	private boolean ignoreAction;
-
-	private HandlerMemory mem;
 	
 	/** List of all active event handlers */
 	private List<CustomHandler> handlers;
@@ -43,7 +41,6 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 		this.attachedComponent = attachedComponent;
 		handlers = new ArrayList<CustomHandler>();
 		ignoreAction = false;
-		mem = new HandlerMemory();
 	}
 	
 	@Override
@@ -136,10 +133,6 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 				handlers.remove(i);
 			}
 		}
-	}
-	
-	public HandlerMemory getHandlerMemory() {
-		return mem;
 	}
 	
 	// Dead weight

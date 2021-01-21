@@ -2,7 +2,6 @@ package view.block.blockHandler;
 
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Set;
 
 import view.View;
 import view.block.BlockComponent;
@@ -22,13 +21,11 @@ public class CSGHandler extends CustomHandler {
 	 */
 	@Override
 	protected void mousePressed(MouseEvent e) {
-		//startInvocation();
 		if(mem.getElementToHide() != null) {
 			view.getCSGModelManager().undisplayCSGModel(mem.getElementToHide());
 			mem.setElementToHide(null);
 		}
-		if(mem.isSnapOccurred()) {
-			mem.setSnapOccurred(false);
+		if(!attachedComponent.equals(mem.getOldRoot())) {
 			view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
 			view.getCSGModelManager().invokeCSGCalculation(mem.getOldRoot());
 		}

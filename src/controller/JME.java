@@ -7,10 +7,13 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.debug.Grid;
 import com.jme3.util.SkyFactory;
 
 public class JME extends SimpleApplication {
@@ -36,6 +39,17 @@ public class JME extends SimpleApplication {
 		camNode.getCamera().lookAt(new Vector3f(0, 0, 0), new Vector3f(0, 1, 0));
 		rootNode.attachChild(node);
 		enableCameraControls(node);
+		
+		viewPort.setBackgroundColor(ColorRGBA.DarkGray);
+		
+		// Create Grid
+		Grid grid = new Grid(20, 20, 1);
+		Geometry geom = new Geometry("grid", grid);
+		Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", ColorRGBA.LightGray);
+		geom.setLocalTranslation(-9, -1, -9);
+		geom.setMaterial(mat);
+		rootNode.attachChild(geom);
 	}
 	
 	/**

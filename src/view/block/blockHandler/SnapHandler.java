@@ -20,8 +20,11 @@ import view.block.BlockSocket.SocketType;
  */
 public class SnapHandler extends CustomHandler {
 
-	public SnapHandler(BlockComponent attachedComponent, View view) {
+	private HandlerMemory mem;
+	
+	public SnapHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
 		super(attachedComponent, view);
+		this.mem = mem;
 	}
 
 	@Override
@@ -116,16 +119,20 @@ public class SnapHandler extends CustomHandler {
 				}
 			}
 			
-			// Add to model
+			// Reorganize trees and update handler memory for later csg operation
+			// Behavior is different depending on which type of component snapped.
 			if(toDragSocket.type == SocketType.RECTANGLE_PLUG) {
 				view.getTreeManager().addToTree(closestBlock, componentToSnap, toDragSocket.direction);
-				view.getCSGModelManager().undisplayCSGModel(closestBlock);
-				view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
+				mem.setElementToHide(closestBlock);
+				mem.addElementToInvokeCSG(attachedComponent);
+				HandlerManager closestBlockHm = (HandlerManager)closestBlock.getMouseListeners()[0];
+				closestBlockHm.getHandlerMemory().setSnapOccurred(true);
 			} else {
 				view.getTreeManager().addToTree(componentToSnap, closestBlock, closestSocket.direction);
 				BlockComponent root = view.getTreeManager().getRoot(closestBlock);
-				view.getCSGModelManager().undisplayCSGModel(attachedComponent);
-				view.getCSGModelManager().invokeCSGCalculation(root);
+				mem.setElementToHide(attachedComponent);
+				mem.addElementToInvokeCSG(root);
+				mem.setSnapOccurred(true);
 			}
 		}
 	}

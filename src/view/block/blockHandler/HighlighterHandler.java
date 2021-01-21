@@ -8,8 +8,6 @@ import view.View;
 import view.block.BlockComponent;
 
 public class HighlighterHandler extends CustomHandler {
-
-	
 	
 	public HighlighterHandler(BlockComponent attachedComponent, View view) {
 		super(attachedComponent, view);
@@ -50,5 +48,4 @@ public class HighlighterHandler extends CustomHandler {
 			block.color -= 10000;
 		}
 	}
-	
 }

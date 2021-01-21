@@ -31,15 +31,16 @@ public class SpawnHandler extends CustomHandler {
         parent.remove(attachedComponent);
         view.getTransferPanel().add(attachedComponent);
 
-        HandlerMemory mem = new HandlerMemory();
         HandlerManager hm = (HandlerManager) attachedComponent.getMouseListeners()[0];
+        HandlerMemory mem = hm.getHandlerMemory();
         hm.addHandler(new PopUpHandler(attachedComponent, view));
         hm.addHandler(new ControllerHandler(attachedComponent, view, mem));
         hm.addHandler(new LayerSwitchHandler(attachedComponent, view));
         hm.addHandler(new DragHandler(attachedComponent, view));
-        hm.addHandler(new SnapHandler(attachedComponent, view));
+        hm.addHandler(new SnapHandler(attachedComponent, view, mem));
         hm.addHandler(new ResizeHandler(attachedComponent, view, mem));
         hm.addHandler(new HighlighterHandler(attachedComponent, view));
+        hm.addHandler(new CSGHandler(attachedComponent, view, mem));
         hm.addHandler(new DeletionHandler(attachedComponent, view));
         
         attachedComponent.addMouseMotionListener(hm);

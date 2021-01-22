@@ -27,6 +27,10 @@ public class LayerSwitchHandler extends CustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// Do nothing if something else than left click has been pressed.
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		// Switch layers
 		attachedComponent.getParent().remove(attachedComponent);
 		view.getTransferPanel().add(attachedComponent);

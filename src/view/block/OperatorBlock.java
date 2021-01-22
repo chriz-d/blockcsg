@@ -61,6 +61,7 @@ public class OperatorBlock extends BlockComponent {
 	
 	/**
 	 * Draws the block depending on state of the block
+	 * @return Returns GeneralPath which drew component.
 	 */
 	@Override
 	public GeneralPath getGeneralPath() {
@@ -88,6 +89,7 @@ public class OperatorBlock extends BlockComponent {
 	
 	/**
 	 * Draws the upper part of the block depending on state
+	 * @param path GeneralPath object for drawing.
 	 */
 	private void drawTower(GeneralPathDecor path) {
 		for(int i = 0; i < towerShapeX.length; i++) {
@@ -108,6 +110,8 @@ public class OperatorBlock extends BlockComponent {
 	/**
 	 * Recalculates block width using given parameter. When changes to width are made
 	 * the socket positions and tower part need to be moved aswell.
+	 * @param depth Depth of the component inside a tree.
+	 * @return Returns the distance the block was move by when growing, used for compensating.
 	 */
 	public int correctWidth(int depth) {
 		int newWidth = ((depth- 1) * defaultSize);

@@ -46,6 +46,9 @@ public class BlockSocket implements Serializable {
 	/**
 	 * On first time run, creates a static map for lookup. Then returns if
 	 * sockets are compatible.
+	 * @param s1 Sockettype 1.
+	 * @param s2 Sockettype 2.
+	 * @return If socket 1 and 2 are compatible shape wise.
 	 */
 	private static boolean isFitting(SocketType s1, SocketType s2) {
 		// First time use, init list
@@ -59,6 +62,9 @@ public class BlockSocket implements Serializable {
 	
 	/**
 	 * Checks multiple flags and determines if sockets are allowed to snap to each other.
+	 * @param s1 Socket 1 to check compability of.
+	 * @param s2 Socket 2 to check compability of.
+	 * @return If sockets are compatible.
 	 */
 	public static boolean isValidSocket(BlockSocket s1, BlockSocket s2) {
 		boolean isNotUsed = !s1.isDisabled && !s2.isDisabled;

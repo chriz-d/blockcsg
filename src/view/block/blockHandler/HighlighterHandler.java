@@ -7,6 +7,11 @@ import java.util.List;
 import view.View;
 import view.block.BlockComponent;
 
+/**
+ * Event handler for highlighting blocks in the workspace.
+ * @author chriz
+ *
+ */
 public class HighlighterHandler extends CustomHandler {
 	
 	public HighlighterHandler(BlockComponent attachedComponent, View view) {

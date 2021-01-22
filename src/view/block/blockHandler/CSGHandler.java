@@ -6,8 +6,16 @@ import java.util.List;
 import view.View;
 import view.block.BlockComponent;
 
+/**
+ * Event handler for managing CSG related events. Looks into 
+ * {@link view.block.blockHandler.HandlerMemory HandlerMemory} for occured events and
+ * invokes CSG calculations if necessary.
+ * @author chriz
+ *
+ */
 public class CSGHandler extends CustomHandler {
-
+	
+	/** Handler memory for getting information from other handlers. */
 	private HandlerMemory mem;
 	
 	public CSGHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
@@ -17,7 +25,8 @@ public class CSGHandler extends CustomHandler {
 	
 	/**
 	 * Checks if component was snapped to another component, if yes, the csg must be recalculated
-	 * for both trees. 
+	 * for both trees. (If attachedComponent is not equal to oldRoot, meaning component was
+	 * disattached). Furthermore hides an element if needed.
 	 */
 	@Override
 	protected void mousePressed(MouseEvent e) {
@@ -44,6 +53,7 @@ public class CSGHandler extends CustomHandler {
 		}
 	}
 	
+	/** Iterates through list and invokes a csg calculation for each element. */
 	private void startInvocation() {
 		List<BlockComponent> invokeList = mem.getInvokeList();
 		for(BlockComponent block : invokeList) {

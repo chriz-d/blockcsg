@@ -24,9 +24,6 @@ public class DragHandler extends CustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// Recalculate prev connected CSG without this component
-		//view.getCSGModelManager().displayCSGModel(attachedComponent);
-		
 		// Save position for dragging
 		screenX = e.getXOnScreen();
 		screenY = e.getYOnScreen();

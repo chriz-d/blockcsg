@@ -99,8 +99,8 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 
 	/**
 	 * Searches for component below point and component to drag
-	 * @param p
-	 * @return
+	 * @param p Point to search component below.
+	 * @return Component below.
 	 */
 	private Component getLowerComponent(Point p) {
 		Container parent = attachedComponent.getParent();

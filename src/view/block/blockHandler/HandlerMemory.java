@@ -5,6 +5,12 @@ import java.util.List;
 
 import view.block.BlockComponent;
 
+/**
+ * Class for storing information for other handlers to use. For example if DragHandler
+ * disconnects a component from its tree and ResizeHandler needs a reference to the old root.
+ * @author chriz
+ *
+ */
 public class HandlerMemory {
 	
 	private BlockComponent oldRoot;

@@ -16,10 +16,17 @@ import com.jme3.scene.Node;
 import com.jme3.scene.debug.Grid;
 import com.jme3.util.SkyFactory;
 
+/**
+ * Manages all jMonkey related things like scene graphand configuration of viewport.
+ * @author chriz
+ *
+ */
 public class JME extends SimpleApplication {
 	
-	/** Mesh for jMonkey to display */
+	/** Queue which meshes should be added to scene graph. Gets processed and emptied every frame. */
 	private Queue<Geometry> meshesToAdd;
+	
+	/** Queue which meshes should be removed from scene graph. Gets processed and emptied every frame. */
 	private Queue<Geometry> meshesToRemove;
 	
 	public JME() {
@@ -27,11 +34,14 @@ public class JME extends SimpleApplication {
 		meshesToRemove = new ConcurrentLinkedQueue<>();
 	}
 	
+	/** 
+	 * Initializes the JME. Configs camera and prepares viewport with grid. 
+	 */
 	@Override
 	public void simpleInitApp() {
+		// Camera settings
 		setPauseOnLostFocus(false);
 		flyCam.setEnabled(false);
-		flyCam.setDragToRotate(true);
 		CameraNode camNode = new CameraNode("Camera", cam);
 		camNode.setLocalTranslation(0, 0, -8);
 		Node node = new Node("pivot");
@@ -53,7 +63,8 @@ public class JME extends SimpleApplication {
 	}
 	
 	/**
-	 * Adds camera controls to JMonkeys input manager (Rotation around center 0,0,0)
+	 * Adds camera controls to JMonkeys input manager (Rotation around center 0,0,0).
+	 * @param node Node the camera is attached to.
 	 */
 	private void enableCameraControls(Node node) {
 		inputManager.addMapping("Rotate Left", new MouseAxisTrigger(MouseInput.AXIS_X, true));
@@ -66,6 +77,11 @@ public class JME extends SimpleApplication {
 		inputManager.addListener(listener, new String[] {"Click"});
 	}
 	
+	/** 
+	 * Gets called every frame and processes the queues of mesh addition 
+	 * and removal from scene graph.
+	 * @param tpf Time per frame.
+	 */
 	@Override
 	public void simpleUpdate(float tpf) {
 		for(Geometry geom : meshesToRemove) {
@@ -80,10 +96,18 @@ public class JME extends SimpleApplication {
 		super.simpleUpdate(tpf);
 	}
 	
+	/** 
+	 * Adds a Geometry to the addition queue.
+	 * @param geom Geometry to add.
+	 */
 	public void addToSceneGraph(Geometry geom) {
 		meshesToAdd.add(geom);
 	}
 	
+	/** 
+	 * Adds a Geometry to the removal queue.
+	 * @param geom Geometry to add.
+	 */
 	public void removeFromSceneGraph(Geometry geom) {
 		meshesToRemove.add(geom);
 	}

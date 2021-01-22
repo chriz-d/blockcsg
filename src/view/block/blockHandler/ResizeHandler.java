@@ -49,7 +49,6 @@ public class ResizeHandler extends CustomHandler {
 	/**
 	 * Resizes the operatorblocks of a tree.
 	 * @param block Block if which tree gets resized.
-	 * @param doDelete Flag for deleting the specified block beforehand.
 	 */
 	public void resizeTree(BlockComponent block) {
 		TreeManager controller =  view.getTreeManager();

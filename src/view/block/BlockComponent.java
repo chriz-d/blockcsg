@@ -41,9 +41,6 @@ public abstract class BlockComponent extends JComponent {
 	/** Contains each socket and its info */
 	public BlockSocket[] socketArr; // Describes sockets from left to right
 	
-	/**
-	 * Drawing code for block.
-	 */
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -85,7 +82,11 @@ public abstract class BlockComponent extends JComponent {
 	/** Disconnects all sockets of block from everything they are connected to */
 	public abstract void disconnectSockets();
 	
-	/** Connects two sockets with each other */
+	/** 
+	 * Connects two sockets with each other 
+	 * @param socket1 Socket 1.
+	 * @param socket2 Socket 2.
+	 */
 	public abstract void connectSocket(BlockSocket socket1, BlockSocket socket2);
 	
 	@Override

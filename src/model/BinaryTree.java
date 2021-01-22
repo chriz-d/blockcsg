@@ -103,7 +103,7 @@ public class BinaryTree<T> {
 	
 	/**
 	 * Returns the depth level of the lowest node starting from the specified node recursively.
-	 * @param elem Starting element for depth measurement
+	 * @param root Starting element for depth measurement
 	 * @param cls Class for filtering. Every element found in tree matching this class gets ignored.
 	 * @return Calculated depth level.
 	 */
@@ -139,9 +139,6 @@ public class BinaryTree<T> {
 		}
 	}
 	
-	/**
-	 * Recursive helper method of getDepth()
-	 */
 	private int getDepth(Node<T> root, Class<?> cls) {
 		if(root == null || cls.isInstance(root.getContent())) {
 			return 0;
@@ -166,10 +163,7 @@ public class BinaryTree<T> {
 		getChildren(list, parentNode);
 		return list;
 	}
-	
-	/**
-	 * Recursive helper method of getChildren().
-	 */
+
 	private void getChildren(List<T> list, Node<T> root) {
 		Node<T> worker = root;
 		if(worker.getLeft() != null) {
@@ -182,9 +176,6 @@ public class BinaryTree<T> {
 		}
 	}
 	
-	/**
-	 * Helper method for finding elements inside tree, because it's unsorted. 
-	 */
 	private Node<T> searchNode(T searched, Node<T> root) {
 		if(root == null) {
 			return null;
@@ -206,7 +197,7 @@ public class BinaryTree<T> {
 	/**
 	 * Class for BinaryTree. Contains data and references for parent, left and right nodes.
 	 * @author chriz
-	 * @param <G>
+	 * @param <G> Type of BinaryTree.
 	 */
 	private class Node<G> {
 		

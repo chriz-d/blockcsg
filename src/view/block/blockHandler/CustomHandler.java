@@ -5,6 +5,11 @@ import java.awt.event.MouseEvent;
 import view.View;
 import view.block.BlockComponent;
 
+/**
+ * Generic template for all handler classes except the {@link view.block.blockHandler.HandlerManager HandlerManager}..
+ * @author chriz
+ *
+ */
 public abstract class CustomHandler {
 	
 	protected View view;

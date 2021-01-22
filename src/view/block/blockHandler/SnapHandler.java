@@ -54,7 +54,7 @@ public class SnapHandler extends CustomHandler {
 	 * Iterates through all blocks and their sockets in workspace and measures distance
 	 * to socket of given block. If distance is close enough, the given block gets moved
 	 * to the socket ("snapped").
-	 * @param componentToSnap
+	 * @param componentToSnap Block to snap to closest block.
 	 */
 	private void snapToClosestBlock(BlockComponent componentToSnap) {
 		// Remove all children of component to drag from list, or else it snaps to itself!

@@ -103,7 +103,7 @@ public class TreeManager {
 	/**
 	 * Returns a list of all children below specified block.
 	 * @param block Parent block of which to get all children of.
-	 * @return
+	 * @return List of children.
 	 */
 	public List<BlockComponent> getChildren(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
@@ -114,6 +114,11 @@ public class TreeManager {
 		return childrenAsBlock;
 	}
 	
+	/**
+	 * Gets the root of a tree from given block.
+	 * @param block Block of which to get root of.
+	 * @return Root of the given block.
+	 */
 	public BlockComponent getRoot(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getRoot();

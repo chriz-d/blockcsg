@@ -18,7 +18,11 @@ public class GeneralPathDecor {
 		this.path = path;
 	}
 	
-	/** Draws line relative to current position of GeneralPath */
+	/** 
+	 * Draws line relative to current position of GeneralPath 
+	 * @param x Relative x position to move to.
+	 * @param y Relative y position to move to.
+	 */
 	public void lineToRelative(int x, int y) {
 		Point currentPos = Support.point2DToPoint(path.getCurrentPoint());
 		Point relativeMove = new Point(x, y);

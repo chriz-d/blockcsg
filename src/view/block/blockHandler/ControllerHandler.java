@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import view.View;
 import view.block.BlockComponent;
 /**
- * An event handler for managing tree creation within the controller.
+ * An event handler for managing tree and 3D model creation within the controllers.
  * @author chriz
  *
  */
@@ -30,10 +30,6 @@ public class ControllerHandler extends CustomHandler {
 		}
 		mem.setOldRoot(view.getTreeManager().getRoot(attachedComponent));
 		view.getTreeManager().removeFromTree(attachedComponent);
-		//mem.addElementToInvokeCSG(attachedComponent);
-		//mem.addElementToInvokeCSG(mem.getOldRoot());
-		//view.getCSGModelManager().invokeCSGCalculation(mem.getOldRoot());
-		//view.getCSGModelManager().invokeCSGCalculation(attachedComponent);
 	}
 
 	@Override

@@ -29,8 +29,14 @@ import view.View;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
 
+/**
+ * Event handler for creating a popup on right clicking components.
+ * @author chriz
+ *
+ */
 public class PopUpHandler extends CustomHandler {
-
+	
+	/** Map containing all GUI elements for easy access by name. */
 	private Map<String, Component> components;
 	
 	public PopUpHandler(BlockComponent attachedComponent,View view) {

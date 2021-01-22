@@ -38,7 +38,12 @@ public class Support {
 		}
 	}
 
-	/** Returns if an point is out of bounds from a given rectangle */
+	/**
+	 * Returns if an point is out of bounds from a given rectangle 
+	 * @param point Point to check if its inside rectangle
+	 * @param rectangle Rectangle describing bounds.
+	 * @return If point is not inside rectangle.
+	 */
 	public static boolean isOutOfBounds(Point point, Rectangle rectangle) {
 		if(point == null) {
 			return true;
@@ -50,10 +55,16 @@ public class Support {
 		return x || y;
 	}
 	
+	/**
+	 * Returns distance between two points.
+	 * @param p1 Point 1.
+	 * @param p2 Point 2.
+	 * @return Distance between Point 1 and Point 2.
+	 */
 	public static double getDistance(Point p1, Point p2) {
 		return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 	}
-	
+
 	public static Point addPoints(Point p1, Point p2) {
 		return new Point(p1.x + p2.x, p1.y + p2.y);
 	}
@@ -62,7 +73,11 @@ public class Support {
 		return new Point(p1.x - p2.x, p1.y - p2.y);
 	}
 	
-	/** Capitalizes only the first letter in an all caps string, used for enums toString() */
+	/** 
+	 * Capitalizes only the first letter in an all caps string, used for enums toString() 
+	 * @param s String to capitalize.
+	 * @return Capitalized string.
+	 */
 	public static String capitalizeNormal(String s) {
 		return s.substring(0, 1) + s.substring(1, s.length()).toLowerCase();
 	}

@@ -21,26 +21,27 @@ import view.block.BlockComponent;
 import view.block.OperatorBlock;
 import view.block.PrimShapeBlock;
 /**
- * Organizes CSG classes.
+ * Represents a single CSG object of a specific {@link view.block.BlockComponent block}.
  * @author chriz
  *
  */
 public class CSGModel {
 	
-	/** Block this object represents */
+	/** Block this object represents. */
 	private BlockComponent block;
-	/** CSG Mesh */
+	
+	/** CSG Mesh of the object. */
 	private CSGShape csg;
 	
+	/** Reference to tree manager for generating the CSG object. */
 	private TreeManager controller;
 	
+	/** Reference to model manager for for generating the CSG object. */
 	private CSGModelManager modelMan;
 	
+	/** Asset Manager for easy access of different material types. */ 
 	private AssetManager assetMan;
 	
-	/**
-	 * Generates mesh depending on type of block
-	 */
 	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block,
 			AssetManager assetMan) {
 		this.controller = controller;
@@ -65,13 +66,16 @@ public class CSGModel {
 	}
 	
 	/**
-	 * Recursively computes CSG of all children of block.
+	 * Recursively computes CSG of all children of block and sets the result as
+	 * its current shape.
 	 * (Very slow!)
-	 * @return
+	 * @return Returns the computed CSG shape.
 	 */
 	private CSGShape generateCSGMesh() {
+		// Create a new geometry for blending shapes
 		CSGGeometry csgBlender = new CSGGeometry();
 		csgBlender.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+		// If block is a operator recursively compute csg of children
 		if(block instanceof OperatorBlock) {
 			OperatorBlock opBlock = (OperatorBlock) block;
 			CSGModel left = modelMan.getCSGModel(controller.getLeft(block));

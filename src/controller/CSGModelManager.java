@@ -3,8 +3,16 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jme3.scene.Mesh;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Sphere;
+
 import model.CSGModel;
+import model.SizeMeasurements;
+import net.wcomohundro.jme3.csg.CSGShape;
+import net.wcomohundro.jme3.csg.shape.CSGCylinder;
 import view.block.BlockComponent;
+import view.block.PrimShapeBlock;
 
 /**
  * Manages 3D objects of blocks. Enables block to get a {@link model.CSGModel CSGModel} assigned.
@@ -77,5 +85,11 @@ public class CSGModelManager {
 	 */
 	public void invokeCSGCalculation(BlockComponent block) {
 		new Thread(new CSGCalculator(modelMap.get(block), this)).start();
+	}
+	
+	public void resizeCSGModel(BlockComponent block, SizeMeasurements size) {
+		undisplayCSGModel(block);
+		modelMap.get(block).resizeModel(size);;
+		displayCSGModel(block);
 	}
 }

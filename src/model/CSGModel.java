@@ -42,12 +42,16 @@ public class CSGModel {
 	/** Asset Manager for easy access of different material types. */ 
 	private AssetManager assetMan;
 	
+	/** Current size of the csg mesh */
+	private SizeMeasurements size;
+	
 	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block,
 			AssetManager assetMan) {
 		this.controller = controller;
 		this.block = block;
 		this.modelMan = modelMan;
 		this.assetMan = assetMan;
+		size = new SizeMeasurements();
 		csg = new CSGShape("New Element", new Mesh());
 		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
 		if(block instanceof PrimShapeBlock) {
@@ -118,5 +122,24 @@ public class CSGModel {
 	
 	public CSGShape getCSG() {
 		return csg;
+	}
+	
+	public void resizeModel(SizeMeasurements size) {
+		Mesh mesh = new Mesh();
+		if(block instanceof PrimShapeBlock) {
+			PrimShapeBlock primBlock = (PrimShapeBlock) block;
+			switch (primBlock.primType) {
+			case CUBE: mesh = new Box(size.length, size.height, size.width); break;
+			case CYLINDER: mesh = new CSGCylinder(20, 20, size.radius, size.length); break;
+			case PYRAMID: mesh = new Sphere(20, 20, 1.3f); break;
+			case SPHERE: mesh = new Sphere(20, 20, size.radius); break;
+			}
+		}
+		csg = new CSGShape("result", mesh);
+		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+	}
+	
+	public SizeMeasurements getSize() {
+		return size;
 	}
 }

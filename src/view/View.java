@@ -5,12 +5,14 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
@@ -88,6 +90,8 @@ public class View {
 		frame.add(createBlockViewPanel());
 		frame.add(createJMonkeyPanel());
 		
+		ImageIcon icon = new ImageIcon("assets/icon.png");
+		frame.setIconImage(icon.getImage());
 		frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		frame.setTitle("CSG Editor");
 		frame.setMinimumSize(new Dimension(800, 300));

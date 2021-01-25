@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -261,6 +262,8 @@ public class PopUpHandler extends CustomHandler {
 	
 	private JDialog getPopUpEmptyPopUp() {
 		JDialog popup = new JDialog();
+		ImageIcon icon = new ImageIcon("assets/icon.png");
+		popup.setIconImage(icon.getImage());
 		popup.setTitle("Configure Parameters");
 		popup.setModal(true);
 		popup.setLocationRelativeTo(null);

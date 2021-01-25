@@ -430,48 +430,6 @@ public class PopUpHandler extends CustomHandler {
 		return posPanel;
 	}
 	
-	public JPanel getCSGSizePanel() {
-		JPanel posPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		JLabel xPosLabel = new JLabel("Length");
-		JLabel yPosLabel = new JLabel("Height");
-		JLabel zPosLabel = new JLabel("Width");
-		JSpinner xPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
-		JSpinner yPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
-		JSpinner zPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
-		components.put("lengthSpinner", xPosSpinner);
-		components.put("heightSpinner", yPosSpinner);
-		components.put("widthSpinner", zPosSpinner);
-		
-		xPosSpinner.setPreferredSize(new Dimension(120,20));
-		yPosSpinner.setPreferredSize(new Dimension(120,20));
-		zPosSpinner.setPreferredSize(new Dimension(120,20));
-		c.gridx = 0;
-		c.gridy = 0;
-		c.insets = new Insets(0, 10, 0, 10);
-		
-		posPanel.add(xPosLabel, c);
-		c.gridx = 1;
-		posPanel.add(yPosLabel, c);
-		c.gridx = 2;
-		posPanel.add(zPosLabel, c);
-		c.gridx = 0;
-		c.gridy = 1;
-		posPanel.add(xPosSpinner, c);
-		c.gridx = 1;
-		posPanel.add(yPosSpinner, c);
-		c.gridx = 2;
-		posPanel.add(zPosSpinner, c);
-		
-		CSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
-		SizeMeasurements size = shape.getSize();
-		xPosSpinner.setValue(size.length);
-		yPosSpinner.setValue(size.height);
-		zPosSpinner.setValue(size.width);
-		
-		return posPanel;
-	}
-	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 	}

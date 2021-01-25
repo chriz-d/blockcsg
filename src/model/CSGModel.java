@@ -57,10 +57,24 @@ public class CSGModel {
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
 			switch (primBlock.primType) {
-			case CUBE: csg.setMesh(new Box(1, 1, 1)); break;
-			case CYLINDER: csg.setMesh(new CSGCylinder(20, 20, 0.5f, 2)); break;
-			case PYRAMID: csg.setMesh(new Sphere(20, 20, 1.3f)); break;
-			case SPHERE: csg.setMesh(new Sphere(20, 20, 1.3f)); break;
+			case CUBE: {
+				size.length = 1;
+				size.height = 1;
+				size.width = 1;
+				csg.setMesh(new Box(size.length, size.height, size.width));
+				}; break;
+			case CYLINDER: {
+				size.length = 2;
+				size.radius = 0.5f;
+				csg.setMesh(new CSGCylinder(20, 20, size.radius, size.length));
+				}; break;
+			case PYRAMID: {
+				csg.setMesh(new Sphere(20, 20, 1.3f));
+			}; break;
+			case SPHERE: {
+				size.radius = 1.3f;
+				csg.setMesh(new Sphere(20, 20, size.radius));
+			}; break;
 			}
 		}
 	}
@@ -125,6 +139,7 @@ public class CSGModel {
 	}
 	
 	public void resizeModel(SizeMeasurements size) {
+		this.size = size;
 		Mesh mesh = new Mesh();
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;

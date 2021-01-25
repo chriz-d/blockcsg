@@ -18,6 +18,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
 import com.jme3.math.Vector3f;
@@ -258,9 +259,9 @@ public class PopUpHandler extends CustomHandler {
 		JLabel xPosLabel = new JLabel("X-Pos");
 		JLabel yPosLabel = new JLabel("Y-Pos");
 		JLabel zPosLabel = new JLabel("Z-Pos");
-		JSpinner xPosSpinner = new JSpinner();
-		JSpinner yPosSpinner = new JSpinner();
-		JSpinner zPosSpinner = new JSpinner();
+		JSpinner xPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner yPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner zPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
 		components.put("xPosSpinner", xPosSpinner);
 		components.put("yPosSpinner", yPosSpinner);
 		components.put("zPosSpinner", zPosSpinner);
@@ -300,9 +301,9 @@ public class PopUpHandler extends CustomHandler {
 		JLabel xRotLabel = new JLabel("X-Rot");
 		JLabel yRotLabel = new JLabel("Y-Rot");
 		JLabel zRotLabel = new JLabel("Z-Rot");
-		JSpinner xRotSpinner = new JSpinner();
-		JSpinner yRotSpinner = new JSpinner();
-		JSpinner zRotSpinner = new JSpinner();
+		JSpinner xRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 1));
+		JSpinner yRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 1));
+		JSpinner zRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 1));
 		components.put("xRotSpinner", xRotSpinner);
 		components.put("yRotSpinner", yRotSpinner);
 		components.put("zRotSpinner", zRotSpinner);
@@ -336,9 +337,9 @@ public class PopUpHandler extends CustomHandler {
 		JLabel xPosLabel = new JLabel("Length");
 		JLabel yPosLabel = new JLabel("Height");
 		JLabel zPosLabel = new JLabel("Width");
-		JSpinner xPosSpinner = new JSpinner();
-		JSpinner yPosSpinner = new JSpinner();
-		JSpinner zPosSpinner = new JSpinner();
+		JSpinner xPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner yPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner zPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
 		components.put("lengthSpinner", xPosSpinner);
 		components.put("heightSpinner", yPosSpinner);
 		components.put("widthSpinner", zPosSpinner);
@@ -376,7 +377,7 @@ public class PopUpHandler extends CustomHandler {
 		JPanel sizePanel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		JLabel radiusLabel = new JLabel("Radius");
-		JSpinner radiusSpinner = new JSpinner();
+		JSpinner radiusSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
 		components.put("radiusSpinner", radiusSpinner);
 		
 		radiusSpinner.setPreferredSize(new Dimension(120,20));
@@ -401,8 +402,8 @@ public class PopUpHandler extends CustomHandler {
 		GridBagConstraints c = new GridBagConstraints();
 		JLabel lengthLabel = new JLabel("Length");
 		JLabel radiusLabel = new JLabel("Radius");
-		JSpinner lengthSpinner = new JSpinner();
-		JSpinner radiusSpinner = new JSpinner();
+		JSpinner lengthSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner radiusSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
 		components.put("lengthSpinner", lengthSpinner);
 		components.put("radiusSpinner", radiusSpinner);
 		
@@ -435,9 +436,9 @@ public class PopUpHandler extends CustomHandler {
 		JLabel xPosLabel = new JLabel("Length");
 		JLabel yPosLabel = new JLabel("Height");
 		JLabel zPosLabel = new JLabel("Width");
-		JSpinner xPosSpinner = new JSpinner();
-		JSpinner yPosSpinner = new JSpinner();
-		JSpinner zPosSpinner = new JSpinner();
+		JSpinner xPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner yPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
+		JSpinner zPosSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 0.1f));
 		components.put("lengthSpinner", xPosSpinner);
 		components.put("heightSpinner", yPosSpinner);
 		components.put("widthSpinner", zPosSpinner);

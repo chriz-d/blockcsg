@@ -21,6 +21,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
@@ -98,8 +100,15 @@ public class PopUpHandler extends CustomHandler {
 				float yRot = Float.valueOf(ySpinner.getValue().toString());
 				float zRot = Float.valueOf(zSpinner.getValue().toString());
 				
-				newPos = new Vector3f(xRot, yRot, zRot);
-				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().rotate(xRot, yRot, zRot);
+				Quaternion xQuat = new Quaternion();
+				Quaternion yQuat = new Quaternion();
+				Quaternion zQuat = new Quaternion();
+				xQuat.fromAngleAxis(xRot * (FastMath.PI / 180), new Vector3f(0, 1, 0));
+				yQuat.fromAngleAxis(yRot * (FastMath.PI / 180), new Vector3f(1, 0, 0));
+				zQuat.fromAngleAxis(zRot * (FastMath.PI / 180), new Vector3f(0, 0, 1));
+				Quaternion rotation = xQuat.mult(yQuat);
+				rotation = rotation.mult(zQuat);
+				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
 				popup.setVisible(false);
 			}
 		});
@@ -145,9 +154,16 @@ public class PopUpHandler extends CustomHandler {
 				float xRot = Float.valueOf(xSpinner.getValue().toString());
 				float yRot = Float.valueOf(ySpinner.getValue().toString());
 				float zRot = Float.valueOf(zSpinner.getValue().toString());
-				
-				newPos = new Vector3f(xRot, yRot, zRot);
-				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().rotate(xRot, yRot, zRot);
+
+				Quaternion xQuat = new Quaternion();
+				Quaternion yQuat = new Quaternion();
+				Quaternion zQuat = new Quaternion();
+				xQuat.fromAngleAxis(xRot * (FastMath.PI / 180), new Vector3f(0, 1, 0));
+				yQuat.fromAngleAxis(yRot * (FastMath.PI / 180), new Vector3f(1, 0, 0));
+				zQuat.fromAngleAxis(zRot * (FastMath.PI / 180), new Vector3f(0, 0, 1));
+				Quaternion rotation = xQuat.mult(yQuat);
+				rotation = rotation.mult(zQuat);
+				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
 				popup.setVisible(false);
 			}
 		});
@@ -226,8 +242,15 @@ public class PopUpHandler extends CustomHandler {
 				float yRot = Float.valueOf(ySpinner.getValue().toString());
 				float zRot = Float.valueOf(zSpinner.getValue().toString());
 				
-				newPos = new Vector3f(xRot, yRot, zRot);
-				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().rotate(xRot, yRot, zRot);
+				Quaternion xQuat = new Quaternion();
+				Quaternion yQuat = new Quaternion();
+				Quaternion zQuat = new Quaternion();
+				xQuat.fromAngleAxis(xRot * (FastMath.PI / 180), new Vector3f(0, 1, 0));
+				yQuat.fromAngleAxis(yRot * (FastMath.PI / 180), new Vector3f(1, 0, 0));
+				zQuat.fromAngleAxis(zRot * (FastMath.PI / 180), new Vector3f(0, 0, 1));
+				Quaternion rotation = xQuat.mult(yQuat);
+				rotation = rotation.mult(zQuat);
+				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
 				popup.setVisible(false);
 			}
 		});
@@ -301,9 +324,9 @@ public class PopUpHandler extends CustomHandler {
 		JLabel xRotLabel = new JLabel("X-Rot");
 		JLabel yRotLabel = new JLabel("Y-Rot");
 		JLabel zRotLabel = new JLabel("Z-Rot");
-		JSpinner xRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 1));
-		JSpinner yRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 1));
-		JSpinner zRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -50f, 50f, 1));
+		JSpinner xRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -360f, 360f, 1));
+		JSpinner yRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -360f, 360f, 1));
+		JSpinner zRotSpinner = new JSpinner(new SpinnerNumberModel(0f, -360f, 360f, 1));
 		components.put("xRotSpinner", xRotSpinner);
 		components.put("yRotSpinner", yRotSpinner);
 		components.put("zRotSpinner", zRotSpinner);

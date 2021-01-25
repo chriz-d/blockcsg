@@ -15,7 +15,7 @@ import view.block.BlockSocket.SocketType;
 public class PrimShapeBlock extends BlockComponent {
 	
 	public enum PrimShapeType {
-		CUBE, SPHERE, PYRAMID, CYLINDER
+		CUBE, SPHERE, CYLINDER
 	}
 	
 	private static final long serialVersionUID = -5948325703189463847L;

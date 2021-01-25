@@ -68,9 +68,6 @@ public class CSGModel {
 				size.radius = 0.5f;
 				csg.setMesh(new CSGCylinder(20, 20, size.radius, size.length));
 				}; break;
-			case PYRAMID: {
-				csg.setMesh(new Sphere(20, 20, 1.3f));
-			}; break;
 			case SPHERE: {
 				size.radius = 1.3f;
 				csg.setMesh(new Sphere(20, 20, size.radius));
@@ -146,7 +143,6 @@ public class CSGModel {
 			switch (primBlock.primType) {
 			case CUBE: mesh = new Box(size.length, size.height, size.width); break;
 			case CYLINDER: mesh = new CSGCylinder(20, 20, size.radius, size.length); break;
-			case PYRAMID: mesh = new Sphere(20, 20, 1.3f); break;
 			case SPHERE: mesh = new Sphere(20, 20, size.radius); break;
 			}
 		}

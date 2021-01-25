@@ -58,8 +58,6 @@ public class PopUpHandler extends CustomHandler {
 					break;
 				case CYLINDER: createCylinderPopUp();
 					break;
-				case PYRAMID: 
-					break;
 				case SPHERE: createSpherePopUp();
 					break;
 				default:

@@ -4,22 +4,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState.BlendMode;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Mesh;
-import com.jme3.scene.Spatial.CullHint;
-import com.jme3.scene.VertexBuffer;
-import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
-import com.jme3.util.BufferUtils;
 
+import controller.ICSGModelManager;
+import controller.ITreeManager;
 import controller.TreeManager;
-import controller.CSGModelManager;
-import controller.JME;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
 import net.wcomohundro.jme3.csg.shape.CSGCylinder;
@@ -41,10 +33,10 @@ public class CSGModel {
 	private CSGShape csg;
 	
 	/** Reference to tree manager for generating the CSG object. */
-	private TreeManager controller;
+	private ITreeManager controller;
 	
 	/** Reference to model manager for for generating the CSG object. */
-	private CSGModelManager modelMan;
+	private ICSGModelManager modelMan;
 	
 	/** Asset Manager for easy access of different material types. */ 
 	private AssetManager assetMan;
@@ -54,17 +46,14 @@ public class CSGModel {
 	
 	private AtomicBoolean isBusy;
 	
-	private Material matToUse;
-	
 	private AtomicBoolean highlighted;
 	
-	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block,
+	public CSGModel(ITreeManager controller, ICSGModelManager modelMan, BlockComponent block,
 			AssetManager assetMan) {
 		this.controller = controller;
 		this.block = block;
 		this.modelMan = modelMan;
 		this.assetMan = assetMan;
-		matToUse = Support.getTransparentMaterial(assetMan);
 		size = new SizeMeasurements();
 		csg = new CSGShape("New Element", new Mesh());
 		csg.setMaterial(Support.getTransparentMaterial(assetMan));

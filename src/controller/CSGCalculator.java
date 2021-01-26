@@ -11,9 +11,9 @@ import model.CSGModel;
 public class CSGCalculator implements Runnable {
 
 	private CSGModel shape;
-	private CSGModelManager modelMan;
+	private ICSGModelManager modelMan;
 	
-	public CSGCalculator(CSGModel shape, CSGModelManager modelMan) {
+	public CSGCalculator(CSGModel shape, ICSGModelManager modelMan) {
 		this.shape = shape;
 		this.modelMan = modelMan;
 	}

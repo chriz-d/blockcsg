@@ -14,10 +14,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.control.LightControl;
 import com.jme3.scene.debug.Grid;
-import com.jme3.util.SkyFactory;
 
 /**
  * Manages all jMonkey related things like scene graphand configuration of viewport.

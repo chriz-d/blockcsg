@@ -6,8 +6,9 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import controller.TreeManager;
+import controller.ITreeManager;
 import controller.JME;
+import controller.TreeManager;
 import support.ObjExporter;
 /**
  * Creates the save dialog and invokes exporter to specified path.
@@ -16,10 +17,10 @@ import support.ObjExporter;
  */
 public class ExportHandler implements ActionListener {
 	
-	private TreeManager controller;
+	private ITreeManager treeMan;
 	
-	public ExportHandler(TreeManager controller) {
-		this.controller = controller;
+	public ExportHandler(ITreeManager controller) {
+		this.treeMan = controller;
 	}
 	
 	@Override

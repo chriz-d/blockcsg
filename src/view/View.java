@@ -1,11 +1,9 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -25,13 +23,14 @@ import javax.swing.ScrollPaneConstants;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
-import controller.CSGModelManager;
+import controller.ICSGModelManager;
+import controller.ITreeManager;
 import controller.JME;
 import controller.TreeManager;
 import view.block.BlockComponent;
 import view.block.OperatorBlock;
-import view.block.PrimShapeBlock;
 import view.block.OperatorBlock.OperatorBlockType;
+import view.block.PrimShapeBlock;
 import view.block.PrimShapeBlock.PrimShapeType;
 import view.block.blockHandler.HandlerManager;
 import view.block.blockHandler.SpawnHandler;
@@ -43,11 +42,11 @@ import view.menuBarHandler.ExportHandler;
  * @author chriz
  *
  */
-public class View {
+public class View implements IView {
 	
-	private TreeManager treeMan;
+	private ITreeManager treeMan;
 	
-	private CSGModelManager modelMan;
+	private ICSGModelManager modelMan;
 	
 	private JME jme;
 	
@@ -67,7 +66,7 @@ public class View {
 	private final int WINDOW_WIDTH = 1280;
 	private final int WINDOW_HEIGHT = 720;
 	
-	public View(TreeManager treeMan, CSGModelManager modelMan, JME jme) {
+	public View(ITreeManager treeMan, ICSGModelManager modelMan, JME jme) {
 		this.treeMan = treeMan;
 		this.modelMan = modelMan;
 		this.jme = jme;
@@ -77,6 +76,7 @@ public class View {
 	/**
 	 * Creates and displays GUI.
 	 */
+	@Override
 	public void initView() {
 		// Enable Anti Aliasing for GUI Elements
 		System.setProperty("awt.useSystemAAFontSettings","on");
@@ -100,11 +100,13 @@ public class View {
 		frame.setVisible(true);
 	}
 
-	public TreeManager getTreeManager() {
+	@Override
+	public ITreeManager getTreeManager() {
 		return treeMan;
 	}
 	
-	public CSGModelManager getCSGModelManager() {
+	@Override
+	public ICSGModelManager getCSGModelManager() {
 		return modelMan;
 	}
 	
@@ -227,26 +229,32 @@ public class View {
 		});
 	}
 	
+	@Override
 	public JFrame getFrame() {
 		return frame;
 	}
 	
+	@Override
 	public JPanel getWorkspacePanel() {
 		return workspacePanel;
 	}
 	
+	@Override
 	public JPanel getBlockViewPanel() {
 		return blockViewPanel;
 	}
 	
+	@Override
 	public JPanel getTransferPanel() {
 		return transferPanel;
 	}
 	
+	@Override
 	public List<BlockComponent> getHighlightedBlocks() {
 		return highlightedBlocks;
 	}
 	
+	@Override
 	public void setHighlightedBlocks(List<BlockComponent> highlightedBlocks) {
 		this.highlightedBlocks = highlightedBlocks;
 	}

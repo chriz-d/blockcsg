@@ -3,8 +3,9 @@ package view.block.blockHandler;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import controller.ITreeManager;
 import controller.TreeManager;
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 import view.block.OperatorBlock;
 /**
@@ -16,7 +17,7 @@ public class ResizeHandler extends CustomHandler {
 	
 	private HandlerMemory mem;
 	
-	public ResizeHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
+	public ResizeHandler(BlockComponent attachedComponent, IView view, HandlerMemory mem) {
 		super(attachedComponent, view);
 		this.mem = mem;
 	}
@@ -51,27 +52,27 @@ public class ResizeHandler extends CustomHandler {
 	 * @param block Block if which tree gets resized.
 	 */
 	public void resizeTree(BlockComponent block) {
-		TreeManager controller =  view.getTreeManager();
-		BlockComponent root = controller.getRoot(block);
+		ITreeManager treeMan =  view.getTreeManager();
+		BlockComponent root = treeMan.getRoot(block);
 		// Get every node in tree
-		List<BlockComponent> allNodes = controller.getChildren(root);
+		List<BlockComponent> allNodes = treeMan.getChildren(root);
 		allNodes.add(root);
 		// Iterate over list and fix width of each component and translate children
 		for(BlockComponent e : allNodes) {
 			if(e instanceof OperatorBlock) {
-				int width = ((OperatorBlock) e).correctWidth(controller.getDepth(e));
+				int width = ((OperatorBlock) e).correctWidth(treeMan.getDepth(e));
 				// Translate children to the left (<--)
-				if(controller.getLeft(e) != null) {
-					List<BlockComponent> childrenToMoveLeft = controller.getChildren(controller.getLeft(e));
-					childrenToMoveLeft.add(controller.getLeft(e));
+				if(treeMan.getLeft(e) != null) {
+					List<BlockComponent> childrenToMoveLeft = treeMan.getChildren(treeMan.getLeft(e));
+					childrenToMoveLeft.add(treeMan.getLeft(e));
 					for(BlockComponent f : childrenToMoveLeft) {
 						f.setLocation((int)f.getLocation().getX() - width, (int)f.getLocation().getY());
 					}
 				}
 				// Translate children to the right (-->)
-				if(controller.getRight(e) != null) {
-					List<BlockComponent> childrenToMoveRight = controller.getChildren(controller.getRight(e));
-					childrenToMoveRight.add(controller.getRight(e));
+				if(treeMan.getRight(e) != null) {
+					List<BlockComponent> childrenToMoveRight = treeMan.getChildren(treeMan.getRight(e));
+					childrenToMoveRight.add(treeMan.getRight(e));
 					for(BlockComponent f : childrenToMoveRight) {
 						f.setLocation((int)f.getLocation().getX() + width, (int)f.getLocation().getY());
 					}

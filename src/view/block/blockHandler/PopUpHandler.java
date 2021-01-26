@@ -25,12 +25,10 @@ import javax.swing.border.EmptyBorder;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
-import controller.TreeManager;
 import model.CSGModel;
 import model.SizeMeasurements;
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
 
@@ -46,7 +44,7 @@ public class PopUpHandler extends CustomHandler {
 	
 	private JDialog popup;
 	
-	public PopUpHandler(BlockComponent attachedComponent,View view) {
+	public PopUpHandler(BlockComponent attachedComponent,IView view) {
 		super(attachedComponent, view);
 		components = new HashMap<>();
 	}

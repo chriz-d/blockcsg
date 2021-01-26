@@ -1,10 +1,9 @@
 package view.block.blockHandler;
 
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 
 /**
@@ -14,7 +13,7 @@ import view.block.BlockComponent;
  */
 public class HighlighterHandler extends CustomHandler {
 	
-	public HighlighterHandler(BlockComponent attachedComponent, View view) {
+	public HighlighterHandler(BlockComponent attachedComponent, IView view) {
 		super(attachedComponent, view);
 	}
 

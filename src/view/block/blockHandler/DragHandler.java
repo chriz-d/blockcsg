@@ -3,7 +3,7 @@ package view.block.blockHandler;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 
 /**
@@ -18,7 +18,7 @@ public class DragHandler extends CustomHandler {
 	/** Helper variable for dragging */
 	private int screenY = 0;
 	
-	public DragHandler(BlockComponent attachedComponent, View view) {
+	public DragHandler(BlockComponent attachedComponent, IView view) {
 		super(attachedComponent, view);
 	}
 

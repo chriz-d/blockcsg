@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import support.Support;
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 /**
  * An event handler responsible for deletion of a block.
@@ -13,7 +13,7 @@ import view.block.BlockComponent;
  */
 public class DeletionHandler extends CustomHandler {
 
-	public DeletionHandler(BlockComponent attachedComponent, View view) {
+	public DeletionHandler(BlockComponent attachedComponent, IView view) {
 		super(attachedComponent, view);
 	}
 	

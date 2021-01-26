@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import controller.ITreeManager;
 import controller.TreeManager;
 import support.Support;
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 import view.block.BlockSocket;
 import view.block.BlockSocket.SocketType;
@@ -22,7 +23,7 @@ public class SnapHandler extends CustomHandler {
 
 	private HandlerMemory mem;
 	
-	public SnapHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
+	public SnapHandler(BlockComponent attachedComponent, IView view, HandlerMemory mem) {
 		super(attachedComponent, view);
 		this.mem = mem;
 	}
@@ -110,7 +111,7 @@ public class SnapHandler extends CustomHandler {
 			componentToSnap.setLocation(spPos.x, spPos.y);
 			
 			// Get all nodes and repos
-			TreeManager controller = view.getTreeManager();
+			ITreeManager controller = view.getTreeManager();
 			List<BlockComponent> allNodes = controller.getChildren(controller.getRoot(componentToSnap));
 			allNodes.add(controller.getRoot(componentToSnap));
 			for(BlockComponent node : allNodes) {

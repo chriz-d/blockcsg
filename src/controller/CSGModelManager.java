@@ -3,27 +3,19 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jme3.scene.Mesh;
-import com.jme3.scene.shape.Box;
-import com.jme3.scene.shape.Sphere;
-
 import model.CSGModel;
 import model.SizeMeasurements;
-import net.wcomohundro.jme3.csg.CSGShape;
-import net.wcomohundro.jme3.csg.shape.CSGCylinder;
-import support.Support;
 import view.block.BlockComponent;
-import view.block.PrimShapeBlock;
 
 /**
  * Manages 3D objects of blocks. Enables block to get a {@link model.CSGModel CSGModel} assigned.
  * @author chriz
  *
  */
-public class CSGModelManager {
+public class CSGModelManager implements ICSGModelManager {
 	
 	/** Reference for passing it onto CSGModels for CSG calculation. */
-	private TreeManager treeMan;
+	private ITreeManager treeMan;
 	
 	/** Instance of JME, enables editing of scene graph. */
 	private JME jme;
@@ -34,7 +26,7 @@ public class CSGModelManager {
 	/** Reference to the currently highlighted model in scenegraph */
 	private CSGModel highlightedModel;
 	
-	public CSGModelManager(TreeManager treeMan, JME jme) {
+	public CSGModelManager(ITreeManager treeMan, JME jme) {
 		this.treeMan = treeMan;
 		this.jme = jme;
 		modelMap = new HashMap<>();
@@ -44,6 +36,7 @@ public class CSGModelManager {
 	 * Creates a new CSGModel using given block.
 	 * @param block Block to create a CSGModel of.
 	 */
+	@Override
 	public void createCSGModel(BlockComponent block) {
 		modelMap.put(block, new CSGModel(treeMan, this, block, jme.getAssetManager()));
 	}
@@ -52,10 +45,12 @@ public class CSGModelManager {
 	 * Deletes a CSGModel.
 	 * @param block Block of which to delete the CSGModel.
 	 */
+	@Override
 	public void deleteCSGModel(BlockComponent block) {
 		modelMap.remove(block);
 	}
 	
+	@Override
 	public boolean hasCSGModel(BlockComponent block) {
 		return modelMap.containsKey(block);
 	}
@@ -64,6 +59,7 @@ public class CSGModelManager {
 	 * Adds a CSGModel to the scene graph queue.
 	 * @param block Block of which the CSGModel should be added to scene graph queue.
 	 */
+	@Override
 	public void displayCSGModel(BlockComponent block) {
 		CSGModel model = modelMap.get(block);
 		jme.addToSceneGraph(model.getCSG());
@@ -74,11 +70,13 @@ public class CSGModelManager {
 	 * from scene graph.
 	 * @param block Block of which the CSGModel should be added to scene graph removal queue.
 	 */
+	@Override
 	public void undisplayCSGModel(BlockComponent block) {
 		CSGModel model = modelMap.get(block);
 		jme.removeFromSceneGraph(model.getCSG());
 	}
 	
+	@Override
 	public CSGModel getCSGModel(BlockComponent block) {
 		return modelMap.get(block);
 	}
@@ -87,16 +85,19 @@ public class CSGModelManager {
 	 * Starts a thread and recomputes the CSG of a given block.
 	 * @param block Block of which to recompute the CSG.
 	 */
+	@Override
 	public void invokeCSGCalculation(BlockComponent block) {
 		new Thread(new CSGCalculator(modelMap.get(block), this)).start();
 	}
 	
+	@Override
 	public void resizeCSGModel(BlockComponent block, SizeMeasurements size) {
 		undisplayCSGModel(block);
 		modelMap.get(block).resizeModel(size);;
 		displayCSGModel(block);
 	}
 	
+	@Override
 	public void unhighlightModel() {
 		if(highlightedModel != null) {
 			highlightedModel.unHighlight();
@@ -104,6 +105,7 @@ public class CSGModelManager {
 		}
 	}
 	
+	@Override
 	public void highlightModel(BlockComponent block) {
 		if(block == null) {
 			highlightedModel = null;

@@ -2,7 +2,7 @@ package view.block.blockHandler;
 
 import java.awt.event.MouseEvent;
 
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 
 /**
@@ -12,10 +12,10 @@ import view.block.BlockComponent;
  */
 public abstract class CustomHandler {
 	
-	protected View view;
+	protected IView view;
 	protected BlockComponent attachedComponent;
 	
-	public CustomHandler(BlockComponent attachedComponent,View view) {
+	public CustomHandler(BlockComponent attachedComponent,IView view) {
 		this.attachedComponent = attachedComponent;
 		this.view = view;
 	}

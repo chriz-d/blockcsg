@@ -8,10 +8,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import support.Support;
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 
 /** 
@@ -37,7 +38,7 @@ public class HandlerManager implements MouseListener, MouseMotionListener {
 	/** List of all active event handlers */
 	private List<CustomHandler> handlers;
 
-	public HandlerManager(BlockComponent attachedComponent, View view) {
+	public HandlerManager(BlockComponent attachedComponent, IView view) {
 		this.attachedComponent = attachedComponent;
 		handlers = new ArrayList<CustomHandler>();
 		ignoreAction = false;

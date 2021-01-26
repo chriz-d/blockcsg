@@ -2,7 +2,7 @@ package view.block.blockHandler;
 
 import java.awt.event.MouseEvent;
 
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 /**
  * An event handler for managing tree and 3D model creation within the controllers.
@@ -13,7 +13,7 @@ public class ControllerHandler extends CustomHandler {
 
 	private HandlerMemory mem;
 	
-	public ControllerHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
+	public ControllerHandler(BlockComponent attachedComponent, IView view, HandlerMemory mem) {
 		super(attachedComponent, view);
 		this.mem = mem;
 	}

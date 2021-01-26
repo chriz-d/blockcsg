@@ -5,22 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.jme3.app.SimpleApplication;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.MouseAxisTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.CameraNode;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.Node;
-import com.jme3.system.AppSettings;
-import com.jme3.system.JmeCanvasContext;
-
 import model.BinaryTree;
-import model.CSGModel;
-import net.wcomohundro.jme3.csg.CSGShape;
 import support.Support.Direction;
-import view.View;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
 /**
@@ -29,7 +15,7 @@ import view.block.PrimShapeBlock;
  * @author chriz
  *
  */
-public class TreeManager {
+public class TreeManager implements ITreeManager {
 	
 	/** Map containing trees of blocks. Every block has a tree. */
 	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
@@ -42,6 +28,7 @@ public class TreeManager {
 	 * Creates a new tree for specified block and adds it to map.
 	 * @param blockToAdd Block to create a tree for.
 	 */
+	@Override
 	public void createTree(BlockComponent blockToAdd) {
 		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
 		treeMap.put(blockToAdd, newTree);
@@ -51,6 +38,7 @@ public class TreeManager {
 	 * Deletes a tree of a block and removes mesh from jMonkey viewport.
 	 * @param blockToDelete Block of which to delete tree.
 	 */
+	@Override
 	public void deleteTree(BlockComponent blockToDelete) {
 		treeMap.remove(blockToDelete);
 	}
@@ -61,6 +49,7 @@ public class TreeManager {
 	 * @param parent Component to attach the new block to.
 	 * @param dir Direction of where to attach the new block to.
 	 */
+	@Override
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
 		// Get trees of blocks
 		BinaryTree<BlockComponent> parentTree = treeMap.get(parent);
@@ -76,6 +65,7 @@ public class TreeManager {
 	 * get put into separate tree and are added to map.
 	 * @param blockToRemove Block to remove.
 	 */
+	@Override
 	public void removeFromTree(BlockComponent blockToRemove) {
 		// Get relevant tree
 		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
@@ -95,6 +85,7 @@ public class TreeManager {
 		}
 	}
 	
+	@Override
 	public int getDepth(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getDepth(block, PrimShapeBlock.class);
@@ -105,6 +96,7 @@ public class TreeManager {
 	 * @param block Parent block of which to get all children of.
 	 * @return List of children.
 	 */
+	@Override
 	public List<BlockComponent> getChildren(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		List<BlockComponent> childrenAsBlock = new ArrayList<>();
@@ -119,21 +111,25 @@ public class TreeManager {
 	 * @param block Block of which to get root of.
 	 * @return Root of the given block.
 	 */
+	@Override
 	public BlockComponent getRoot(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getRoot();
 	}
 	
+	@Override
 	public BlockComponent getLeft(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getLeft(block);
 	}
 	
+	@Override
 	public BlockComponent getRight(BlockComponent block) {
 		BinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getRight(block);
 	}
 	
+	@Override
 	public boolean hasTree(BlockComponent block) {
 		return treeMap.containsKey(block);
 	}

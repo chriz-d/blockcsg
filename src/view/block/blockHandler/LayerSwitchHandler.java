@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 /**
  * An event handler for switching between swing layers to enable a smooth drag operation.
@@ -20,7 +20,7 @@ public class LayerSwitchHandler extends CustomHandler {
 	/** Flag for initial offset when spawning, needed for compensating the offset of the drawer. */
 	private boolean isFreshlySpawned;
 	
-	public LayerSwitchHandler(BlockComponent attachedComponent,View view) {
+	public LayerSwitchHandler(BlockComponent attachedComponent,IView view) {
 		super(attachedComponent, view);
 		isFreshlySpawned = true;
 	}

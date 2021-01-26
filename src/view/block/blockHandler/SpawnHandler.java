@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import support.Support;
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 /**
  * An event handler enabling the component to be cloned when clicking. Initializes the other
@@ -15,7 +15,7 @@ import view.block.BlockComponent;
  */
 public class SpawnHandler extends CustomHandler {
 	
-	public SpawnHandler(BlockComponent attachedComponent, View view) {
+	public SpawnHandler(BlockComponent attachedComponent, IView view) {
 		super(attachedComponent, view);
 	}
 	

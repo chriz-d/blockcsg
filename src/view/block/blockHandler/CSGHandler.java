@@ -3,7 +3,7 @@ package view.block.blockHandler;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import view.View;
+import view.IView;
 import view.block.BlockComponent;
 
 /**
@@ -18,7 +18,7 @@ public class CSGHandler extends CustomHandler {
 	/** Handler memory for getting information from other handlers. */
 	private HandlerMemory mem;
 	
-	public CSGHandler(BlockComponent attachedComponent, View view, HandlerMemory mem) {
+	public CSGHandler(BlockComponent attachedComponent, IView view, HandlerMemory mem) {
 		super(attachedComponent, view);
 		this.mem = mem;
 	}

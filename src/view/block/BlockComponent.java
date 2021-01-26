@@ -61,10 +61,10 @@ public abstract class BlockComponent extends JComponent {
 		g2.draw(path);
 		
 		// Draw snap points
-		g2.setColor(Color.BLUE);
-		for(BlockSocket e : socketArr) {
-			g2.drawRect(e.position.x, e.position.y, 1, 1);
-		}
+//		g2.setColor(Color.BLUE);
+//		for(BlockSocket e : socketArr) {
+//			g2.drawRect(e.position.x, e.position.y, 1, 1);
+//		}
 		
 		// Draw Label centered
 		g2.setColor(Color.WHITE);

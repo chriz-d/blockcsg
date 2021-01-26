@@ -1,10 +1,16 @@
 package model;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.BlendMode;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Mesh;
+import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.VertexBuffer.Type;
 import com.jme3.scene.shape.Box;
@@ -17,6 +23,7 @@ import controller.JME;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
 import net.wcomohundro.jme3.csg.shape.CSGCylinder;
+import support.Support;
 import view.block.BlockComponent;
 import view.block.OperatorBlock;
 import view.block.PrimShapeBlock;
@@ -45,15 +52,25 @@ public class CSGModel {
 	/** Current size of the csg mesh */
 	private SizeMeasurements size;
 	
+	private AtomicBoolean isBusy;
+	
+	private Material matToUse;
+	
+	private AtomicBoolean highlighted;
+	
 	public CSGModel(TreeManager controller, CSGModelManager modelMan, BlockComponent block,
 			AssetManager assetMan) {
 		this.controller = controller;
 		this.block = block;
 		this.modelMan = modelMan;
 		this.assetMan = assetMan;
+		matToUse = Support.getTransparentMaterial(assetMan);
 		size = new SizeMeasurements();
 		csg = new CSGShape("New Element", new Mesh());
-		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+		csg.setMaterial(Support.getTransparentMaterial(assetMan));
+		isBusy = new AtomicBoolean(false);
+		highlighted = new AtomicBoolean(false);
+		csg.setQueueBucket(Bucket.Translucent);
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
 			switch (primBlock.primType) {
@@ -87,9 +104,11 @@ public class CSGModel {
 	 * @return Returns the computed CSG shape.
 	 */
 	private CSGShape generateCSGMesh() {
+		isBusy.set(true);
 		// Create a new geometry for blending shapes
 		CSGGeometry csgBlender = new CSGGeometry();
-		csgBlender.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+		csgBlender.setMaterial(Support.getTransparentMaterial(assetMan));
+		csgBlender.setQueueBucket(Bucket.Translucent);
 		// If block is a operator recursively compute csg of children
 		if(block instanceof OperatorBlock) {
 			OperatorBlock opBlock = (OperatorBlock) block;
@@ -118,12 +137,23 @@ public class CSGModel {
 		
 		if(csgBlender.getMesh() == null) {
 			csg = new CSGShape("ReturnVal", new Mesh());
-			csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+			if(highlighted.get()) {
+				csg.setMaterial(Support.getHighlightMaterial(assetMan));
+			} else {
+				csg.setMaterial(Support.getTransparentMaterial(assetMan));
+			}
+			csg.setQueueBucket(Bucket.Translucent);
 			return null;
 		} else {
 			csg = new CSGShape("ReturnVal", csgBlender.getMesh());
+			if(highlighted.get()) {
+				csg.setMaterial(Support.getHighlightMaterial(assetMan));
+			} else {
+				csg.setMaterial(Support.getTransparentMaterial(assetMan));
+			}
+			csg.setQueueBucket(Bucket.Translucent);
 		}
-		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+		isBusy.set(false);
 		return csg;
 	}
 	
@@ -137,6 +167,7 @@ public class CSGModel {
 	
 	public void resizeModel(SizeMeasurements size) {
 		this.size = size;
+		// Create new mesh with new size and swap it out
 		Mesh mesh = new Mesh();
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
@@ -147,10 +178,21 @@ public class CSGModel {
 			}
 		}
 		csg = new CSGShape("result", mesh);
-		csg.setMaterial(new Material(assetMan, "Common/MatDefs/Misc/ShowNormals.j3md"));
+		csg.setMaterial(Support.getTransparentMaterial(assetMan));
+		csg.setQueueBucket(Bucket.Translucent);
 	}
 	
 	public SizeMeasurements getSize() {
 		return size;
+	}
+	
+	public void doHighlight() {
+		highlighted.set(true);
+		csg.setMaterial(Support.getHighlightMaterial(assetMan));
+	}
+	
+	public void unHighlight() {
+		highlighted.set(false);
+		csg.setMaterial(Support.getTransparentMaterial(assetMan));
 	}
 }

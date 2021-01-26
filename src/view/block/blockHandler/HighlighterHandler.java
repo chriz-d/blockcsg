@@ -23,7 +23,9 @@ public class HighlighterHandler extends CustomHandler {
 		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		children.add(attachedComponent);
 		unhighlightBlocks();
+		unhighlightModel();
 		highlightBlocks(children);
+		highlightModel(attachedComponent);
 		view.getFrame().repaint();
 	}
 
@@ -37,7 +39,9 @@ public class HighlighterHandler extends CustomHandler {
 		List<BlockComponent> children = view.getTreeManager().getChildren(root);
 		children.add(root);
 		unhighlightBlocks();
+		unhighlightModel();
 		highlightBlocks(children);
+		highlightModel(root);
 		view.getFrame().repaint();
 	}
 	
@@ -52,5 +56,13 @@ public class HighlighterHandler extends CustomHandler {
 		for(BlockComponent block : view.getHighlightedBlocks()) {
 			block.color -= 10000;
 		}
+	}
+	
+	private void unhighlightModel() {
+		view.getCSGModelManager().unhighlightModel();
+	}
+	
+	private void highlightModel(BlockComponent block) {
+		view.getCSGModelManager().highlightModel(block);
 	}
 }

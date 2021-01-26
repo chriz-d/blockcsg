@@ -7,12 +7,15 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial.CullHint;
+import com.jme3.scene.control.LightControl;
 import com.jme3.scene.debug.Grid;
 import com.jme3.util.SkyFactory;
 
@@ -60,6 +63,29 @@ public class JME extends SimpleApplication {
 		geom.setLocalTranslation(-9, -1, -9);
 		geom.setMaterial(mat);
 		rootNode.attachChild(geom);
+		
+		// Create lights
+		PointLight light = new PointLight(new Vector3f(0, 0, -10), ColorRGBA.White, 50f);
+		PointLight light2 = new PointLight(new Vector3f(-10, 10, 0), ColorRGBA.White, 50f);
+		PointLight light3 = new PointLight(new Vector3f(10, 10, 0), ColorRGBA.White, 50f);
+		rootNode.addLight(light);
+		rootNode.addLight(light2);
+		rootNode.addLight(light3);
+		Node lightNode = new Node("light");
+		Node lightNode2 = new Node("light2");
+		Node lightNode3 = new Node("light3");
+		LightControl lightcontrol = new LightControl(light);
+		LightControl lightcontrol2 = new LightControl(light2);
+		LightControl lightcontrol3 = new LightControl(light3);
+		lightNode.addControl(lightcontrol);
+		lightNode2.addControl(lightcontrol2);
+		lightNode3.addControl(lightcontrol3);
+		lightNode.setLocalTranslation(new Vector3f(0, 0, -10));
+		lightNode2.setLocalTranslation(new Vector3f(-10, 10, 0));
+		lightNode3.setLocalTranslation(new Vector3f(10, 10, 0));
+		node.attachChild(lightNode);
+		node.attachChild(lightNode2);
+		node.attachChild(lightNode3);
 	}
 	
 	/**
@@ -110,6 +136,10 @@ public class JME extends SimpleApplication {
 	 */
 	public void removeFromSceneGraph(Geometry geom) {
 		meshesToRemove.add(geom);
+	}
+	
+	public boolean isInSceneGraph(Geometry geom) {
+		return rootNode.hasChild(geom);
 	}
 	
 	public void highlightObject() {

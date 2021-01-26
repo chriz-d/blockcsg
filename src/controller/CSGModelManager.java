@@ -11,6 +11,7 @@ import model.CSGModel;
 import model.SizeMeasurements;
 import net.wcomohundro.jme3.csg.CSGShape;
 import net.wcomohundro.jme3.csg.shape.CSGCylinder;
+import support.Support;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
 
@@ -29,6 +30,9 @@ public class CSGModelManager {
 	
 	/** Map containing fitting block and CSGModel pairs. */
 	private Map<BlockComponent, CSGModel> modelMap;
+	
+	/** Reference to the currently highlighted model in scenegraph */
+	private CSGModel highlightedModel;
 	
 	public CSGModelManager(TreeManager treeMan, JME jme) {
 		this.treeMan = treeMan;
@@ -91,5 +95,22 @@ public class CSGModelManager {
 		undisplayCSGModel(block);
 		modelMap.get(block).resizeModel(size);;
 		displayCSGModel(block);
+	}
+	
+	public void unhighlightModel() {
+		if(highlightedModel != null) {
+			highlightedModel.unHighlight();
+			highlightedModel = null;
+		}
+	}
+	
+	public void highlightModel(BlockComponent block) {
+		if(block == null) {
+			highlightedModel = null;
+			return;
+		}
+		
+		highlightedModel = modelMap.get(block);
+		highlightedModel.doHighlight();
 	}
 }

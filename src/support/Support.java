@@ -7,8 +7,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import com.jme3.asset.AssetManager;
+import com.jme3.material.Material;
+import com.jme3.material.RenderState.BlendMode;
+import com.jme3.math.ColorRGBA;
 /**
- * Contains helper methods for miscellaneous operations not worthy for their own class.
+ * Contains helper methods for miscellaneous operations not worthy of their own class.
  * @author chriz
  *
  */
@@ -84,5 +89,22 @@ public class Support {
 	
 	public static Point point2DToPoint(Point2D point2D) {
 		return new Point((int) point2D.getX(), (int) point2D.getY());
+	}
+	
+	public static Material getTransparentMaterial(AssetManager assetMan) {
+		Material mat = new Material(assetMan, "Common/MatDefs/Light/Lighting.j3md");
+		mat.setBoolean("UseMaterialColors",true);
+		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+		mat.setColor("Diffuse", new ColorRGBA(1, 1, 1, 0.4f));
+		mat.setColor("Ambient", new ColorRGBA(1, 1, 1, 0.4f));
+		return mat;
+	}
+	
+	public static Material getHighlightMaterial(AssetManager assetMan) {
+		Material mat = new Material(assetMan, "Common/MatDefs/Light/Lighting.j3md");
+		mat.setBoolean("UseMaterialColors",true);
+		mat.setColor("Diffuse", new ColorRGBA(1, 1, 1, 1));
+		mat.setColor("Ambient", new ColorRGBA(1, 1, 1, 1));
+		return mat;
 	}
 }

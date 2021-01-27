@@ -20,10 +20,10 @@ public class CSGCalculator implements Runnable {
 	
 	@Override
 	public void run() {
-		// Hide mesh because editing scene graph from another is forbidden
+		// Hide mesh because editing scene graph from another thread is forbidden
 		modelMan.undisplayCSGModel(shape.getBlock());
 		// Generate CSG recursively
-		shape.startCSGGeneration();
+		shape.generateCSGMesh();
 		// Display generated mesh
 		modelMan.displayCSGModel(shape.getBlock());
 	}

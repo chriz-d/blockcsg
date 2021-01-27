@@ -62,7 +62,7 @@ public class JME extends SimpleApplication {
 		geom.setMaterial(mat);
 		rootNode.attachChild(geom);
 		
-		// Create lights
+		// Create lights and attach them to camera
 		PointLight light = new PointLight(new Vector3f(0, 0, -10), ColorRGBA.White, 50f);
 		PointLight light2 = new PointLight(new Vector3f(-10, 10, 0), ColorRGBA.White, 50f);
 		PointLight light3 = new PointLight(new Vector3f(10, 10, 0), ColorRGBA.White, 50f);

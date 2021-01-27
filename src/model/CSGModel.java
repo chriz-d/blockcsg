@@ -3,7 +3,6 @@ package model;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Mesh;
@@ -12,7 +11,6 @@ import com.jme3.scene.shape.Sphere;
 
 import controller.ICSGModelManager;
 import controller.ITreeManager;
-import controller.TreeManager;
 import net.wcomohundro.jme3.csg.CSGGeometry;
 import net.wcomohundro.jme3.csg.CSGShape;
 import net.wcomohundro.jme3.csg.shape.CSGCylinder;
@@ -80,21 +78,19 @@ public class CSGModel {
 		}
 	}
 	
-	public void startCSGGeneration() {
-		generateCSGMesh();
-	}
-	
 	/**
 	 * Recursively computes CSG of all children of block and sets the result as
 	 * its current shape.
 	 * (Very slow!)
 	 * @return Returns the computed CSG shape.
 	 */
-	private CSGShape generateCSGMesh() {
-		// Create a new geometry for blending shapes
+	public CSGShape generateCSGMesh() {
+		// Create a new geometry for blending shapes and config it
 		CSGGeometry csgBlender = new CSGGeometry();
 		csgBlender.setMaterial(Support.getTransparentMaterial(assetMan));
 		csgBlender.setQueueBucket(Bucket.Translucent);
+		
+		// All meshes that need blending need to moved to (0, 0, 0) hence save oldPos
 		CSGModel left = null;
 		CSGModel right = null;
 		Vector3f oldPos = csg.getLocalTranslation().clone();
@@ -106,6 +102,7 @@ public class CSGModel {
 			if(left != null) {
 				CSGShape leftCSG = left.generateCSGMesh();
 				if(leftCSG != null) {
+					// Move to center and add to blend
 					oldPos = leftCSG.getLocalTranslation().clone();
 					leftCSG.setLocalTranslation(new Vector3f(0, 0, 0));
 					csgBlender.addShape(leftCSG);
@@ -114,6 +111,7 @@ public class CSGModel {
 			if(right != null) {
 				CSGShape rightCSG = right.generateCSGMesh();
 				if(rightCSG != null) {
+					// Move to center and add to blend
 					rightCSG.setLocalTranslation(rightCSG.getLocalTranslation().subtract(oldPos));
 					switch(opBlock.opType) {
 					case DIFFERENCE: csgBlender.subtractShape(rightCSG); break;
@@ -123,20 +121,25 @@ public class CSGModel {
 				}
 			}
 		} else {
+			// Not a operator, add simply to blend and move to center
 			csg.setLocalTranslation(new Vector3f(0, 0, 0));
 			csgBlender.addShape(csg);
 		}
+		// Compute CSG
 		csgBlender.regenerate();
+		
+		// Move children back to their old pos
 		if(left != null) {
 			left.getCSG().setLocalTranslation(oldPos);
 		}
 		if(right != null) {
 			right.getCSG().setLocalTranslation(right.getCSG().getLocalTranslation().add(oldPos));
 		}
+		
+		// Pretty ugly, create a new shape from the csg result, take generated mesh and update pos
 		if(csgBlender.getMesh() == null) {
 			csg = new CSGShape("ReturnVal", new Mesh());
 			csg.setLocalTranslation(oldPos);
-			System.out.println(oldPos);
 			if(highlighted.get()) {
 				csg.setMaterial(Support.getHighlightMaterial(assetMan));
 			} else {
@@ -147,7 +150,6 @@ public class CSGModel {
 		} else {
 			csg = new CSGShape("ReturnVal", csgBlender.getMesh());
 			csg.setLocalTranslation(oldPos);
-			System.out.println(oldPos);
 			if(highlighted.get()) {
 				csg.setMaterial(Support.getHighlightMaterial(assetMan));
 			} else {

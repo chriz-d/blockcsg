@@ -44,8 +44,6 @@ public class CSGModel {
 	/** Current size of the csg mesh */
 	private SizeMeasurements size;
 	
-	private AtomicBoolean isBusy;
-	
 	private AtomicBoolean highlighted;
 	
 	public CSGModel(ITreeManager controller, ICSGModelManager modelMan, BlockComponent block,
@@ -57,7 +55,6 @@ public class CSGModel {
 		size = new SizeMeasurements();
 		csg = new CSGShape("New Element", new Mesh());
 		csg.setMaterial(Support.getTransparentMaterial(assetMan));
-		isBusy = new AtomicBoolean(false);
 		highlighted = new AtomicBoolean(false);
 		csg.setQueueBucket(Bucket.Translucent);
 		if(block instanceof PrimShapeBlock) {
@@ -93,7 +90,6 @@ public class CSGModel {
 	 * @return Returns the computed CSG shape.
 	 */
 	private CSGShape generateCSGMesh() {
-		isBusy.set(true);
 		// Create a new geometry for blending shapes
 		CSGGeometry csgBlender = new CSGGeometry();
 		csgBlender.setMaterial(Support.getTransparentMaterial(assetMan));
@@ -142,7 +138,6 @@ public class CSGModel {
 			}
 			csg.setQueueBucket(Bucket.Translucent);
 		}
-		isBusy.set(false);
 		return csg;
 	}
 	

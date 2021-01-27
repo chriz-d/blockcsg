@@ -2,6 +2,8 @@ package controller;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
@@ -51,6 +53,9 @@ public class JME extends SimpleApplication {
 		rootNode.attachChild(node);
 		enableCameraControls(node);
 		
+		//Misc Settings
+		setDisplayFps(false);
+		setDisplayStatView(false);
 		viewPort.setBackgroundColor(ColorRGBA.DarkGray);
 		
 		// Create Grid

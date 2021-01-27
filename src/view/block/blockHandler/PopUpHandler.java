@@ -29,6 +29,7 @@ import com.jme3.math.Vector3f;
 
 import model.CSGModel;
 import model.SizeMeasurements;
+import net.wcomohundro.jme3.csg.CSGShape;
 import view.IView;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
@@ -112,8 +113,9 @@ public class PopUpHandler extends CustomHandler {
 				// Move children aswell
 				List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 				for(BlockComponent block : children) {
-					view.getCSGModelManager().getCSGModel(block).getCSG().setLocalTranslation(newPos);
-					view.getCSGModelManager().getCSGModel(block).getCSG().setLocalRotation(rotation);
+					CSGShape blockToChange = view.getCSGModelManager().getCSGModel(block).getCSG();
+					blockToChange.setLocalTranslation(blockToChange.getWorldTranslation().add(newPos));
+					blockToChange.setLocalRotation(rotation);
 				}
 				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
 				popup.setVisible(false);

@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Box;
@@ -94,20 +95,26 @@ public class CSGModel {
 		CSGGeometry csgBlender = new CSGGeometry();
 		csgBlender.setMaterial(Support.getTransparentMaterial(assetMan));
 		csgBlender.setQueueBucket(Bucket.Translucent);
+		CSGModel left = null;
+		CSGModel right = null;
+		Vector3f oldPos = csg.getLocalTranslation().clone();
 		// If block is a operator recursively compute csg of children
 		if(block instanceof OperatorBlock) {
 			OperatorBlock opBlock = (OperatorBlock) block;
-			CSGModel left = modelMan.getCSGModel(controller.getLeft(block));
-			CSGModel right = modelMan.getCSGModel(controller.getRight(block));
+			left = modelMan.getCSGModel(controller.getLeft(block));
+			right = modelMan.getCSGModel(controller.getRight(block));
 			if(left != null) {
 				CSGShape leftCSG = left.generateCSGMesh();
 				if(leftCSG != null) {
+					oldPos = leftCSG.getLocalTranslation().clone();
+					leftCSG.setLocalTranslation(new Vector3f(0, 0, 0));
 					csgBlender.addShape(leftCSG);
 				}
 			}
 			if(right != null) {
 				CSGShape rightCSG = right.generateCSGMesh();
 				if(rightCSG != null) {
+					rightCSG.setLocalTranslation(rightCSG.getLocalTranslation().subtract(oldPos));
 					switch(opBlock.opType) {
 					case DIFFERENCE: csgBlender.subtractShape(rightCSG); break;
 					case INTERSECT: csgBlender.intersectShape(rightCSG); break;
@@ -116,12 +123,20 @@ public class CSGModel {
 				}
 			}
 		} else {
+			csg.setLocalTranslation(new Vector3f(0, 0, 0));
 			csgBlender.addShape(csg);
 		}
 		csgBlender.regenerate();
-		
+		if(left != null) {
+			left.getCSG().setLocalTranslation(oldPos);
+		}
+		if(right != null) {
+			right.getCSG().setLocalTranslation(right.getCSG().getLocalTranslation().add(oldPos));
+		}
 		if(csgBlender.getMesh() == null) {
 			csg = new CSGShape("ReturnVal", new Mesh());
+			csg.setLocalTranslation(oldPos);
+			System.out.println(oldPos);
 			if(highlighted.get()) {
 				csg.setMaterial(Support.getHighlightMaterial(assetMan));
 			} else {
@@ -131,6 +146,8 @@ public class CSGModel {
 			return null;
 		} else {
 			csg = new CSGShape("ReturnVal", csgBlender.getMesh());
+			csg.setLocalTranslation(oldPos);
+			System.out.println(oldPos);
 			if(highlighted.get()) {
 				csg.setMaterial(Support.getHighlightMaterial(assetMan));
 			} else {

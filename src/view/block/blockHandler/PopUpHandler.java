@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Box;
@@ -108,6 +109,12 @@ public class PopUpHandler extends CustomHandler {
 				Quaternion rotation = xQuat.mult(yQuat);
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
+				// Move children aswell
+				List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
+				for(BlockComponent block : children) {
+					view.getCSGModelManager().getCSGModel(block).getCSG().setLocalTranslation(newPos);
+					view.getCSGModelManager().getCSGModel(block).getCSG().setLocalRotation(rotation);
+				}
 				popup.setVisible(false);
 			}
 		});

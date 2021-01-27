@@ -115,6 +115,7 @@ public class PopUpHandler extends CustomHandler {
 					view.getCSGModelManager().getCSGModel(block).getCSG().setLocalTranslation(newPos);
 					view.getCSGModelManager().getCSGModel(block).getCSG().setLocalRotation(rotation);
 				}
+				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
 				popup.setVisible(false);
 			}
 		});
@@ -170,6 +171,7 @@ public class PopUpHandler extends CustomHandler {
 				Quaternion rotation = xQuat.mult(yQuat);
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
+				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
 				popup.setVisible(false);
 			}
 		});
@@ -204,6 +206,7 @@ public class PopUpHandler extends CustomHandler {
 				
 				Vector3f newPos = new Vector3f(xPos, yPos, zPos);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalTranslation(newPos);
+				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
 				popup.setVisible(false);
 			}
 		});
@@ -257,6 +260,7 @@ public class PopUpHandler extends CustomHandler {
 				Quaternion rotation = xQuat.mult(yQuat);
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
+				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
 				popup.setVisible(false);
 			}
 		});

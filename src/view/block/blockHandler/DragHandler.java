@@ -24,6 +24,9 @@ public class DragHandler extends CustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		// Save position for dragging
 		screenX = e.getXOnScreen();
 		screenY = e.getYOnScreen();

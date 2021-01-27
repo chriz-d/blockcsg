@@ -33,7 +33,6 @@ public class SpawnHandler extends CustomHandler {
 
         HandlerManager hm = (HandlerManager) attachedComponent.getMouseListeners()[0];
         HandlerMemory mem = new HandlerMemory();
-        hm.addHandler(new PopUpHandler(attachedComponent, view));
         hm.addHandler(new ControllerHandler(attachedComponent, view, mem));
         hm.addHandler(new LayerSwitchHandler(attachedComponent, view));
         hm.addHandler(new DragHandler(attachedComponent, view));
@@ -42,6 +41,7 @@ public class SpawnHandler extends CustomHandler {
         hm.addHandler(new HighlighterHandler(attachedComponent, view));
         hm.addHandler(new CSGHandler(attachedComponent, view, mem));
         hm.addHandler(new DeletionHandler(attachedComponent, view));
+        hm.addHandler(new PopUpHandler(attachedComponent, view));
         
         attachedComponent.addMouseMotionListener(hm);
         parent.add(spawnedComp, index);

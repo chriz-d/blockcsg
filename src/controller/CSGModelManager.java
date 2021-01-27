@@ -92,9 +92,16 @@ public class CSGModelManager implements ICSGModelManager {
 	
 	@Override
 	public void resizeCSGModel(BlockComponent block, SizeMeasurements size) {
-		undisplayCSGModel(block);
-		modelMap.get(block).resizeModel(size);;
-		displayCSGModel(block);
+		CSGModel model = modelMap.get(block);
+		boolean wasInScene = false;
+		if(jme.isInSceneGraph(model.getCSG())) {
+			undisplayCSGModel(block);
+			wasInScene = true;
+		}
+		model.resizeModel(size);
+		if(wasInScene) {
+			displayCSGModel(block);
+		}
 	}
 	
 	@Override

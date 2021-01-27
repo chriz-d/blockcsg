@@ -25,6 +25,9 @@ public class DeletionHandler extends CustomHandler {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		if(Support.isOutOfBounds(view.getFrame().getMousePosition(), 
 				view.getWorkspacePanel().getBounds())) {
 			

@@ -20,6 +20,9 @@ public class ControllerHandler extends CustomHandler {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		// If first time placing, create tree for block
 		if(!view.getTreeManager().hasTree(attachedComponent)) {
 			view.getTreeManager().createTree(attachedComponent);
@@ -36,7 +39,7 @@ public class ControllerHandler extends CustomHandler {
 	public void mouseDragged(MouseEvent e) {
 		// Unused
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// Unused

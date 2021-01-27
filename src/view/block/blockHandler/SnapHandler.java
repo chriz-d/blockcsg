@@ -30,6 +30,9 @@ public class SnapHandler extends CustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		// Disconnect all sockets
 		attachedComponent.disconnectSockets();
 	}

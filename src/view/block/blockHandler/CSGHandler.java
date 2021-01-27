@@ -30,6 +30,9 @@ public class CSGHandler extends CustomHandler {
 	 */
 	@Override
 	protected void mousePressed(MouseEvent e) {
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		if(mem.getElementToHide() != null) {
 			view.getCSGModelManager().undisplayCSGModel(mem.getElementToHide());
 			mem.setElementToHide(null);

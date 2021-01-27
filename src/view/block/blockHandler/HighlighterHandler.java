@@ -19,12 +19,15 @@ public class HighlighterHandler extends CustomHandler {
 
 	@Override
 	protected void mousePressed(MouseEvent e) {
+//		if(e.getButton() != MouseEvent.BUTTON1) {
+//			return;
+//		}
 		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		children.add(attachedComponent);
 		unhighlightBlocks();
 		unhighlightModel();
 		highlightBlocks(children);
-		highlightModel(attachedComponent);
+		highlightModel(view.getTreeManager().getRoot(attachedComponent));
 		view.getFrame().repaint();
 	}
 

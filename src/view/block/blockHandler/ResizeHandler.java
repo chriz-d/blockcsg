@@ -24,6 +24,9 @@ public class ResizeHandler extends CustomHandler {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(e.getButton() != MouseEvent.BUTTON1) {
+			return;
+		}
 		// Resize components
 		// Remove from tree
 		BlockComponent root = mem.getOldRoot();

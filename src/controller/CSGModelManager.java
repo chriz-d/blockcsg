@@ -122,4 +122,9 @@ public class CSGModelManager implements ICSGModelManager {
 		highlightedModel = modelMap.get(block);
 		highlightedModel.doHighlight();
 	}
+
+	@Override
+	public CSGModel getHighlightedModel() {
+		return highlightedModel;
+	}
 }

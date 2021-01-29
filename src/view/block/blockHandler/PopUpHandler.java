@@ -85,6 +85,7 @@ public class PopUpHandler extends CustomHandler {
 		applyButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Translate
 				JSpinner xSpinner = (JSpinner)components.get("xPosSpinner");
 				JSpinner ySpinner = (JSpinner)components.get("yPosSpinner");
 				JSpinner zSpinner = (JSpinner)components.get("zPosSpinner");
@@ -93,14 +94,17 @@ public class PopUpHandler extends CustomHandler {
 				float zPos = Float.valueOf(zSpinner.getValue().toString());
 				
 				Vector3f newPos = new Vector3f(xPos, yPos, zPos);
+				Vector3f oldPos = view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().getLocalTranslation();
+				Vector3f newChildPos = newPos.subtract(oldPos);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalTranslation(newPos);
+				
+				// Rotate
 				xSpinner = (JSpinner)components.get("xRotSpinner");
 				ySpinner = (JSpinner)components.get("yRotSpinner");
 				zSpinner = (JSpinner)components.get("zRotSpinner");
 				float xRot = Float.valueOf(xSpinner.getValue().toString());
 				float yRot = Float.valueOf(ySpinner.getValue().toString());
 				float zRot = Float.valueOf(zSpinner.getValue().toString());
-				
 				Quaternion xQuat = new Quaternion();
 				Quaternion yQuat = new Quaternion();
 				Quaternion zQuat = new Quaternion();
@@ -110,11 +114,12 @@ public class PopUpHandler extends CustomHandler {
 				Quaternion rotation = xQuat.mult(yQuat);
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
+				
 				// Move children aswell
 				List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 				for(BlockComponent block : children) {
 					CSGShape blockToChange = view.getCSGModelManager().getCSGModel(block).getCSG();
-					blockToChange.setLocalTranslation(blockToChange.getWorldTranslation().add(newPos));
+					blockToChange.setLocalTranslation(blockToChange.getLocalTranslation().add(newChildPos));
 					blockToChange.setLocalRotation(rotation);
 				}
 				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
@@ -173,6 +178,7 @@ public class PopUpHandler extends CustomHandler {
 				Quaternion rotation = xQuat.mult(yQuat);
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
+				
 				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
 				popup.setVisible(false);
 			}

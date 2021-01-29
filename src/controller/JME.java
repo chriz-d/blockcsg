@@ -1,9 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.input.MouseInput;
@@ -12,25 +12,43 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.CameraNode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LightControl;
+import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.debug.Grid;
+import com.jme3.scene.shape.Cylinder;
+import com.jme3.scene.shape.Dome;
+
+import net.wcomohundro.jme3.csg.shape.CSGCylinder;
+
 
 /**
- * Manages all jMonkey related things like scene graphand configuration of viewport.
+ * Manages all jMonkey related things like scene graph and configuration of viewport.
  * @author chriz
  *
  */
 public class JME extends SimpleApplication {
 	
 	/** Queue which meshes should be added to scene graph. Gets processed and emptied every frame. */
-	private Queue<Geometry> meshesToAdd;
+	private Queue<Spatial> meshesToAdd;
 	
 	/** Queue which meshes should be removed from scene graph. Gets processed and emptied every frame. */
-	private Queue<Geometry> meshesToRemove;
+	private Queue<Spatial> meshesToRemove;
+	
+	/** Node where all csg meshes get attached */
+	public Node csgNode;
+	
+	/** Node where drag and rotate arrows are attached */
+	public Node interactionNode;
+	
+	public Geometry selectedObject;
 	
 	public JME() {
 		meshesToAdd = new ConcurrentLinkedQueue<>();
@@ -65,6 +83,7 @@ public class JME extends SimpleApplication {
 		mat.setColor("Color", ColorRGBA.LightGray);
 		geom.setLocalTranslation(-9, -1, -9);
 		geom.setMaterial(mat);
+		geom.setQueueBucket(Bucket.Opaque);
 		rootNode.attachChild(geom);
 		
 		// Create lights and attach them to camera
@@ -89,6 +108,26 @@ public class JME extends SimpleApplication {
 		node.attachChild(lightNode);
 		node.attachChild(lightNode2);
 		node.attachChild(lightNode3);
+		
+		// Init csgNode
+		csgNode = new Node();
+		rootNode.attachChild(csgNode);
+		
+		// Init interactionNode
+		interactionNode = new Node();
+		//rootNode.attachChild(interactionNode);
+		
+		// Create interactable geometries for translation and rotation
+		Geometry xAxis = new Geometry("xAxis", new CSGCylinder(20, 20, 0.1f, 0.3f));
+		Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+		mat2.setColor("Color", ColorRGBA.Blue);
+		mat2.getAdditionalRenderState().setDepthTest(false);
+		mat2.getAdditionalRenderState().setDepthWrite(false);
+		Quaternion rot90 = new Quaternion();
+		rot90.fromAngleAxis(90 * (FastMath.PI / 180), new Vector3f(0, 1, 0));
+		xAxis.setLocalRotation(rot90);
+		xAxis.setMaterial(mat2);
+		interactionNode.attachChild(xAxis);
 	}
 	
 	/**
@@ -100,10 +139,11 @@ public class JME extends SimpleApplication {
 		inputManager.addMapping("Rotate Right", new MouseAxisTrigger(MouseInput.AXIS_X, false));
 		inputManager.addMapping("Rotate Up", new MouseAxisTrigger(MouseInput.AXIS_Y, true));
 		inputManager.addMapping("Rotate Down", new MouseAxisTrigger(MouseInput.AXIS_Y, false));
-		inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		JMEKeyListener listener = new JMEKeyListener(getInputManager(), node);
+		inputManager.addMapping("Right Click", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+		inputManager.addMapping("Left Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		JMEKeyListener listener = new JMEKeyListener(this, node);
 		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
-		inputManager.addListener(listener, new String[] {"Click"});
+		inputManager.addListener(listener, new String[] {"Right Click", "Left Click"});
 	}
 	
 	/** 
@@ -113,12 +153,12 @@ public class JME extends SimpleApplication {
 	 */
 	@Override
 	public void simpleUpdate(float tpf) {
-		for(Geometry geom : meshesToRemove) {
-			rootNode.detachChild(geom);
+		for(Spatial geom : meshesToRemove) {
+			csgNode.detachChild(geom);
 		}
 		meshesToRemove.clear();
-		for(Geometry geom : meshesToAdd) {
-			rootNode.attachChild(geom);
+		for(Spatial geom : meshesToAdd) {
+			csgNode.attachChild(geom);
 		}
 		meshesToAdd.clear();
 		
@@ -129,23 +169,39 @@ public class JME extends SimpleApplication {
 	 * Adds a Geometry to the addition queue.
 	 * @param geom Geometry to add.
 	 */
-	public void addToSceneGraph(Geometry geom) {
+	public void addToSceneGraph(Spatial geom) {
 		meshesToAdd.add(geom);
+		while(!meshesToAdd.isEmpty()) {
+			// Busy wait till queue is empty
+		}
 	}
 	
 	/** 
 	 * Adds a Geometry to the removal queue.
 	 * @param geom Geometry to add.
 	 */
-	public void removeFromSceneGraph(Geometry geom) {
+	public void removeFromSceneGraph(Spatial geom) {
 		meshesToRemove.add(geom);
+		while(!meshesToRemove.isEmpty()) {
+			// Busy wait till queue is empty
+		}
 	}
 	
 	public boolean isInSceneGraph(Geometry geom) {
-		return rootNode.hasChild(geom);
+		return csgNode.hasChild(geom);
 	}
 	
-	public void highlightObject() {
-		
+	public void setInteraction(Geometry geom) {
+		Vector3f pos = geom.getLocalTranslation();
+		for(Spatial interactable : interactionNode.getChildren()) {
+			interactable.setLocalTranslation(pos);
+		}
+		addToSceneGraph(interactionNode);
+		selectedObject = geom;
+	}
+	
+	public void removeInteraction() {
+		removeFromSceneGraph(interactionNode);
+		selectedObject = null;
 	}
 }

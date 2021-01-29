@@ -209,7 +209,7 @@ public class View implements IView {
 		// Add event handler for menu items
 		about.addActionListener(new AboutHandler());
 		controls.addActionListener(new ControlsHandler());
-		export.addActionListener(new ExportHandler(treeMan));
+		export.addActionListener(new ExportHandler(modelMan));
 	}
 	
 	/**

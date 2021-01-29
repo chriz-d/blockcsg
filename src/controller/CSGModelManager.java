@@ -109,6 +109,7 @@ public class CSGModelManager implements ICSGModelManager {
 		if(highlightedModel != null) {
 			highlightedModel.unHighlight();
 			highlightedModel = null;
+			//jme.removeInteraction();
 		}
 	}
 	
@@ -121,6 +122,7 @@ public class CSGModelManager implements ICSGModelManager {
 		
 		highlightedModel = modelMap.get(block);
 		highlightedModel.doHighlight();
+		//jme.setInteraction(highlightedModel.getCSG());
 	}
 
 	@Override

@@ -152,10 +152,11 @@ public class CSGModel {
 			csg.setLocalTranslation(oldPos);
 			if(highlighted.get()) {
 				csg.setMaterial(Support.getHighlightMaterial(assetMan));
+				csg.setQueueBucket(Bucket.Opaque);
 			} else {
 				csg.setMaterial(Support.getTransparentMaterial(assetMan));
+				csg.setQueueBucket(Bucket.Translucent);
 			}
-			csg.setQueueBucket(Bucket.Translucent);
 		}
 		return csg;
 	}
@@ -181,8 +182,8 @@ public class CSGModel {
 			}
 		}
 		csg = new CSGShape("result", mesh);
-		csg.setMaterial(Support.getTransparentMaterial(assetMan));
-		csg.setQueueBucket(Bucket.Translucent);
+		csg.setMaterial(Support.getHighlightMaterial(assetMan));
+		csg.setQueueBucket(Bucket.Opaque);
 	}
 	
 	public SizeMeasurements getSize() {
@@ -192,10 +193,13 @@ public class CSGModel {
 	public void doHighlight() {
 		highlighted.set(true);
 		csg.setMaterial(Support.getHighlightMaterial(assetMan));
+		csg.setQueueBucket(Bucket.Opaque);
+		
 	}
 	
 	public void unHighlight() {
 		highlighted.set(false);
 		csg.setMaterial(Support.getTransparentMaterial(assetMan));
+		csg.setQueueBucket(Bucket.Translucent);
 	}
 }

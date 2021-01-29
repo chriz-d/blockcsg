@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import controller.ICSGModelManager;
 import controller.ITreeManager;
 import controller.JME;
 import controller.TreeManager;
@@ -17,21 +18,21 @@ import support.ObjExporter;
  */
 public class ExportHandler implements ActionListener {
 	
-	private ITreeManager treeMan;
+	private ICSGModelManager modelMan;
 	
-	public ExportHandler(ITreeManager controller) {
-		this.treeMan = controller;
+	public ExportHandler(ICSGModelManager modelMan) {
+		this.modelMan = modelMan;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		JFileChooser fc = new JFileChooser();
-//		int val = fc.showSaveDialog(null);
-//		if(val == JFileChooser.APPROVE_OPTION) {
-//			File file = fc.getSelectedFile();
-//			ObjExporter.exportMesh(file.getAbsolutePath() + ".obj", 
-//					JME.getInstance().getCurrentDisplayedMesh());
-//		}
+		JFileChooser fc = new JFileChooser();
+		int val = fc.showSaveDialog(null);
+		if(val == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			ObjExporter.exportMesh(file.getAbsolutePath() + ".obj", 
+					modelMan.getHighlightedModel().getCSG().getMesh());
+		}
 	}
 
 }

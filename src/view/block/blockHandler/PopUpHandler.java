@@ -122,7 +122,14 @@ public class PopUpHandler extends CustomHandler {
 					blockToChange.setLocalTranslation(blockToChange.getLocalTranslation().add(newChildPos));
 					blockToChange.setLocalRotation(rotation);
 				}
-				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
+				
+				BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
+				view.getCSGModelManager().invokeCSGCalculation(root);
+				view.getCSGModelManager().highlightModel(root);
+				List<BlockComponent> toHighlight = view.getTreeManager().getChildren(root);
+				toHighlight.add(root);
+				view.unhighlightBlocks();
+				view.highlightBlocks(toHighlight);
 				popup.setVisible(false);
 			}
 		});
@@ -179,7 +186,13 @@ public class PopUpHandler extends CustomHandler {
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
 				
-				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
+				BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
+				view.getCSGModelManager().invokeCSGCalculation(root);
+				view.getCSGModelManager().highlightModel(root);
+				List<BlockComponent> toHighlight = view.getTreeManager().getChildren(root);
+				toHighlight.add(root);
+				view.unhighlightBlocks();
+				view.highlightBlocks(toHighlight);
 				popup.setVisible(false);
 			}
 		});
@@ -214,7 +227,14 @@ public class PopUpHandler extends CustomHandler {
 				
 				Vector3f newPos = new Vector3f(xPos, yPos, zPos);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalTranslation(newPos);
-				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
+				
+				BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
+				view.getCSGModelManager().invokeCSGCalculation(root);
+				view.getCSGModelManager().highlightModel(root);
+				List<BlockComponent> toHighlight = view.getTreeManager().getChildren(root);
+				toHighlight.add(root);
+				view.unhighlightBlocks();
+				view.highlightBlocks(toHighlight);
 				popup.setVisible(false);
 			}
 		});
@@ -242,7 +262,6 @@ public class PopUpHandler extends CustomHandler {
 				size.length = Float.valueOf(lengthSpinner.getValue().toString());
 				size.radius = Float.valueOf(radiusSpinner.getValue().toString());
 				view.getCSGModelManager().resizeCSGModel(attachedComponent, size);
-				
 				JSpinner xSpinner = (JSpinner)components.get("xPosSpinner");
 				JSpinner ySpinner = (JSpinner)components.get("yPosSpinner");
 				JSpinner zSpinner = (JSpinner)components.get("zPosSpinner");
@@ -268,7 +287,14 @@ public class PopUpHandler extends CustomHandler {
 				Quaternion rotation = xQuat.mult(yQuat);
 				rotation = rotation.mult(zQuat);
 				view.getCSGModelManager().getCSGModel(attachedComponent).getCSG().setLocalRotation(rotation);
-				view.getCSGModelManager().invokeCSGCalculation(view.getTreeManager().getRoot(attachedComponent));
+				
+				BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
+				view.getCSGModelManager().invokeCSGCalculation(root);
+				view.getCSGModelManager().highlightModel(root);
+				List<BlockComponent> toHighlight = view.getTreeManager().getChildren(root);
+				toHighlight.add(root);
+				view.unhighlightBlocks();
+				view.highlightBlocks(toHighlight);
 				popup.setVisible(false);
 			}
 		});

@@ -24,11 +24,11 @@ public class HighlighterHandler extends CustomHandler {
 //		}
 		List<BlockComponent> children = view.getTreeManager().getChildren(attachedComponent);
 		children.add(attachedComponent);
-		unhighlightBlocks();
-		unhighlightModel();
-		highlightBlocks(children);
-		highlightModel(view.getTreeManager().getRoot(attachedComponent));
-		view.getFrame().repaint();
+		view.unhighlightBlocks();
+		view.getCSGModelManager().unhighlightModel();
+		view.highlightBlocks(children);
+		view.getCSGModelManager().highlightModel(attachedComponent);
+		
 	}
 
 	@Override
@@ -40,31 +40,9 @@ public class HighlighterHandler extends CustomHandler {
 		BlockComponent root = view.getTreeManager().getRoot(attachedComponent);
 		List<BlockComponent> children = view.getTreeManager().getChildren(root);
 		children.add(root);
-		unhighlightBlocks();
-		unhighlightModel();
-		highlightBlocks(children);
-		highlightModel(root);
-		view.getFrame().repaint();
-	}
-	
-	private void highlightBlocks(List<BlockComponent> blocksToHighlight) {
-		for(BlockComponent block : blocksToHighlight) {
-			block.color += 10000;
-		}
-		view.setHighlightedBlocks(blocksToHighlight);
-	}
-	
-	private void unhighlightBlocks() {
-		for(BlockComponent block : view.getHighlightedBlocks()) {
-			block.color -= 10000;
-		}
-	}
-	
-	private void unhighlightModel() {
+		view.unhighlightBlocks();
 		view.getCSGModelManager().unhighlightModel();
-	}
-	
-	private void highlightModel(BlockComponent block) {
-		view.getCSGModelManager().highlightModel(block);
+		view.highlightBlocks(children);
+		view.getCSGModelManager().highlightModel(root);
 	}
 }

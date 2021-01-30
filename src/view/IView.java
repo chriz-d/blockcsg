@@ -28,8 +28,8 @@ public interface IView {
 
 	JPanel getTransferPanel();
 
-	List<BlockComponent> getHighlightedBlocks();
-
-	void setHighlightedBlocks(List<BlockComponent> highlightedBlocks);
-
+	void highlightBlocks(List<BlockComponent> blocksToHighlight);
+	
+	void unhighlightBlocks();
+	
 }

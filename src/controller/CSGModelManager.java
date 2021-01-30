@@ -3,8 +3,11 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jme3.renderer.queue.RenderQueue.Bucket;
+
 import model.CSGModel;
 import model.SizeMeasurements;
+import support.Support;
 import view.block.BlockComponent;
 
 /**
@@ -93,21 +96,14 @@ public class CSGModelManager implements ICSGModelManager {
 	@Override
 	public void resizeCSGModel(BlockComponent block, SizeMeasurements size) {
 		CSGModel model = modelMap.get(block);
-		boolean wasInScene = false;
-		if(jme.isInSceneGraph(model.getCSG())) {
-			undisplayCSGModel(block);
-			wasInScene = true;
-		}
 		model.resizeModel(size);
-		if(wasInScene) {
-			displayCSGModel(block);
-		}
 	}
 	
 	@Override
 	public void unhighlightModel() {
 		if(highlightedModel != null) {
-			highlightedModel.unHighlight();
+			highlightedModel.getCSG().setMaterial(Support.getTransparentMaterial(jme.getAssetManager()));
+			highlightedModel.getCSG().setQueueBucket(Bucket.Translucent);
 			highlightedModel = null;
 			//jme.removeInteraction();
 		}
@@ -119,9 +115,9 @@ public class CSGModelManager implements ICSGModelManager {
 			highlightedModel = null;
 			return;
 		}
-		
 		highlightedModel = modelMap.get(block);
-		highlightedModel.doHighlight();
+		highlightedModel.getCSG().setMaterial(Support.getHighlightMaterial(jme.getAssetManager()));
+		highlightedModel.getCSG().setQueueBucket(Bucket.Opaque);
 		//jme.setInteraction(highlightedModel.getCSG());
 	}
 

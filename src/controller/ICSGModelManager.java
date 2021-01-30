@@ -48,5 +48,4 @@ public interface ICSGModelManager {
 	void highlightModel(BlockComponent block);
 	
 	CSGModel getHighlightedModel();
-
 }

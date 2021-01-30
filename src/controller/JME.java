@@ -171,9 +171,6 @@ public class JME extends SimpleApplication {
 	 */
 	public void addToSceneGraph(Spatial geom) {
 		meshesToAdd.add(geom);
-		while(!meshesToAdd.isEmpty()) {
-			// Busy wait till queue is empty
-		}
 	}
 	
 	/** 
@@ -182,9 +179,6 @@ public class JME extends SimpleApplication {
 	 */
 	public void removeFromSceneGraph(Spatial geom) {
 		meshesToRemove.add(geom);
-		while(!meshesToRemove.isEmpty()) {
-			// Busy wait till queue is empty
-		}
 	}
 	
 	public boolean isInSceneGraph(Geometry geom) {

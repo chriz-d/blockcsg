@@ -1,8 +1,7 @@
 package model;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.jme3.asset.AssetManager;
+import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Mesh;
@@ -43,8 +42,6 @@ public class CSGModel {
 	/** Current size of the csg mesh */
 	private SizeMeasurements size;
 	
-	private AtomicBoolean highlighted;
-	
 	public CSGModel(ITreeManager controller, ICSGModelManager modelMan, BlockComponent block,
 			AssetManager assetMan) {
 		this.controller = controller;
@@ -54,7 +51,6 @@ public class CSGModel {
 		size = new SizeMeasurements();
 		csg = new CSGShape("New Element", new Mesh());
 		csg.setMaterial(Support.getTransparentMaterial(assetMan));
-		highlighted = new AtomicBoolean(false);
 		csg.setQueueBucket(Bucket.Translucent);
 		if(block instanceof PrimShapeBlock) {
 			PrimShapeBlock primBlock = (PrimShapeBlock) block;
@@ -138,25 +134,20 @@ public class CSGModel {
 		
 		// Pretty ugly, create a new shape from the csg result, take generated mesh and update pos
 		if(csgBlender.getMesh() == null) {
+			Material oldMat = csg.getMaterial();
+			Bucket oldBucket = csg.getQueueBucket();
 			csg = new CSGShape("ReturnVal", new Mesh());
 			csg.setLocalTranslation(oldPos);
-			if(highlighted.get()) {
-				csg.setMaterial(Support.getHighlightMaterial(assetMan));
-			} else {
-				csg.setMaterial(Support.getTransparentMaterial(assetMan));
-			}
-			csg.setQueueBucket(Bucket.Translucent);
+			csg.setMaterial(oldMat);
+			csg.setQueueBucket(oldBucket);
 			return null;
 		} else {
+			Material oldMat = csg.getMaterial();
+			Bucket oldBucket = csg.getQueueBucket();
 			csg = new CSGShape("ReturnVal", csgBlender.getMesh());
 			csg.setLocalTranslation(oldPos);
-			if(highlighted.get()) {
-				csg.setMaterial(Support.getHighlightMaterial(assetMan));
-				csg.setQueueBucket(Bucket.Opaque);
-			} else {
-				csg.setMaterial(Support.getTransparentMaterial(assetMan));
-				csg.setQueueBucket(Bucket.Translucent);
-			}
+			csg.setMaterial(oldMat);
+			csg.setQueueBucket(oldBucket);
 		}
 		return csg;
 	}
@@ -181,25 +172,10 @@ public class CSGModel {
 			case SPHERE: mesh = new Sphere(20, 20, size.radius); break;
 			}
 		}
-		csg = new CSGShape("result", mesh);
-		csg.setMaterial(Support.getHighlightMaterial(assetMan));
-		csg.setQueueBucket(Bucket.Opaque);
+		csg.setMesh(mesh);
 	}
 	
 	public SizeMeasurements getSize() {
 		return size;
-	}
-	
-	public void doHighlight() {
-		highlighted.set(true);
-		csg.setMaterial(Support.getHighlightMaterial(assetMan));
-		csg.setQueueBucket(Bucket.Opaque);
-		
-	}
-	
-	public void unHighlight() {
-		highlighted.set(false);
-		csg.setMaterial(Support.getTransparentMaterial(assetMan));
-		csg.setQueueBucket(Bucket.Translucent);
 	}
 }

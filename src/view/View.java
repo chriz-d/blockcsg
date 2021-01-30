@@ -250,12 +250,20 @@ public class View implements IView {
 	}
 	
 	@Override
-	public List<BlockComponent> getHighlightedBlocks() {
-		return highlightedBlocks;
+	public void highlightBlocks(List<BlockComponent> blocksToHighlight) {
+		for(BlockComponent block : blocksToHighlight) {
+			block.color += 10000;
+		}
+		highlightedBlocks = blocksToHighlight;
+		getFrame().repaint();
 	}
 	
 	@Override
-	public void setHighlightedBlocks(List<BlockComponent> highlightedBlocks) {
-		this.highlightedBlocks = highlightedBlocks;
+	public void unhighlightBlocks() {
+		for(BlockComponent block : highlightedBlocks) {
+			block.color -= 10000;
+		}
+		highlightedBlocks = new ArrayList<>();
+		getFrame().repaint();
 	}
 }

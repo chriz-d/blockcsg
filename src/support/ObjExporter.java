@@ -21,7 +21,7 @@ public class ObjExporter {
 	 */
 	public static void exportMesh(String path, Mesh mesh) {
 		try {
-			Vector3f[] vertices = new Vector3f[mesh.getVertexCount()];
+			Vector3f[] vertices = new Vector3f[mesh.getTriangleCount() * 3];
 			Vector3f[] normals = new Vector3f[mesh.getTriangleCount()];
 			// Extract vertices and normals from triangles of given mesh
 			for(int i = 0; i < mesh.getTriangleCount(); i++) {

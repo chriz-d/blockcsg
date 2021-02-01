@@ -105,7 +105,6 @@ public class CSGModelManager implements ICSGModelManager {
 			highlightedModel.getCSG().setMaterial(Support.getTransparentMaterial(jme.getAssetManager()));
 			highlightedModel.getCSG().setQueueBucket(Bucket.Translucent);
 			highlightedModel = null;
-			//jme.removeInteraction();
 		}
 	}
 	
@@ -118,7 +117,6 @@ public class CSGModelManager implements ICSGModelManager {
 		highlightedModel = modelMap.get(block);
 		highlightedModel.getCSG().setMaterial(Support.getHighlightMaterial(jme.getAssetManager()));
 		highlightedModel.getCSG().setQueueBucket(Bucket.Opaque);
-		//jme.setInteraction(highlightedModel.getCSG());
 	}
 
 	@Override

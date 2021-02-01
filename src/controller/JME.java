@@ -45,11 +45,6 @@ public class JME extends SimpleApplication {
 	/** Node where all csg meshes get attached */
 	public Node csgNode;
 	
-	/** Node where drag and rotate arrows are attached */
-	public Node interactionNode;
-	
-	public Geometry selectedObject;
-	
 	public JME() {
 		meshesToAdd = new ConcurrentLinkedQueue<>();
 		meshesToRemove = new ConcurrentLinkedQueue<>();
@@ -112,22 +107,6 @@ public class JME extends SimpleApplication {
 		// Init csgNode
 		csgNode = new Node();
 		rootNode.attachChild(csgNode);
-		
-		// Init interactionNode
-		interactionNode = new Node();
-		//rootNode.attachChild(interactionNode);
-		
-		// Create interactable geometries for translation and rotation
-		Geometry xAxis = new Geometry("xAxis", new CSGCylinder(20, 20, 0.1f, 0.3f));
-		Material mat2 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-		mat2.setColor("Color", ColorRGBA.Blue);
-		mat2.getAdditionalRenderState().setDepthTest(false);
-		mat2.getAdditionalRenderState().setDepthWrite(false);
-		Quaternion rot90 = new Quaternion();
-		rot90.fromAngleAxis(90 * (FastMath.PI / 180), new Vector3f(0, 1, 0));
-		xAxis.setLocalRotation(rot90);
-		xAxis.setMaterial(mat2);
-		interactionNode.attachChild(xAxis);
 	}
 	
 	/**
@@ -143,7 +122,7 @@ public class JME extends SimpleApplication {
 		inputManager.addMapping("Left Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
 		JMEKeyListener listener = new JMEKeyListener(this, node);
 		inputManager.addListener(listener, new String[] {"Rotate Left", "Rotate Right", "Rotate Up", "Rotate Down"});
-		inputManager.addListener(listener, new String[] {"Right Click", "Left Click"});
+		inputManager.addListener(listener, new String[] {"Left Click"});
 	}
 	
 	/** 
@@ -183,19 +162,5 @@ public class JME extends SimpleApplication {
 	
 	public boolean isInSceneGraph(Geometry geom) {
 		return csgNode.hasChild(geom);
-	}
-	
-	public void setInteraction(Geometry geom) {
-		Vector3f pos = geom.getLocalTranslation();
-		for(Spatial interactable : interactionNode.getChildren()) {
-			interactable.setLocalTranslation(pos);
-		}
-		addToSceneGraph(interactionNode);
-		selectedObject = geom;
-	}
-	
-	public void removeInteraction() {
-		removeFromSceneGraph(interactionNode);
-		selectedObject = null;
 	}
 }

@@ -11,6 +11,9 @@ sourceSets {
          java {
             srcDirs = ['src']
          }
+         resources {
+            srcDirs "assets"
+        }
     }
 }
 
@@ -35,5 +38,8 @@ java {
 jar {
     manifest {
         attributes 'Main-Class': 'controller.Main'
+    }
+    from {
+        configurations.runtimeClasspath.collect {it.isDirectory() ? it : zipTree(it) }
     }
 }

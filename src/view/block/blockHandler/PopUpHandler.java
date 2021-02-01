@@ -46,9 +46,16 @@ public class PopUpHandler extends CustomHandler {
 	
 	private JDialog popup;
 	
+	private float xRot;
+	private float yRot;
+	private float zRot;
+	
 	public PopUpHandler(BlockComponent attachedComponent,IView view) {
 		super(attachedComponent, view);
 		components = new HashMap<>();
+		xRot = 0;
+		yRot = 0;
+		zRot = 0;
 	}
 	
 	@Override
@@ -102,9 +109,9 @@ public class PopUpHandler extends CustomHandler {
 				xSpinner = (JSpinner)components.get("xRotSpinner");
 				ySpinner = (JSpinner)components.get("yRotSpinner");
 				zSpinner = (JSpinner)components.get("zRotSpinner");
-				float xRot = Float.valueOf(xSpinner.getValue().toString());
-				float yRot = Float.valueOf(ySpinner.getValue().toString());
-				float zRot = Float.valueOf(zSpinner.getValue().toString());
+				xRot = Float.valueOf(xSpinner.getValue().toString());
+				yRot = Float.valueOf(ySpinner.getValue().toString());
+				zRot = Float.valueOf(zSpinner.getValue().toString());
 				Quaternion xQuat = new Quaternion();
 				Quaternion yQuat = new Quaternion();
 				Quaternion zQuat = new Quaternion();
@@ -172,9 +179,9 @@ public class PopUpHandler extends CustomHandler {
 				xSpinner = (JSpinner)components.get("xRotSpinner");
 				ySpinner = (JSpinner)components.get("yRotSpinner");
 				zSpinner = (JSpinner)components.get("zRotSpinner");
-				float xRot = Float.valueOf(xSpinner.getValue().toString());
-				float yRot = Float.valueOf(ySpinner.getValue().toString());
-				float zRot = Float.valueOf(zSpinner.getValue().toString());
+				xRot = Float.valueOf(xSpinner.getValue().toString());
+				yRot = Float.valueOf(ySpinner.getValue().toString());
+				zRot = Float.valueOf(zSpinner.getValue().toString());
 
 				Quaternion xQuat = new Quaternion();
 				Quaternion yQuat = new Quaternion();
@@ -274,9 +281,9 @@ public class PopUpHandler extends CustomHandler {
 				xSpinner = (JSpinner)components.get("xRotSpinner");
 				ySpinner = (JSpinner)components.get("yRotSpinner");
 				zSpinner = (JSpinner)components.get("zRotSpinner");
-				float xRot = Float.valueOf(xSpinner.getValue().toString());
-				float yRot = Float.valueOf(ySpinner.getValue().toString());
-				float zRot = Float.valueOf(zSpinner.getValue().toString());
+				xRot = Float.valueOf(xSpinner.getValue().toString());
+				yRot = Float.valueOf(ySpinner.getValue().toString());
+				zRot = Float.valueOf(zSpinner.getValue().toString());
 				
 				Quaternion xQuat = new Quaternion();
 				Quaternion yQuat = new Quaternion();
@@ -397,6 +404,10 @@ public class PopUpHandler extends CustomHandler {
 		c.gridx = 2;
 		rotPanel.add(zRotSpinner, c);
 		
+		xRotSpinner.setValue(xRot);
+		yRotSpinner.setValue(yRot);
+		zRotSpinner.setValue(zRot);
+		
 		return rotPanel;
 	}
 	
@@ -433,6 +444,7 @@ public class PopUpHandler extends CustomHandler {
 		c.gridx = 2;
 		sizePanel.add(zPosSpinner, c);
 		
+		// Set current values
 		CSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
 		SizeMeasurements size = shape.getSize();
 		xPosSpinner.setValue(size.length);

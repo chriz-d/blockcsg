@@ -1,7 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -12,8 +10,6 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.PointLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.CameraNode;
@@ -21,12 +17,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.LightControl;
-import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.debug.Grid;
-import com.jme3.scene.shape.Cylinder;
-import com.jme3.scene.shape.Dome;
-
-import net.wcomohundro.jme3.csg.shape.CSGCylinder;
 
 
 /**

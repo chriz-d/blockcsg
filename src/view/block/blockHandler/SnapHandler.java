@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import controller.ITreeManager;
-import controller.TreeManager;
 import support.Support;
 import view.IView;
 import view.block.BlockComponent;

@@ -7,9 +7,6 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import controller.ICSGModelManager;
-import controller.ITreeManager;
-import controller.JME;
-import controller.TreeManager;
 import support.ObjExporter;
 /**
  * Creates the save dialog and invokes exporter to specified path.

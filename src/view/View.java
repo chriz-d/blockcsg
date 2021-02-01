@@ -26,7 +26,6 @@ import com.jme3.system.JmeCanvasContext;
 import controller.ICSGModelManager;
 import controller.ITreeManager;
 import controller.JME;
-import controller.TreeManager;
 import view.block.BlockComponent;
 import view.block.OperatorBlock;
 import view.block.OperatorBlock.OperatorBlockType;

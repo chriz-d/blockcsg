@@ -4,7 +4,6 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import controller.ITreeManager;
-import controller.TreeManager;
 import view.IView;
 import view.block.BlockComponent;
 import view.block.OperatorBlock;

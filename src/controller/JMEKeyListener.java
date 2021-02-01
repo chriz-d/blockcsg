@@ -1,16 +1,9 @@
 package controller;
 
-import com.jme3.collision.CollisionResults;
-import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.material.Material;
-import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.debug.Arrow;
 
 /**
  * Listens to key inputs. In this case, clicking on the viewport for camera rotation.
@@ -29,7 +22,7 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 	private Node node;
 	
 	/** Flag for showing if the right mouse button is currently pressed. */
-	private boolean rightClickPressed;
+	private boolean leftClickPressed;
 	
 	/** Mouse position of last frame, used for computing rotation speed. */
 	private Vector2f oldMousePos;
@@ -42,7 +35,7 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 	@Override
 	public void onAction(String name, boolean keyPressed, float tpf) {
 		if(name.equals("Left Click")) {
-			rightClickPressed = keyPressed;
+			leftClickPressed = keyPressed;
 			if(keyPressed) {
 				jme.getInputManager().setCursorVisible(false);
 			} else {
@@ -59,7 +52,7 @@ public class JMEKeyListener implements AnalogListener, ActionListener {
 		}
 		Vector2f distance = oldMousePos.subtract(newMousePos);
 		oldMousePos = newMousePos.clone();
-		if(rightClickPressed) {
+		if(leftClickPressed) {
 			node.rotate(distance.y / 100, distance.x / 100, 0);
 		}
 	}

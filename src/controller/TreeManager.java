@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.BinaryTree;
+import model.IBinaryTree;
 import support.Support.Direction;
 import view.block.BlockComponent;
 import view.block.PrimShapeBlock;
@@ -18,10 +19,10 @@ import view.block.PrimShapeBlock;
 public class TreeManager implements ITreeManager {
 	
 	/** Map containing trees of blocks. Every block has a tree. */
-	private Map<BlockComponent, BinaryTree<BlockComponent>> treeMap;
+	private Map<BlockComponent, IBinaryTree<BlockComponent>> treeMap;
 	
 	public TreeManager() {
-		treeMap = new HashMap<BlockComponent, BinaryTree<BlockComponent>>();
+		treeMap = new HashMap<BlockComponent, IBinaryTree<BlockComponent>>();
 	}
 	
 	/**
@@ -30,7 +31,7 @@ public class TreeManager implements ITreeManager {
 	 */
 	@Override
 	public void createTree(BlockComponent blockToAdd) {
-		BinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
+		IBinaryTree<BlockComponent> newTree = new BinaryTree<BlockComponent>(blockToAdd);
 		treeMap.put(blockToAdd, newTree);
 	}
 	
@@ -52,8 +53,8 @@ public class TreeManager implements ITreeManager {
 	@Override
 	public void addToTree(BlockComponent blockToAdd, BlockComponent parent, Direction dir) {
 		// Get trees of blocks
-		BinaryTree<BlockComponent> parentTree = treeMap.get(parent);
-		BinaryTree<BlockComponent> blockToAddTree = treeMap.get(blockToAdd);
+		IBinaryTree<BlockComponent> parentTree = treeMap.get(parent);
+		IBinaryTree<BlockComponent> blockToAddTree = treeMap.get(blockToAdd);
 		// Delete tree of child block and insert it into parent tree
 		treeMap.remove(blockToAdd);
 		treeMap.put(blockToAdd, parentTree);
@@ -68,11 +69,11 @@ public class TreeManager implements ITreeManager {
 	@Override
 	public void removeFromTree(BlockComponent blockToRemove) {
 		// Get relevant tree
-		BinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
+		IBinaryTree<BlockComponent> tree = treeMap.get(blockToRemove);
 		List<BlockComponent> children = tree.getChildren(blockToRemove);
 		
 		// Delete element from tree, get branch as newTree
-		BinaryTree<BlockComponent> newTree = tree.removeElement(blockToRemove);
+		IBinaryTree<BlockComponent> newTree = tree.removeElement(blockToRemove);
 		
 		//Remove actual element
 		treeMap.remove(blockToRemove);
@@ -87,7 +88,7 @@ public class TreeManager implements ITreeManager {
 	
 	@Override
 	public int getDepth(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		IBinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getDepth(block, PrimShapeBlock.class);
 	}
 	
@@ -98,7 +99,7 @@ public class TreeManager implements ITreeManager {
 	 */
 	@Override
 	public List<BlockComponent> getChildren(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		IBinaryTree<BlockComponent> tree = treeMap.get(block);
 		List<BlockComponent> childrenAsBlock = new ArrayList<>();
 		for(BlockComponent e : tree.getChildren(block)) {
 			childrenAsBlock.add(e);
@@ -113,19 +114,19 @@ public class TreeManager implements ITreeManager {
 	 */
 	@Override
 	public BlockComponent getRoot(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		IBinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getRoot();
 	}
 	
 	@Override
 	public BlockComponent getLeft(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		IBinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getLeft(block);
 	}
 	
 	@Override
 	public BlockComponent getRight(BlockComponent block) {
-		BinaryTree<BlockComponent> tree = treeMap.get(block);
+		IBinaryTree<BlockComponent> tree = treeMap.get(block);
 		return tree.getRight(block);
 	}
 	

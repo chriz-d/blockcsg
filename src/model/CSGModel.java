@@ -22,7 +22,7 @@ import view.block.PrimShapeBlock;
  * @author chriz
  *
  */
-public class CSGModel {
+public class CSGModel implements ICSGModel {
 	
 	/** Block this object represents. */
 	private BlockComponent block;
@@ -80,6 +80,7 @@ public class CSGModel {
 	 * (Very slow!)
 	 * @return Returns the computed CSG shape.
 	 */
+	@Override
 	public CSGShape generateCSGMesh() {
 		// Create a new geometry for blending shapes and config it
 		CSGGeometry csgBlender = new CSGGeometry();
@@ -87,8 +88,8 @@ public class CSGModel {
 		csgBlender.setQueueBucket(Bucket.Translucent);
 		
 		// All meshes that need blending need to moved to (0, 0, 0) hence save oldPos
-		CSGModel left = null;
-		CSGModel right = null;
+		ICSGModel left = null;
+		ICSGModel right = null;
 		Vector3f oldPos = csg.getLocalTranslation().clone();
 		// If block is a operator recursively compute csg of children
 		if(block instanceof OperatorBlock) {
@@ -152,14 +153,17 @@ public class CSGModel {
 		return csg;
 	}
 	
+	@Override
 	public BlockComponent getBlock() {
 		return block;
 	}
 	
+	@Override
 	public CSGShape getCSG() {
 		return csg;
 	}
 	
+	@Override
 	public void resizeModel(SizeMeasurements size) {
 		this.size = size;
 		// Create new mesh with new size and swap it out
@@ -175,6 +179,7 @@ public class CSGModel {
 		csg.setMesh(mesh);
 	}
 	
+	@Override
 	public SizeMeasurements getSize() {
 		return size;
 	}

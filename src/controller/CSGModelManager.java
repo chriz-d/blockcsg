@@ -6,6 +6,7 @@ import java.util.Map;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 
 import model.CSGModel;
+import model.ICSGModel;
 import model.SizeMeasurements;
 import support.Support;
 import view.block.BlockComponent;
@@ -24,10 +25,10 @@ public class CSGModelManager implements ICSGModelManager {
 	private JME jme;
 	
 	/** Map containing fitting block and CSGModel pairs. */
-	private Map<BlockComponent, CSGModel> modelMap;
+	private Map<BlockComponent, ICSGModel> modelMap;
 	
 	/** Reference to the currently highlighted model in scenegraph */
-	private CSGModel highlightedModel;
+	private ICSGModel highlightedModel;
 	
 	public CSGModelManager(ITreeManager treeMan, JME jme) {
 		this.treeMan = treeMan;
@@ -64,7 +65,7 @@ public class CSGModelManager implements ICSGModelManager {
 	 */
 	@Override
 	public void displayCSGModel(BlockComponent block) {
-		CSGModel model = modelMap.get(block);
+		ICSGModel model = modelMap.get(block);
 		jme.addToSceneGraph(model.getCSG());
 	}
 	
@@ -75,12 +76,12 @@ public class CSGModelManager implements ICSGModelManager {
 	 */
 	@Override
 	public void undisplayCSGModel(BlockComponent block) {
-		CSGModel model = modelMap.get(block);
+		ICSGModel model = modelMap.get(block);
 		jme.removeFromSceneGraph(model.getCSG());
 	}
 	
 	@Override
-	public CSGModel getCSGModel(BlockComponent block) {
+	public ICSGModel getCSGModel(BlockComponent block) {
 		return modelMap.get(block);
 	}
 	
@@ -95,7 +96,7 @@ public class CSGModelManager implements ICSGModelManager {
 	
 	@Override
 	public void resizeCSGModel(BlockComponent block, SizeMeasurements size) {
-		CSGModel model = modelMap.get(block);
+		ICSGModel model = modelMap.get(block);
 		model.resizeModel(size);
 	}
 	
@@ -120,7 +121,7 @@ public class CSGModelManager implements ICSGModelManager {
 	}
 
 	@Override
-	public CSGModel getHighlightedModel() {
+	public ICSGModel getHighlightedModel() {
 		return highlightedModel;
 	}
 }

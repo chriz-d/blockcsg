@@ -1,7 +1,7 @@
 package controller;
 
 
-import model.CSGModel;
+import model.ICSGModel;
 /**
  * Class for calculating csg in seperate thread to prevent GUI lockup.
  * After calculation is done the calculated mesh is inserted into scene graph
@@ -10,10 +10,10 @@ import model.CSGModel;
  */
 public class CSGCalculator implements Runnable {
 
-	private CSGModel shape;
+	private ICSGModel shape;
 	private ICSGModelManager modelMan;
 	
-	public CSGCalculator(CSGModel shape, ICSGModelManager modelMan) {
+	public CSGCalculator(ICSGModel shape, ICSGModelManager modelMan) {
 		this.shape = shape;
 		this.modelMan = modelMan;
 	}

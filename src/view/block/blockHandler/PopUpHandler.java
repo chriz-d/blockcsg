@@ -27,7 +27,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
-import model.CSGModel;
+import model.ICSGModel;
 import model.SizeMeasurements;
 import net.wcomohundro.jme3.csg.CSGShape;
 import view.IView;
@@ -376,7 +376,7 @@ public class PopUpHandler extends CustomHandler {
 		c.gridx = 2;
 		posPanel.add(zPosSpinner, c);
 		
-		CSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
+		ICSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
 		Vector3f pos = shape.getCSG().getLocalTranslation();
 		xPosSpinner.setValue(pos.x);
 		yPosSpinner.setValue(pos.y);
@@ -459,7 +459,7 @@ public class PopUpHandler extends CustomHandler {
 		sizePanel.add(zPosSpinner, c);
 		
 		// Set current values
-		CSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
+		ICSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
 		SizeMeasurements size = shape.getSize();
 		xPosSpinner.setValue(size.length);
 		yPosSpinner.setValue(size.height);
@@ -485,7 +485,7 @@ public class PopUpHandler extends CustomHandler {
 		c.gridy = 1;
 		sizePanel.add(radiusSpinner, c);
 		
-		CSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
+		ICSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
 		SizeMeasurements size = shape.getSize();
 		radiusSpinner.setValue(size.radius);
 		
@@ -517,7 +517,7 @@ public class PopUpHandler extends CustomHandler {
 		c.gridx = 1;
 		posPanel.add(radiusSpinner, c);
 		
-		CSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
+		ICSGModel shape = view.getCSGModelManager().getCSGModel(attachedComponent);
 		SizeMeasurements size = shape.getSize();
 		lengthSpinner.setValue(size.length);
 		radiusSpinner.setValue(size.radius);

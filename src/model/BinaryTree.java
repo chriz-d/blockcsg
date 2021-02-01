@@ -12,7 +12,7 @@ import support.Support.Direction;
  * @author chriz
  * @param <T> Type of BinaryTree.
  */
-public class BinaryTree<T> {
+public class BinaryTree<T> implements IBinaryTree<T> {
 	/** Root node of the tree. */
 	private Node<T> root;
 	
@@ -37,7 +37,9 @@ public class BinaryTree<T> {
 	 * @param parent Node in tree to attach the new element to.
 	 * @param dir Direction (Left / Right)
 	 */
-	public void addElement(BinaryTree<T> childTree, T parent, Direction dir) {
+	@Override
+	public void addElement(IBinaryTree<T> ichildTree, T parent, Direction dir) {
+		BinaryTree<T> childTree = (BinaryTree<T>) ichildTree;
 		// Get find parent node in tree
 		Node<T> parentNode = searchNode(parent, root);
 		
@@ -57,7 +59,8 @@ public class BinaryTree<T> {
 	 * @param elem Element to delete.
 	 * @return A new tree containing deleted node as root and its children.
 	 */
-	public BinaryTree<T> removeElement(T elem) {
+	@Override
+	public IBinaryTree<T> removeElement(T elem) {
 		// Search element in tree
 		Node<T> nodeToRemove = searchNode(elem, root);
 		if(nodeToRemove == null) {
@@ -82,6 +85,7 @@ public class BinaryTree<T> {
 	 * @param elem Element to search.
 	 * @return Boolean if element was found inside tree.
 	 */
+	@Override
 	public boolean contains(T elem) {
 		return (searchNode(elem, root) != null);
 	}
@@ -89,6 +93,7 @@ public class BinaryTree<T> {
 	/**
 	 * @return Boolean if tree is empty.
 	 */
+	@Override
 	public boolean isEmpty() {
 		return root == null;
 	}
@@ -97,6 +102,7 @@ public class BinaryTree<T> {
 		return root;
 	}
 	
+	@Override
 	public T getRoot() {
 		return root.getContent();
 	}
@@ -107,6 +113,7 @@ public class BinaryTree<T> {
 	 * @param cls Class for filtering. Every element found in tree matching this class gets ignored.
 	 * @return Calculated depth level.
 	 */
+	@Override
 	public int getDepth(T root, Class<?> cls) {
 		return getDepth(searchNode(root, this.root), cls);
 	}
@@ -116,6 +123,7 @@ public class BinaryTree<T> {
 	 * @param elem Element of which to return left child.
 	 * @return Left element of specified element.
 	 */
+	@Override
 	public T getLeft(T elem) {
 		Node<T> node = searchNode(elem, root);
 		if(node != null && node.getLeft() != null) {
@@ -130,6 +138,7 @@ public class BinaryTree<T> {
 	 * @param elem Element of which to return right child.
 	 * @return Right element of specified element.
 	 */
+	@Override
 	public T getRight(T elem) {
 		Node<T> node = searchNode(elem, root);
 		if(node != null && node.getRight() != null) {
@@ -157,6 +166,7 @@ public class BinaryTree<T> {
 	 * @param parent Element of which to return all children.
 	 * @return List of all found children.
 	 */
+	@Override
 	public List<T> getChildren(T parent) {
 		List<T> list = new ArrayList<T>();
 		Node<T> parentNode = searchNode(parent, root);

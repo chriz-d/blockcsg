@@ -1,6 +1,6 @@
 package controller;
 
-import model.CSGModel;
+import model.ICSGModel;
 import model.SizeMeasurements;
 import view.block.BlockComponent;
 
@@ -33,7 +33,7 @@ public interface ICSGModelManager {
 	 */
 	void undisplayCSGModel(BlockComponent block);
 
-	CSGModel getCSGModel(BlockComponent block);
+	ICSGModel getCSGModel(BlockComponent block);
 
 	/**
 	 * Starts a thread and recomputes the CSG of a given block.
@@ -47,5 +47,5 @@ public interface ICSGModelManager {
 
 	void highlightModel(BlockComponent block);
 	
-	CSGModel getHighlightedModel();
+	ICSGModel getHighlightedModel();
 }

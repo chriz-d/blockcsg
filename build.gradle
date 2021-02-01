@@ -22,9 +22,9 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jmonkeyengine:jme3-core:3.2.2-stable"
-    implementation "org.jmonkeyengine:jme3-desktop:3.2.2-stable"
-    implementation "org.jmonkeyengine:jme3-lwjgl:3.2.2-stable"
+    implementation "org.jmonkeyengine:jme3-core:3.3.2-stable"
+    implementation "org.jmonkeyengine:jme3-desktop:3.3.2-stable"
+    implementation "org.jmonkeyengine:jme3-lwjgl:3.3.2-stable"
     implementation files('libs/WCOmoCSG321-b20191021-j17.jar')
     implementation files('libs/WCOmoCSGjme321-b20191021-j17.jar')
 }

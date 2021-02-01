@@ -51,7 +51,7 @@ If you want to change dimensions, position or rotation of a block, simply right 
 Note: When moving or rotating an operand, all children of the moved operand will also be moved or rotated.
 
 If you are happy with the result you can select File > Export in the toolbar to export the current selected model to an .obj file.
-(Curre)
+(Current selected = highlighted model / blocks)
 
 ## Known issues
 - Application raises an error when an operation leaves the mesh empty.

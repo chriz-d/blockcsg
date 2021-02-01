@@ -87,6 +87,7 @@ public class PopUpHandler extends CustomHandler {
 		popup.add(mainPanel);
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(getPositionPanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		mainPanel.add(getRotationPanel());
 		JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(new ActionListener() {
@@ -140,7 +141,9 @@ public class PopUpHandler extends CustomHandler {
 				popup.setVisible(false);
 			}
 		});
+		mainPanel.add(Box.createRigidArea(new Dimension(40, 20)));
 		mainPanel.add(applyButton);
+		applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		popup.pack();
 		popup.setVisible(true);
 	}
@@ -151,7 +154,9 @@ public class PopUpHandler extends CustomHandler {
 		popup.add(mainPanel);
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(getCubeSizePanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		mainPanel.add(getPositionPanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		mainPanel.add(getRotationPanel());
 		JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(new ActionListener() {
@@ -203,7 +208,9 @@ public class PopUpHandler extends CustomHandler {
 				popup.setVisible(false);
 			}
 		});
+		mainPanel.add(Box.createRigidArea(new Dimension(40, 20)));
 		mainPanel.add(applyButton);
+		applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		popup.pack();
 		popup.setVisible(true);
 	}
@@ -214,6 +221,7 @@ public class PopUpHandler extends CustomHandler {
 		popup.add(mainPanel);
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(getSphereSizePanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		mainPanel.add(getPositionPanel());
 		JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(new ActionListener() {
@@ -245,7 +253,9 @@ public class PopUpHandler extends CustomHandler {
 				popup.setVisible(false);
 			}
 		});
+		mainPanel.add(Box.createRigidArea(new Dimension(40, 20)));
 		mainPanel.add(applyButton);
+		applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		popup.pack();
 		popup.setVisible(true);
 	}
@@ -256,7 +266,9 @@ public class PopUpHandler extends CustomHandler {
 		popup.add(mainPanel);
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(getCylinderSizePanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		mainPanel.add(getPositionPanel());
+		mainPanel.add(Box.createRigidArea(new Dimension(10, 10)));
 		mainPanel.add(getRotationPanel());
 		JButton applyButton = new JButton("Apply");
 		applyButton.addActionListener(new ActionListener() {
@@ -305,7 +317,9 @@ public class PopUpHandler extends CustomHandler {
 				popup.setVisible(false);
 			}
 		});
+		mainPanel.add(Box.createRigidArea(new Dimension(40, 20)));
 		mainPanel.add(applyButton);
+		applyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		popup.pack();
 		popup.setVisible(true);
 	}

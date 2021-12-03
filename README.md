@@ -55,3 +55,7 @@ If you are happy with the result you can select File > Export in the toolbar to 
 
 ## Known issues
 - Application raises an error when an operation leaves the mesh empty.
+
+## Credits
+jMonkey CSG Library by wcomohundro
+http://jmonkeycsg.sourceforge.net/
